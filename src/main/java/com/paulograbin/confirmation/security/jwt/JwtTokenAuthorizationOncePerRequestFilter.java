@@ -25,7 +25,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private UserDetailsService inMemoryUserDetailService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -49,22 +49,20 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
             } catch (IllegalArgumentException e) {
                 logger.error("JWT_TOKEN_UNABLE_TO_GET_USERNAME", e);
             } catch (ExpiredJwtException e) {
-                logger.warn("JWT_TOKEN_EXPIRED", e);
+                logger.warn("Token used by user is expired", e);
             }
         } else {
             logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
         }
 
-        logger.debug("JWT_TOKEN_USERNAME_VALUE '{}'", username);
+        logger.info("JWT_TOKEN_USERNAME_VALUE '{}'", username);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.inMemoryUserDetailService.loadUserByUsername(username);
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
