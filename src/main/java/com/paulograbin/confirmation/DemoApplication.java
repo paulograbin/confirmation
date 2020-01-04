@@ -6,9 +6,11 @@ import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -40,6 +42,11 @@ public class DemoApplication implements CommandLineRunner {
 
     @Resource
     private ParticipationService participationService;
+
+    @Bean
+    ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
 
     @Override
