@@ -58,6 +58,10 @@ public class User implements UserDetails {
 
     private boolean active;
 
+    @Getter
+    @Setter
+    private boolean master;
+
     @OneToMany(mappedBy = "user")
     private Set<Participation> participations;
 
@@ -69,8 +73,8 @@ public class User implements UserDetails {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.active = true;
         this.password = password;
+        this.master = false;
         this.creationDate = LocalDateTime.now();
     }
 
