@@ -30,6 +30,8 @@ public class User implements UserDetails {
     private String lastName;
 
     @OneToMany
+    @Getter
+    @Setter
     private Set<Event> createdEvents;
 
     @Column(unique = true)
@@ -56,6 +58,8 @@ public class User implements UserDetails {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
     private LocalDateTime inactivatedIn;
 
+    @Getter
+    @Setter
     private boolean active;
 
     @Getter
@@ -96,15 +100,6 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -122,13 +117,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return active;
-    }
-
-    public void setActive(boolean b) {
-        this.active = b;
-    }
-
-    public boolean isActive() {
-        return this.active;
     }
 }
