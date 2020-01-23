@@ -4,10 +4,16 @@ import com.paulograbin.confirmation.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
+
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
     boolean existsByUsername(String username);
 
+    boolean existsByEmail(String email);
+
     UserDetails findByUsername(String username);
+
+    Optional<User> findByUsernameOrEmail(String username, String email);
 }
