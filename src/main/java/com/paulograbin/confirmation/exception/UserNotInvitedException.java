@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class UsernameNotAvailableException extends RuntimeException {
+public class UserNotInvitedException extends RuntimeException {
 
-    private static final Logger log = LoggerFactory.getLogger(UsernameNotAvailableException.class);
+    private static final Logger log = LoggerFactory.getLogger(UserNotInvitedException.class);
 
-    public UsernameNotAvailableException(String message) {
+    public UserNotInvitedException(String message) {
         super(message);
 
         log.error(message);
