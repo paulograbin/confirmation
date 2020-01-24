@@ -6,17 +6,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Getter
     @Setter
     private Long id;
@@ -27,19 +28,25 @@ public class Event {
 
     @Getter
     @Setter
+    private String description;
+
+    @Getter
+    @Setter
     private String address;
 
     @OneToOne
+    @Getter
+    @Setter
     private User creator;
 
     @Getter
     @Setter
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dateTime;
 
     @Getter
     @Setter
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime creationDate;
 
     @OneToMany(mappedBy = "event")
@@ -50,11 +57,12 @@ public class Event {
     public Event() {
     }
 
-    public Event(String title, String address, User creator, LocalDateTime date) {
+    public Event(String title, String address, String description, User creator, LocalDateTime date) {
         this();
 
         this.title = title;
         this.address = address;
+        this.description = description;
         this.creator = creator;
         this.dateTime = date;
         this.creationDate = LocalDateTime.now();
@@ -67,10 +75,6 @@ public class Event {
     public void addParticipant(User participant) {
         Participation p = new Participation(participant, this);
         participants.add(p);
-    }
-
-    public List<Participation> getParticipants() {
-        return participants;
     }
 
     @Override
@@ -88,9 +92,5 @@ public class Event {
             Participation participation = participants.get(i);
             participation.confirmParticipant();
         }
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

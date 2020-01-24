@@ -22,9 +22,9 @@ class EventTest {
 
     @Test
     void name() {
-        User mc = new User("mc@gvs.com.br", "MC", "GVS", "aaa");
+        User mc = new User("mc@gvs.com.br", "MC", "GVS", "", "aaa");
 
-        Event e = new Event("Sessão sábado", "", mc, LocalDateTime.of(2019, 11, 21, 14, 0));
+        Event e = new Event("Sessão sábado", "", "", mc, LocalDateTime.of(2019, 11, 21, 14, 0));
 
         userRepository.save(mc);
         eventRepository.save(e);
