@@ -1,7 +1,14 @@
 package com.paulograbin.confirmation.security.jwt.resource;
 
+import com.paulograbin.confirmation.Role;
+import com.paulograbin.confirmation.RoleName;
 import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.exception.NotFoundException;
+import com.paulograbin.confirmation.persistence.RoleRepository;
 import com.paulograbin.confirmation.security.jwt.JwtTokenUtil;
+import com.paulograbin.confirmation.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -10,16 +17,24 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.Collections;
 
 @RestController
+@RequestMapping("/api/auth")
 @CrossOrigin(origins="http://localhost:4200")
 public class JwtAuthenticationRestController {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationRestController.class);
 
     @Value("${jwt.http.request.header}")
     private String tokenHeader;
@@ -28,54 +43,83 @@ public class JwtAuthenticationRestController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserDetailsService userService;
+    private JwtTokenUtil jwtTokenUtil;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
+    @Resource
+    private RoleRepository roleRepository;
+
+    @Resource
+    private UserService userService;
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest)
             throws AuthenticationException {
 
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
-        final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new JwtTokenResponse(token));
-    }
-
-    @RequestMapping(value = "${jwt.refresh.token.uri}", method = RequestMethod.GET)
-    public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
-        String authToken = request.getHeader(tokenHeader);
-        final String token = authToken.substring(7);
-        String username = jwtTokenUtil.getUsernameFromToken(token);
-        User user = (User) userService.loadUserByUsername(username);
-
-        if (jwtTokenUtil.canTokenBeRefreshed(token)) {
-            String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtTokenResponse(refreshedToken));
-        } else {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
-    @ExceptionHandler({ AuthenticationException.class })
-    public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-    }
-
-    private void authenticate(String username, String password) {
-        Objects.requireNonNull(username);
-        Objects.requireNonNull(password);
+        log.info("Authentication...");
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsernameOrEmail(),
+                            loginRequest.getPassword()));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String jwtToken = jwtTokenUtil.generateToken(authentication);
+
+            return ResponseEntity.ok(new JwtTokenResponse(jwtToken));
         } catch (DisabledException e) {
             throw new AuthenticationException("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
             throw new AuthenticationException("INVALID_CREDENTIALS", e);
         }
     }
+
+    @PostMapping("/signup")
+    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+        User user = new User();
+        user.setFirstName(signUpRequest.getFirstName());
+        user.setLastName(signUpRequest.getLastName());
+        user.setEmail(signUpRequest.getEmail());
+        user.setUsername(signUpRequest.getUsername());
+        user.setPassword(signUpRequest.getPassword());
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new NotFoundException("Role not found"));
+
+        user.setRoles(Collections.singleton(userRole));
+
+        User createdUser = userService.createUser(user);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{username}")
+                .buildAndExpand(createdUser.getUsername()).toUri();
+
+        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+    }
+
+//    @RequestMapping(value = "${jwt.refresh.token.uri}", method = RequestMethod.GET)
+//    public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+//        String authToken = request.getHeader(tokenHeader);
+//        final String token = authToken.substring(7);
+//        String username = jwtTokenUtil.getUsernameFromToken(token);
+//        User user = (User) userService.loadUserByUsername(username);
+//
+//        if (jwtTokenUtil.canTokenBeRefreshed(token)) {
+//            String refreshedToken = jwtTokenUtil.refreshToken(token);
+//            return ResponseEntity.ok(new JwtTokenResponse(refreshedToken));
+//        } else {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }
+
+    @ExceptionHandler({ AuthenticationException.class })
+    public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
 }
 
