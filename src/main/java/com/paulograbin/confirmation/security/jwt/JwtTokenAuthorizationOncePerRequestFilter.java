@@ -44,11 +44,13 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
             final String requestTokenHeader = getTokenFromRequestHeader(request);
 
             if (jwtTokenUtil.validateToken(requestTokenHeader)) {
-                Long userId = jwtTokenUtil.getUserIdFromJWT(tokenHeader);
+                Long userId = jwtTokenUtil.getUserIdFromJWT(requestTokenHeader);
 
                 UserDetails userDetails = userService.loadUserById(userId);
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
