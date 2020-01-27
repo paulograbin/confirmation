@@ -1,8 +1,12 @@
 package com.paulograbin.confirmation.service;
 
+import com.paulograbin.confirmation.Role;
+import com.paulograbin.confirmation.RoleName;
 import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.exception.EmailNotAvailableException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
+import com.paulograbin.confirmation.persistence.RoleRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +31,9 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Resource
+    private RoleRepository roleRepository;
+
+    @Resource
     private PasswordEncoder passwordEncoder;
 
 
@@ -41,11 +48,25 @@ public class UserService implements UserDetailsService {
     public User createUser(User user) {
         validateInformation(user);
         validateAvailableUsername(user.getUsername());
+        validateAvailableEmail(user.getEmail());
 
         user.setId(null);
+        user.setModificationDate(null);
+        user.setInactivatedIn(null);
+        user.setActive(true);
         user.setCreationDate(LocalDateTime.now());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new NotFoundException("Role not found"));
+        user.setRoles(Collections.singleton(userRole));
+
         return userRepository.save(user);
+    }
+
+    private void validateAvailableEmail(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailNotAvailableException(format("Email %s is already taken", email));
+        }
     }
 
     private void validateAvailableUsername(String username) {

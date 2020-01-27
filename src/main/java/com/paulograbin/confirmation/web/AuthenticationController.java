@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation.security.jwt.resource;
+package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.Role;
 import com.paulograbin.confirmation.RoleName;
@@ -6,6 +6,7 @@ import com.paulograbin.confirmation.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.persistence.RoleRepository;
 import com.paulograbin.confirmation.security.jwt.JwtTokenUtil;
+import com.paulograbin.confirmation.security.jwt.resource.*;
 import com.paulograbin.confirmation.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
@@ -32,9 +32,9 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins="http://localhost:4200")
-public class JwtAuthenticationRestController {
+public class AuthenticationController {
 
-    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationRestController.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Value("${jwt.http.request.header}")
     private String tokenHeader;
@@ -49,15 +49,10 @@ public class JwtAuthenticationRestController {
     private JwtTokenUtil jwtTokenUtil;
 
     @Resource
-    private RoleRepository roleRepository;
-
-    @Resource
     private UserService userService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest)
-            throws AuthenticationException {
-
+    public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest) {
         log.info("Authentication...");
 
         try {
@@ -87,16 +82,10 @@ public class JwtAuthenticationRestController {
         user.setUsername(signUpRequest.getUsername());
         user.setPassword(signUpRequest.getPassword());
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new NotFoundException("Role not found"));
-
-        user.setRoles(Collections.singleton(userRole));
-
         User createdUser = userService.createUser(user);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{username}")
-                .buildAndExpand(createdUser.getUsername()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}")
+                .buildAndExpand(createdUser.getId()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
