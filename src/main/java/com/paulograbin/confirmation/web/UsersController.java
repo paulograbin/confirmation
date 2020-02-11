@@ -1,8 +1,11 @@
 package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.security.jwt.CurrentUser;
+import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.web.dto.UserDTO;
+import com.paulograbin.confirmation.web.dto.UserDetailsDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
@@ -14,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static java.lang.String.format;
 
 
 @CrossOrigin("*")
@@ -29,8 +33,18 @@ public class UsersController {
 
     private ModelMapper modelMapper = new ModelMapper();
 
+    @Resource
+    private ModelMapper modelMapper;
 
-    @RequestMapping(method = RequestMethod.GET)
+
+    @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDetailsDTO getCurrentUser(@CurrentUser User currentUser) {
+        UserDetailsDTO user = modelMapper.map(currentUser, UserDetailsDTO.class);
+
+        return user;
+    }
+
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> listAll() {
         Iterable<User> users = userService.fetchAll();
