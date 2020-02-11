@@ -80,10 +80,11 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    public Participation invite2(final long userId, final long eventId) {
-        User user = userService.fetchById(userId);
-        Event event = fetchById(eventId);
+    public Participation declineParticipation(long userId, long eventId) {
+        Optional<Participation> participationOptional = participationService.fetchByEventAndUser(eventId, userId);
 
-        return participationService.createNew(event, user);
+        Participation participation = participationOptional.orElseThrow(() -> new UserNotInvitedException(format("Participation not found for user %s in event %s", userId, eventId)));
+
+        return participationService.declineParticipation(participation);
     }
 }
