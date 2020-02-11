@@ -67,10 +67,19 @@ public class EventsController {
         eventService.invite2(userId, eventId);
     }
 
-    @RequestMapping(path = "/events", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Event createNewEvent(@RequestBody Event event) {
-        log.info(event.toString());
+    @PostMapping(path = "/event/{eventId}/confirm/{userId}")
+    public void confirmParticipation(@PathVariable("eventId") final long eventId, @PathVariable("userId") final long userId) {
+        log.info("Confirming user {} to event {}", userId, eventId);
+
+        eventService.confirmParticipation(userId, eventId);
+    }
+
+    @PostMapping(path = "/event/{eventId}/decline/{userId}")
+    public void declineParticipation(@PathVariable("eventId") final long eventId, @PathVariable("userId") final long userId) {
+        log.info("Declining user {} to event {}", userId, eventId);
+
+        eventService.declineParticipation(userId, eventId);
+    }
 
         return eventService.createEvent(event);
     @PostMapping(path = "/events")
