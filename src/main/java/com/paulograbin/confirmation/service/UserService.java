@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -42,7 +44,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User fetchById(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found exception"));
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User " + id + " not found exception"));
     }
 
     public User createUser(User user) {
