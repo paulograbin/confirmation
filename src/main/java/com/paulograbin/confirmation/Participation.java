@@ -8,10 +8,13 @@ import java.time.LocalDateTime;
 
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "event_id"})
+})
 public class Participation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     @Setter
     private long id;
