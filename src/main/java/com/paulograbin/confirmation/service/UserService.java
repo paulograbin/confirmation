@@ -102,22 +102,24 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userFromDatabase);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetails byUsername = userRepository.findByUsername(username);
+    public User activate(Long id) {
+        User userFromDatabase = fetchById(id);
 
-        if (byUsername == null)
-            throw new UsernameNotFoundException("Ops");
+        userFromDatabase.setActive(true);
+        userFromDatabase.setInactivatedIn(null);
+        userFromDatabase.setModificationDate(LocalDateTime.now());
 
-        return byUsername;
+        return userRepository.save(userFromDatabase);
     }
 
-//    public static UserSS authenticated() {
-//        try {
-//            return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        }
-//        catch (Exception e) {
-//            return null;
-//        }
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String usernameOrEmail) {
+        return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + usernameOrEmail));
+    }
+
+    public UserDetails loadUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+    }
 }
