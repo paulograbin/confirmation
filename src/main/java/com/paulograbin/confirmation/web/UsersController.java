@@ -43,8 +43,10 @@ public class UsersController {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public User createNewUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public UserDTO createNewUser(@RequestBody User userToBeCreated) {
+        User createdUser = userService.createUser(userToBeCreated);
+
+        return modelMapper.map(createdUser, UserDTO.class);
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -57,14 +59,19 @@ public class UsersController {
 
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody User newUserInformation) {
+        User user = userService.updateUser(id, newUserInformation);
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public User inactivateUser(@PathVariable Long id) {
-        return userService.inactivate(id);
+    public UserDTO inactivateUser(@PathVariable Long id) {
+        log.info(format("Inactivating user %d", id));
+        User inactivatedUser = userService.inactivate(id);
+
+        return modelMapper.map(inactivatedUser, UserDTO.class);
+    }
 
     @RequestMapping(path = "/{id}/activate", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
