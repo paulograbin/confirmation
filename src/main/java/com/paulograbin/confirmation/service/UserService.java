@@ -80,11 +80,11 @@ public class UserService implements UserDetailsService {
     }
 
     public User updateUser(Long id, User user) {
-        //        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userFromDatabase = fetchById(id);
 
         userFromDatabase.setFirstName(user.getFirstName());
         userFromDatabase.setLastName(user.getLastName());
+        userFromDatabase.setPassword(passwordEncoder.encode(user.getPassword()));
         userFromDatabase.setModificationDate(LocalDateTime.now());
 
         User updatedUser = userRepository.save(userFromDatabase);
