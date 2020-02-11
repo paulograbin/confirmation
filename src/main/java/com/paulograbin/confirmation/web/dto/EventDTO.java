@@ -12,7 +12,9 @@ public class EventDTO {
     private int id;
     private String title;
     private String address;
-    private String creatorName;
+    private int creatorId;
+    private String creatorFirstName;
+    private String creatorLastName;
     private LocalDateTime dateTime;
     private LocalDateTime creationDate;
 
