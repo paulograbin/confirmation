@@ -1,20 +1,26 @@
 package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.Event;
-import com.paulograbin.confirmation.Participation;
+import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
+import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.web.dto.EventDTO;
 import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
+import com.paulograbin.confirmation.web.dto.ParticipationDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 
 @RestController
@@ -25,10 +31,14 @@ public class EventsController {
     @Resource
     private EventService eventService;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    @Resource
+    private ParticipationService participationService;
+
+    @Resource
+    private ModelMapper modelMapper;
 
 
-    @RequestMapping(path = "/events", method = RequestMethod.GET)
+    @GetMapping(path = "/events")
     public List<EventDTO> listAllEvents() {
         log.info("All events");
 
@@ -40,9 +50,9 @@ public class EventsController {
                 .collect(Collectors.toList());
     }
 
-    @RequestMapping(path = "/events/{id}", method = RequestMethod.GET)
+    @GetMapping(path = "/events/{id}")
     public EventDetailsDTO fetchEventDetails(@PathVariable("id") long eventId) {
-        log.info("All details of event " + eventId);
+        log.info("All details of event {}", eventId);
 
         Event event = eventService.fetchById(eventId);
 
@@ -81,7 +91,13 @@ public class EventsController {
         eventService.declineParticipation(userId, eventId);
     }
 
-        return eventService.createEvent(event);
+    @GetMapping(path = "/events/invitations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ParticipationDTO> fetchEventsUserIsInvited(@PathVariable("userId") final long userId) {
+        log.info("Looking for events to which user {} is invited to", userId);
+
+        return participationService.getAllParticipationsFromUser(userId);
+    }
+
     @PostMapping(path = "/events")
     @ResponseStatus(HttpStatus.CREATED)
     public Event createNewEvent(@RequestBody Event event, @CurrentUser User currentUser) {
