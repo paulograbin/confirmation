@@ -65,5 +65,14 @@ public class UsersController {
     @ResponseStatus(HttpStatus.OK)
     public User inactivateUser(@PathVariable Long id) {
         return userService.inactivate(id);
+
+    @RequestMapping(path = "/{id}/activate", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO activateUser(@PathVariable Long id) {
+        log.info(format("Activating user %d", id));
+        User activatedUser = userService.activate(id);
+
+        return modelMapper.map(activatedUser, UserDTO.class);
+    }
     }
 }
