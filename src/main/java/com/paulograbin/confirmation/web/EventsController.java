@@ -73,5 +73,9 @@ public class EventsController {
         log.info(event.toString());
 
         return eventService.createEvent(event);
+    @PostMapping(path = "/events")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Event createNewEvent(@RequestBody Event event, @CurrentUser User currentUser) {
+        return eventService.createEvent(event, currentUser);
     }
 }
