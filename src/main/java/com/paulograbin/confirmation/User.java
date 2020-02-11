@@ -41,10 +41,10 @@ public class User implements UserDetails {
     @Setter
     private String lastName;
 
-    @OneToMany
-    @Getter
-    @Setter
-    private Set<Event> createdEvents;
+//    @OneToMany
+//    @Getter
+//    @Setter
+//    private Set<Event> createdEvents;
 
     @Getter
     @Setter
