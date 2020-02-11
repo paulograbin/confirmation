@@ -20,4 +20,11 @@ public class LoginRequest {
     @Setter
     private String password;
 
+    @Override
+    public String toString() {
+        return "LoginRequest{" +
+                "usernameOrEmail='" + usernameOrEmail + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

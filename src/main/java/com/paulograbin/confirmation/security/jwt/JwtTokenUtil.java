@@ -1,21 +1,17 @@
 package com.paulograbin.confirmation.security.jwt;
 
 import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.security.jwt.resource.JwtTokenResponse;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.impl.DefaultClock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -33,18 +29,20 @@ public class JwtTokenUtil implements Serializable {
     private Long expiration;
 
 
-    public String generateToken(Authentication authentication) {
+    public JwtTokenResponse generateToken(Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
 
         Date now = new Date();
         Date expirationDate = calculateExpirationDate(now);
 
-        return Jwts.builder()
+        String jwtToken = Jwts.builder()
                 .setSubject(Long.toString(principal.getId()))
-                .setIssuedAt(new Date())
+                .setIssuedAt(now)
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
+
+        return new JwtTokenResponse(jwtToken, expirationDate, principal.isMaster());
     }
 
     public Long getUserIdFromJWT(String token) {

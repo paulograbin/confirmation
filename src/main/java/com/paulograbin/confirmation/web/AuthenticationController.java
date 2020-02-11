@@ -29,6 +29,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
 
+
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins="http://localhost:4200")
@@ -53,7 +54,7 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest) {
-        log.info("Authentication...");
+        log.info("Authentication: {}", loginRequest);
 
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -63,9 +64,9 @@ public class AuthenticationController {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String jwtToken = jwtTokenUtil.generateToken(authentication);
+            JwtTokenResponse generatedToken = jwtTokenUtil.generateToken(authentication);
 
-            return ResponseEntity.ok(new JwtTokenResponse(jwtToken));
+            return ResponseEntity.ok(generatedToken);
         } catch (DisabledException e) {
             throw new AuthenticationException("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
@@ -109,6 +110,4 @@ public class AuthenticationController {
     public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
-
 }
-

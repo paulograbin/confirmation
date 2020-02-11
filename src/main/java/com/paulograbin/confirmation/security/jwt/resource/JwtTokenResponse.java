@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 public class JwtTokenResponse implements Serializable {
@@ -16,7 +17,22 @@ public class JwtTokenResponse implements Serializable {
 
     @Getter
     @Setter
+    private Date expirationDate;
+
+    @Getter
+    @Setter
+    private boolean master;
+
+    @Getter
+    @Setter
     private String tokenType = "Bearer";
+
+
+    public JwtTokenResponse(String token, Date expirationDate, boolean master) {
+        this.token = token;
+        this.expirationDate = expirationDate;
+        this.master = master;
+    }
 
     public JwtTokenResponse(String token) {
         this.token = token;
