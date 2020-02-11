@@ -67,6 +67,10 @@ public class EventService {
         return event.getParticipants();
     }
 
+    public List<Event> fetchAllEventsCreatedByUser(long userId) {
+        return eventRepository.findAllByCreatorId(userId);
+    }
+
     public Event fetchById(long id) {
         return eventRepository.findById(id).orElseThrow(() -> new NotFoundException("Event with id " + id + " not found!"));
     }

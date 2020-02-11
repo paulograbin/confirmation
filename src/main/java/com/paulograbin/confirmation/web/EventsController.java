@@ -49,11 +49,22 @@ public class EventsController {
         return modelMapper.map(event, EventDetailsDTO.class);
     }
 
-    @RequestMapping(path = "/events/{id}/participants", method = RequestMethod.GET)
-    public List<Participation> listParticipants(@PathVariable("id") long eventId) {
-        log.info("All participants of event " + eventId);
+    @GetMapping(path = "/events/createdBy/{userId}")
+    public List<EventDetailsDTO> fetchEventsCreatedByUser(@PathVariable("userId") long userId) {
+        log.info("Fetching all events created by user {}", userId);
 
-        return eventService.fetchParticipantsByEvent(eventId);
+        List<Event> events = eventService.fetchAllEventsCreatedByUser(userId);
+
+        return events.stream()
+                .map(e -> modelMapper.map(e, EventDetailsDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping(path = "/event/{eventId}/invite/{userId}")
+    public void inviteParticipant(@PathVariable("eventId") final long eventId, @PathVariable("userId") final long userId) {
+        log.info(format("Inviting user %s to event %s", userId, eventId));
+
+        eventService.invite2(userId, eventId);
     }
 
     @RequestMapping(path = "/events", method = RequestMethod.POST)
