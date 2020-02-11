@@ -59,10 +59,10 @@ public class EventService {
         return true;
     }
 
-    public List<Participation> fetchParticipantsByEvent(long eventId) {
+    public List<Participation> fetchParticipantsByEvent(final long eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
 
-        Event event = eventOptional.orElseThrow(() -> new NotFoundException("opa"));
+        Event event = eventOptional.orElseThrow(() -> new EventNotFoundException(format("Event %s not found", eventId)));
 
         return event.getParticipants();
     }
