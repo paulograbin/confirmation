@@ -43,8 +43,20 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    private void validate() {
+    private boolean isValid(Event event) {
+        if (event.getTitle().length() < 5) {
+            throw new IllegalArgumentException();
+        }
 
+        if (event.getAddress().isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+
+        if (event.getDateTime() == null) {
+            throw new IllegalArgumentException();
+        }
+
+        return true;
     }
 
     public List<Participation> fetchParticipantsByEvent(long eventId) {
