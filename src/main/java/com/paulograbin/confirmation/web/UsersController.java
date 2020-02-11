@@ -31,7 +31,8 @@ public class UsersController {
     @Resource
     private UserService userService;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    @Resource
+    private ParticipationService participationService;
 
     @Resource
     private ModelMapper modelMapper;
@@ -95,5 +96,15 @@ public class UsersController {
 
         return modelMapper.map(activatedUser, UserDTO.class);
     }
+
+    @RequestMapping(path = "/{id}/participations", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO getAllParticipation(@PathVariable Long id) {
+        log.info(format("Fetching all participations from user %d", id));
+        User activatedUser = userService.activate(id);
+
+//        participationService
+
+        return modelMapper.map(activatedUser, UserDTO.class);
     }
 }
