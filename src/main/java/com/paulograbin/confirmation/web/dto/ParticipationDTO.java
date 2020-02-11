@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class ParticipationDTO {
 
-    int id;
+    long id;
     private UserDTO user;
     private EventDTO event;
     private String status;
