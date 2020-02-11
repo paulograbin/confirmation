@@ -1,35 +1,84 @@
 package com.paulograbin.confirmation;
 
-import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.ParticipationRepository;
-import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.TimeZone;
+
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
+
+    // TOOD:
+    // Figure out a way to obtain the token in the controller test calls
+    // Identify if user has permission to invite and confirm users
+    // Get events to which I'm invited
+    // Get events to which I'm invited but haven't confirmed yet
+    // Validations on post requests
+    // Test everything
+    // Exception when user is invited more than once to a event
+    // Make event and user unique in participation model
+
+
+    public static final String DEFAULT_ADDRESS_JOAO_CORREA = "Avenida João Corrêa, 815";
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
 
+    @PostConstruct
+    void init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC-3"));
+    }
 
-    @Resource
-    private EventRepository eventRepository;
+    @Bean
+    HttpTraceRepository configIt() {
+        return new LoggerHttpTrace();
+    }
 
-    @Resource
-    private UserRepository userRepository;
+//    @Bean
+//    @Primary
+//    public ObjectMapper serializingObjectMapper() {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JavaTimeModule javaTimeModule = new JavaTimeModule();
+//
+////        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateSerializer());
+////        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
+//        objectMapper.registerModule(javaTimeModule);
+//        return objectMapper;
+//    }
+
+//    class LocalDateSerializer extends JsonSerializer<LocalDateTime> {
+//
+//        public final DateTimeFormatter FORMATTER = ofPattern("MM/dd/yyyy hh:mm:ss");
+//
+//        @Override
+//        public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+//            gen.writeString(value.format(FORMATTER));
+//        }
+//    }
+
+//    class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
+//        public final DateTimeFormatter FORMATTER = ofPattern("dd::MM::yyyy");
+//
+//        @Override
+//        public LocalDate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+//            return LocalDate.parse(p.getValueAsString(), FORMATTER);
+//        }
+//    }
 
     @Resource
     private ParticipationRepository participationRepository;
@@ -51,39 +100,28 @@ public class DemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User mc1 = new User("plgrabin", "Paulo", "Grabin", "aaa");
-        User mc2 = new User("paulograbin", "Paulo 22", "Grabin 222", "bbb");
-        User mc3 = new User("primeiroconselheiro", "Primeiro", "Conselheiro", "ccc");
-        User mc4 = new User("segundoconselheiro", "Segundo", "Conselheiro", "ddd");
-        User mc5 = new User("visitante", "visitante", "numero 1", "eee");
+        if (participationRepository.count() == 0) {
 
-        mc1 = userService.createUser(mc1);
-        mc2 = userService.createUser(mc2);
-        mc3 = userService.createUser(mc3);
-        mc4 = userService.createUser(mc4);
-        mc5 = userService.createUser(mc5);
+            User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
+            mc1.setMaster(true);
+            User mc2 = new User("asimov", "Isaac", "Asimov", "asimov", "aaa");
+            User mc3 = new User("primeiroconselheiro", "Primeiro", "Conselheiro", "primeiroconselheiro", "aaa");
 
-        Event e = new Event("Cerimonia 1", "Avenida João Correa 815", mc1, LocalDateTime.of(2019, 11, 21, 14, 0));
-        Event e2 = new Event("Cerimonia 2", "Avenida João Correa 815", mc1, LocalDateTime.of(2019, 11, 28, 14, 0));
-        e = eventService.createEvent(e);
-        e2 = eventService.createEvent(e2);
+            mc1 = userService.createUser(mc1);
+            mc2 = userService.createUser(mc2);
+            mc3 = userService.createUser(mc3);
 
-        eventService.invite2(mc3.getId(), e.getId());
-        eventService.invite2(mc4.getId(), e.getId());
-        eventService.invite2(mc5.getId(), e.getId());
+            Event e01 = new Event("Mais antigo", DEFAULT_ADDRESS_JOAO_CORREA, "Evento mais velho", mc1, LocalDateTime.of(2020, 01, 1, 14, 0, 0));
+            Event e02 = new Event("Proximo", DEFAULT_ADDRESS_JOAO_CORREA, "Proximo", mc1, LocalDateTime.of(2020, 01, 20, 14, 0, 0));
+            Event e03 = new Event("Futuro", DEFAULT_ADDRESS_JOAO_CORREA, "Evento do futuro", mc1, LocalDateTime.of(2020, 02, 1, 14, 0, 0));
 
-        List<Participation> participants = e.getParticipants();
-        participationRepository.saveAll(participants);
+            e01 = eventService.createEvent(e01, mc1);
+            e02 = eventService.createEvent(e02, mc1);
+            e03 = eventService.createEvent(e03, mc1);
 
-        participationRepository.findAll();
-
-
-//        User firstInvited = new User("firstinvited", "First", "Invited", "aaa");
-//        e.addParticipant(firstInvited);
-//        userRepository.save(firstInvited);
-//        participationRepository.saveAll(participants);
-//
-//        e.confirmParticipant(firstInvited);
-//        participationRepository.saveAll(participants);
+            if (e01.getParticipants().isEmpty()) {
+                throw new UnsupportedOperationException();
+            }
+        }
     }
 }
