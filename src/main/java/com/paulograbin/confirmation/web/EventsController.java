@@ -102,5 +102,18 @@ public class EventsController {
     @ResponseStatus(HttpStatus.CREATED)
     public Event createNewEvent(@RequestBody Event event, @CurrentUser User currentUser) {
         return eventService.createEvent(event, currentUser);
+    @PutMapping(path = "/events/{eventId}")
+    @ResponseStatus(HttpStatus.OK)
+    public EventDetailsDTO updateEvent(@PathVariable("eventId") long eventId, @RequestBody Event event, @CurrentUser User currentUser) {
+        Event updatedEvent = eventService.updateEvent(eventId, event, currentUser);
+
+        return modelMapper.map(updatedEvent, EventDetailsDTO.class);
+    }
+
+    @DeleteMapping(path = "/events/{eventId}")
+    public ResponseEntity<Object> deleteEvent(@PathVariable("eventId") final long eventId, @CurrentUser User currentUser) {
+        eventService.deleteEvent(eventId, currentUser);
+
+        return ResponseEntity.ok().build();
     }
 }
