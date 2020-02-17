@@ -61,6 +61,8 @@ public class UsersController {
     public UserDTO createNewUser(@RequestBody User userToBeCreated) {
         User createdUser = userService.createUser(userToBeCreated);
 
+        // todo stop user from creating as master
+
         return modelMapper.map(createdUser, UserDTO.class);
     }
 
@@ -84,6 +86,8 @@ public class UsersController {
     public UserDTO inactivateUser(@PathVariable Long id) {
         log.info(format("Inactivating user %d", id));
         User inactivatedUser = userService.inactivate(id);
+
+        // todo lock this endpoint
 
         return modelMapper.map(inactivatedUser, UserDTO.class);
     }
