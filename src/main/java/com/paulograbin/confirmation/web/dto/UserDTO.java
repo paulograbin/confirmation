@@ -12,9 +12,9 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String username;
-    private LocalDateTime creationDate;
-    private LocalDateTime modificationDate;
-    private LocalDateTime inactivatedIn;
+    private String creationDate;
+    private String modificationDate;
+    private String inactivatedIn;
     private boolean active;
     private boolean master;
 
