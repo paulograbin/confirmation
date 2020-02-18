@@ -8,6 +8,7 @@ import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.persistence.RoleRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.security.jwt.resource.SignUpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,22 +48,45 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User " + id + " not found exception"));
     }
 
-    public User createUser(User user) {
-        validateInformation(user);
-        validateAvailableUsername(user.getUsername());
-        validateAvailableEmail(user.getEmail());
+    public User createUser() {
 
-        user.setId(null);
-        user.setModificationDate(null);
-        user.setInactivatedIn(null);
-        user.setActive(true);
-        user.setCreationDate(LocalDateTime.now());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return this.createUser(userFromSignupRequest);
+    }
+
+    public User createUser(SignUpRequest signUpRequest) {
+        User userToCreate = getUserFromRequest(signUpRequest);
+
+        validateInformation(userToCreate);
+        validateAvailableUsername(userToCreate.getUsername());
+        validateAvailableEmail(userToCreate.getEmail());
+
+        setDefaultInformationToNewUser(userToCreate);
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new NotFoundException("Role not found"));
-        user.setRoles(Collections.singleton(userRole));
+        userToCreate.setRoles(Collections.singleton(userRole));
 
-        return userRepository.save(user);
+        return userRepository.save(userToCreate);
+    }
+
+    private void setDefaultInformationToNewUser(User userToCreate) {
+        userToCreate.setId(null);
+        userToCreate.setModificationDate(null);
+        userToCreate.setInactivatedIn(null);
+        userToCreate.setActive(true);
+        userToCreate.setCreationDate(LocalDateTime.now());
+        userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
+    }
+
+    private User getUserFromRequest(SignUpRequest signUpRequest) {
+        User userToCreate = new User();
+
+        userToCreate.setFirstName(signUpRequest.getFirstName());
+        userToCreate.setLastName(signUpRequest.getLastName());
+        userToCreate.setEmail(signUpRequest.getEmail());
+        userToCreate.setUsername(signUpRequest.getUsername());
+        userToCreate.setPassword(signUpRequest.getPassword());
+        return userToCreate;
     }
 
     private void validateAvailableEmail(String email) {

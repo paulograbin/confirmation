@@ -76,14 +76,7 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        User user = new User();
-        user.setFirstName(signUpRequest.getFirstName());
-        user.setLastName(signUpRequest.getLastName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setUsername(signUpRequest.getUsername());
-        user.setPassword(signUpRequest.getPassword());
-
-        User createdUser = userService.createUser(user);
+        User createdUser = userService.createUser(signUpRequest);
 
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}")
                 .buildAndExpand(createdUser.getId()).toUri();

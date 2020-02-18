@@ -2,6 +2,7 @@ package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
+import com.paulograbin.confirmation.security.jwt.resource.SignUpRequest;
 import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.web.dto.UserDTO;
@@ -58,10 +59,8 @@ public class UsersController {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO createNewUser(@RequestBody User userToBeCreated) {
+    public UserDTO createNewUser(@RequestBody SignUpRequest userToBeCreated) {
         User createdUser = userService.createUser(userToBeCreated);
-
-        // todo stop user from creating as master
 
         return modelMapper.map(createdUser, UserDTO.class);
     }
