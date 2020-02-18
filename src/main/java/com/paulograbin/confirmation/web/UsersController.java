@@ -40,15 +40,18 @@ public class UsersController {
 
 
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDetailsDTO getCurrentUser(@CurrentUser User currentUser) {
-        UserDetailsDTO user = modelMapper.map(currentUser, UserDetailsDTO.class);
+    public UserDTO getCurrentUser(@CurrentUser User currentUser) {
+        log.info("Fetching /me for user {}", currentUser.getId());
+        User userFromDatabase = userService.fetchById(currentUser.getId());
 
-        return user;
+        return modelMapper.map(userFromDatabase, UserDTO.class);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> listAll() {
+        log.info("Listing every user");
+
         Iterable<User> users = userService.fetchAll();
         List<User> arrayList = Lists.from(users.iterator());
 
@@ -57,30 +60,43 @@ public class UsersController {
                 .collect(Collectors.toList());
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO createNewUser(@RequestBody SignUpRequest userToBeCreated) {
+        log.info("Creating new user {}", userToBeCreated.getUsername());
+
         User createdUser = userService.createUser(userToBeCreated);
 
         return modelMapper.map(createdUser, UserDTO.class);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    @GetMapping(path = "/{id}/participations")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDetailsDTO getAllParticipation(@PathVariable Long id) {
+        log.info(format("Fetching all participations from user %d", id));
+        User user = userService.fetchById(id);
+
+        return modelMapper.map(user, UserDetailsDTO.class);
+    }
+
+    @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO listUser(@PathVariable long id) {
+        log.info(format("Fetching user %d", id));
+
         User user = userService.fetchById(id);
 
         return modelMapper.map(user, UserDTO.class);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO updateUser(@PathVariable Long id, @RequestBody User newUserInformation) {
         User user = userService.updateUser(id, newUserInformation);
         return modelMapper.map(user, UserDTO.class);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO inactivateUser(@PathVariable Long id) {
         log.info(format("Inactivating user %d", id));
@@ -91,22 +107,11 @@ public class UsersController {
         return modelMapper.map(inactivatedUser, UserDTO.class);
     }
 
-    @RequestMapping(path = "/{id}/activate", method = RequestMethod.PUT)
+    @PutMapping(path = "/{id}/activate")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO activateUser(@PathVariable Long id) {
         log.info(format("Activating user %d", id));
         User activatedUser = userService.activate(id);
-
-        return modelMapper.map(activatedUser, UserDTO.class);
-    }
-
-    @RequestMapping(path = "/{id}/participations", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public UserDTO getAllParticipation(@PathVariable Long id) {
-        log.info(format("Fetching all participations from user %d", id));
-        User activatedUser = userService.activate(id);
-
-//        participationService
 
         return modelMapper.map(activatedUser, UserDTO.class);
     }
