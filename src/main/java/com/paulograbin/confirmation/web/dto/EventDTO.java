@@ -3,7 +3,6 @@ package com.paulograbin.confirmation.web.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Data
@@ -11,10 +10,9 @@ public class EventDTO {
 
     private int id;
     private String title;
+    private String description;
     private String address;
-    private int creatorId;
-    private String creatorFirstName;
-    private String creatorLastName;
+    private UserDTO creator;
     private LocalDateTime dateTime;
     private LocalDateTime creationDate;
 
