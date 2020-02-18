@@ -3,6 +3,7 @@ package com.paulograbin.confirmation.web.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Data
@@ -17,5 +18,6 @@ public class UserDetailsDTO {
     private LocalDateTime inactivatedIn;
     private boolean active;
     private boolean master;
+    private List<ParticipationDTO> participations;
 
 }
