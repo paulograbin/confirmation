@@ -2,22 +2,12 @@ package com.paulograbin.confirmation.web.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Data
-public class UserDetailsDTO {
+public class UserDetailsDTO extends UserDTO {
 
-    private int id;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private LocalDateTime creationDate;
-    private LocalDateTime modificationDate;
-    private LocalDateTime inactivatedIn;
-    private boolean active;
-    private boolean master;
-    private List<ParticipationDTO> participations;
+    private List<ParticipationWithoutUserDTO> participations;
 
 }
