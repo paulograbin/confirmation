@@ -48,10 +48,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User " + id + " not found exception"));
     }
 
-    public User createUser() {
+    public User createUser(User userToCreate) {
+        SignUpRequest request = new SignUpRequest();
+        request.setEmail(userToCreate.getEmail());
+        request.setPassword(userToCreate.getPassword());
+        request.setUsername(userToCreate.getUsername());
+        request.setFirstName(userToCreate.getFirstName());
+        request.setLastName(userToCreate.getLastName());
 
-
-        return this.createUser(userFromSignupRequest);
+        return this.createUser(request);
     }
 
     public User createUser(SignUpRequest signUpRequest) {
