@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.security.jwt;
 
+import com.paulograbin.confirmation.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -67,6 +68,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
+
                 .authorizeRequests()
                 .antMatchers("/",
                         "/favicon.ico",
@@ -75,10 +77,9 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                         .permitAll()
-                .antMatchers("/api/auth/**")
-                    .permitAll()
-                .anyRequest()
-                    .authenticated();
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.DELETE).hasAnyRole("ADMIN", "MASTER")
+                .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
