@@ -19,8 +19,18 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     @NaturalId
+    @Getter
+    @Setter
     private RoleName name;
 
     public Role() {
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name=" + name +
+                '}';
     }
 }

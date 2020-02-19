@@ -102,8 +102,20 @@ public class DemoApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (participationRepository.count() == 0) {
 
+            Role admin = new Role();
+            admin.setName(RoleName.ROLE_ADMIN);
+            Role master = new Role();
+            master.setName(RoleName.ROLE_MC);
+            Role user = new Role();
+            user.setName(RoleName.ROLE_USER);
+
+            admin = roleService.save(admin);
+            master = roleService.save(master);
+            user = roleService.save(user);
+
             User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
             mc1.setMaster(true);
+            mc1.setRoles(Set.of(admin, master));
             User mc2 = new User("asimov", "Isaac", "Asimov", "asimov", "aaa");
             User mc3 = new User("primeiroconselheiro", "Primeiro", "Conselheiro", "primeiroconselheiro", "aaa");
 
