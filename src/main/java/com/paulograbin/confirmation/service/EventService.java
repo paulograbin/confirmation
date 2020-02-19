@@ -91,4 +91,25 @@ public class EventService {
 
         return participationService.declineParticipation(participation);
     }
+
+    public void deleteEvent(long eventId, User currentUser) {
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
+
+        if (isCurrentUserCreatorOfThisEvent(currentUser, event)) {
+            List<Participation> allParticipationsFromEvent = participationService.getAllParticipationsFromEvent(event.getId());
+
+            if (isCreatorTheOnlyInvitedUser(allParticipationsFromEvent)) {
+                participationService.deleteParticipations(allParticipationsFromEvent);
+                eventRepository.deleteById(event.getId());
+            }
+        }
+    }
+
+    private boolean isCreatorTheOnlyInvitedUser(List<Participation> allParticipationsFromEvent) {
+        return allParticipationsFromEvent.size() == 1;
+    }
+
+    private boolean isCurrentUserCreatorOfThisEvent(User currentUser, Event event) {
+        return event.getCreator().getId().equals(currentUser.getId());
+    }
 }
