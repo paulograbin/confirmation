@@ -136,5 +136,22 @@ public class DemoApplication implements CommandLineRunner {
                 throw new UnsupportedOperationException();
             }
         }
+
+        checkDefaultAdminIsPresent();
+    }
+
+    private void checkDefaultAdminIsPresent() {
+        User plgrabin = null;
+        try {
+            plgrabin = (User) userService.loadUserByUsername("plgrabin");
+            System.out.println("user exists");
+        } catch (UsernameNotFoundException e) {
+            System.out.println("user DOES NOT exist");
+            User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
+        }
+
+        plgrabin = userService.createUser(plgrabin);
+        userService.setAsMaster(plgrabin.getId());
+        userService.grantRoles(plgrabin.getId(), Set.of(roleService.getByName(RoleName.ROLE_ADMIN)));
     }
 }
