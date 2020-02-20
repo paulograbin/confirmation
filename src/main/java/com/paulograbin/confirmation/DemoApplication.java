@@ -92,6 +92,9 @@ public class DemoApplication implements CommandLineRunner {
     @Resource
     private ParticipationService participationService;
 
+    @Resource
+    private RoleService roleService;
+
     @Bean
     ModelMapper modelMapper() {
         return new ModelMapper();
@@ -114,12 +117,11 @@ public class DemoApplication implements CommandLineRunner {
             user = roleService.save(user);
 
             User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
-            mc1.setMaster(true);
-            mc1.setRoles(Set.of(admin, master));
             User mc2 = new User("asimov", "Isaac", "Asimov", "asimov", "aaa");
             User mc3 = new User("primeiroconselheiro", "Primeiro", "Conselheiro", "primeiroconselheiro", "aaa");
 
             mc1 = userService.createUser(mc1);
+            userService.setAsMaster(mc1.getId());
             userService.grantRoles(mc1.getId(), Set.of(admin));
             mc2 = userService.createUser(mc2);
             mc3 = userService.createUser(mc3);
