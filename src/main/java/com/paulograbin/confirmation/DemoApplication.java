@@ -120,6 +120,7 @@ public class DemoApplication implements CommandLineRunner {
             User mc3 = new User("primeiroconselheiro", "Primeiro", "Conselheiro", "primeiroconselheiro", "aaa");
 
             mc1 = userService.createUser(mc1);
+            userService.grantRoles(mc1.getId(), Set.of(admin));
             mc2 = userService.createUser(mc2);
             mc3 = userService.createUser(mc3);
 
