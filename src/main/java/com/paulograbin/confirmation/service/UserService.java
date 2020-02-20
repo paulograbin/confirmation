@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Optional;
+import java.util.Set;
 
 import static java.lang.String.format;
 
@@ -152,5 +152,24 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+    }
+
+    public User setAsMaster(final long userId) {
+        User userFromDatabase = fetchById(userId);
+
+        userFromDatabase.setMaster(true);
+
+        return userRepository.save(userFromDatabase);
+    }
+
+    public void grantRoles(final long userId, Set<Role> rolesToAdd) {
+        User userFromDatabase = fetchById(userId);
+
+        Set<Role> roles = userFromDatabase.getRoles();
+        roles.addAll(rolesToAdd);
+
+        userFromDatabase.setRoles(roles);
+
+        userRepository.save(userFromDatabase);
     }
 }
