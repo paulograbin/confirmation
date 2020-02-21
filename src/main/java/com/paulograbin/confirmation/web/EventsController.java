@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -100,8 +102,14 @@ public class EventsController {
 
     @PostMapping(path = "/events")
     @ResponseStatus(HttpStatus.CREATED)
-    public Event createNewEvent(@RequestBody Event event, @CurrentUser User currentUser) {
-        return eventService.createEvent(event, currentUser);
+    public EventDetailsDTO createNewEvent(@RequestBody Event eventToCreate, @CurrentUser User currentUser) {
+        Event createdEvent = eventService.createEvent(eventToCreate, currentUser);
+
+        // todo replace with event creation request with only the features whose values are assigned by users
+
+        return modelMapper.map(createdEvent, EventDetailsDTO.class);
+    }
+
     @PutMapping(path = "/events/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public EventDetailsDTO updateEvent(@PathVariable("eventId") long eventId, @RequestBody Event event, @CurrentUser User currentUser) {
