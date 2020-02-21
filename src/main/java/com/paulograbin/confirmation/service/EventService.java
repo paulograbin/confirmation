@@ -5,7 +5,10 @@ import com.paulograbin.confirmation.Event;
 import com.paulograbin.confirmation.Participation;
 import com.paulograbin.confirmation.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
+import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
+import com.paulograbin.confirmation.exception.UserNotInvitedException;
 import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static java.lang.String.format;
 
 @Service
 public class EventService {
@@ -93,13 +98,24 @@ public class EventService {
         return eventRepository.findById(id).orElseThrow(() -> new NotFoundException("Event with id " + id + " not found!"));
     }
 
-    public void inviteUserForEvent(final long userId, final long eventId) {
+    public Participation inviteUserForEvent(final long userId, final long eventId) {
         User user = userService.fetchById(userId);
         Event event = fetchById(eventId);
 
-        event.addParticipant(user);
+        Optional<Participation> participation = participationService.fetchByEventAndUser(event.getId(), user.getId());
+        if (participation.isPresent()) {
+            throw new UserAlreadyInvitedException(format("User %s is already invited for event %s", userId, eventId));
+        }
 
-        eventRepository.save(event);
+        return participationService.createNew(event, user);
+    }
+
+    public Participation confirmParticipation(long userId, long eventId) {
+        Optional<Participation> participationOptional = participationService.fetchByEventAndUser(eventId, userId);
+
+        Participation participation = participationOptional.orElseThrow(() -> new UserNotInvitedException(format("Participation not found for user %s in event %s", userId, eventId)));
+
+        return participationService.confirmPartitipation(participation);
     }
 
     public Participation declineParticipation(long userId, long eventId) {
