@@ -45,15 +45,15 @@ public class EventService {
 
     private boolean isValid(Event event) {
         if (event.getTitle().length() < 5) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Título do evento precisa ter pelo menos 5 chars");
         }
 
         if (event.getAddress().isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Faltou informar o endereço");
         }
 
         if (event.getDateTime() == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Faltou informar a data do evento");
         }
 
         return true;
@@ -62,7 +62,7 @@ public class EventService {
     public List<Participation> fetchParticipantsByEvent(final long eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
 
-        Event event = eventOptional.orElseThrow(() -> new EventNotFoundException(format("Event %s not found", eventId)));
+        Event event = eventOptional.orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
 
         return event.getParticipants();
     }
