@@ -30,17 +30,26 @@ public class EventService {
     ParticipationService participationService;
 
     public Iterable<Event> fetchAllEvents() {
-        log.info("Service - fetch all");
+        log.info("Fetching all events");
 
         return eventRepository.findAll();
     }
 
-    public Event createEvent(Event event) {
-        validate();
+    public Event createEvent(Event event, User eventCreator) {
+        isValid(event);
 
         event.setId(null);
         event.setCreationDate(LocalDateTime.now());
-        return eventRepository.save(event);
+        event.setCreator(eventCreator);
+
+        Event save = eventRepository.save(event);
+
+        Participation creatorPartitipation = participationService.createNew(event, event.getCreator());
+        participationService.confirmPartitipation(creatorPartitipation);
+
+        return save;
+    }
+
     public Event updateEvent(long eventId, Event event, @CurrentUser User currentUser) {
         Event eventFromDatabase = fetchById(eventId);
 
