@@ -41,6 +41,15 @@ public class EventService {
         event.setId(null);
         event.setCreationDate(LocalDateTime.now());
         return eventRepository.save(event);
+    public Event updateEvent(long eventId, Event event, @CurrentUser User currentUser) {
+        Event eventFromDatabase = fetchById(eventId);
+
+        eventFromDatabase.setTitle(event.getTitle());
+        eventFromDatabase.setDescription(event.getDescription());
+        eventFromDatabase.setAddress(event.getAddress());
+        eventFromDatabase.setDateTime(event.getDateTime());
+
+        return eventRepository.save(eventFromDatabase);
     }
 
     private boolean isValid(Event event) {
