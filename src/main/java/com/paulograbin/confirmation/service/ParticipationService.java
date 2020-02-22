@@ -21,19 +21,60 @@ import java.util.stream.Collectors;
 @Service
 public class ParticipationService {
 
+    private static final Logger log = LoggerFactory.getLogger(ParticipationService.class);
+
     @Resource
     ParticipationRepository participationRepository;
 
-    public Iterable<Participation> teste() {
+    @Resource
+    UserService userService;
+
+    @Resource
+    EventService eventService;
+
+    @Resource
+    private ModelMapper modelMapper;
+
+    public Iterable<Participation> fetchAllParticipations() {
+        log.info("Fetching every participation");
+
         return participationRepository.findAll();
     }
 
 
+    public List<Participation> getAllParticipationsFromEvent(final long eventId) {
+        log.info(String.format("Fetching every from event %d", eventId));
+
+        Event eventFromDatabase = eventService.fetchById(eventId);
+
+        return eventFromDatabase.getParticipants();
+    }
+
+    public List<ParticipationDTO> getAllParticipationsFromUser(final long userId) {
+        log.info(String.format("Fetching every from user %d", userId));
+
+        User userFromDatabase = userService.fetchById(userId);
+
+        List<Participation> participants = userFromDatabase.getParticipations();
+
+        return participants.stream()
+                .map(p -> modelMapper.map(p, ParticipationDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
+
     public Participation createNew(Event event, User user) {
         Participation p = new Participation(user, event);
+        p.setStatus(ParticipationStatus.INVITED);
 
         return participationRepository.save(p);
     }
+
+    public Optional<Participation> fetchByEventAndUser(long eventId, long userId) {
+        return participationRepository.findByEventIdAndUserId(eventId, userId);
+    }
+
     public Participation confirmPartitipation(Participation participation) {
         participation.setStatus(ParticipationStatus.CONFIRMED);
         participation.setConfirmationDate(LocalDateTime.now());
@@ -46,5 +87,11 @@ public class ParticipationService {
         participation.setConfirmationDate(LocalDateTime.now());
 
         return participationRepository.save(participation);
+    }
+
+    public void deleteAllParticipationsFromEvent(Long eventId) {
+        List<Participation> allParticipationsFromEvent = getAllParticipationsFromEvent(eventId);
+
+        participationRepository.deleteAll(allParticipationsFromEvent);
     }
 }
