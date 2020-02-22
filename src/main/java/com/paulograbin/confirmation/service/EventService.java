@@ -5,6 +5,7 @@ import com.paulograbin.confirmation.Event;
 import com.paulograbin.confirmation.Participation;
 import com.paulograbin.confirmation.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
+import com.paulograbin.confirmation.exception.NotYourEventException;
 import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
 import com.paulograbin.confirmation.exception.UserNotInvitedException;
 import com.paulograbin.confirmation.persistence.EventRepository;
@@ -127,15 +128,18 @@ public class EventService {
     }
 
     public void deleteEvent(long eventId, User currentUser) {
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
 
-        if (isCurrentUserCreatorOfThisEvent(currentUser, event)) {
+        if (isCurrentUserCreatorOfThisEvent(currentUser, event) || currentUser.isAdmin()) {
             List<Participation> allParticipationsFromEvent = participationService.getAllParticipationsFromEvent(event.getId());
 
             if (isCreatorTheOnlyInvitedUser(allParticipationsFromEvent)) {
-                participationService.deleteParticipations(allParticipationsFromEvent);
+                participationService.deleteAllParticipationsFromEvent(event.getId());
                 eventRepository.deleteById(event.getId());
             }
+        } else {
+            throw new NotYourEventException("This event was not created by you!");
         }
     }
 
