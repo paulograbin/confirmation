@@ -47,42 +47,6 @@ public class DemoApplication implements CommandLineRunner {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC-3"));
     }
 
-    @Bean
-    HttpTraceRepository configIt() {
-        return new LoggerHttpTrace();
-    }
-
-//    @Bean
-//    @Primary
-//    public ObjectMapper serializingObjectMapper() {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JavaTimeModule javaTimeModule = new JavaTimeModule();
-//
-////        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateSerializer());
-////        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
-//        objectMapper.registerModule(javaTimeModule);
-//        return objectMapper;
-//    }
-
-//    class LocalDateSerializer extends JsonSerializer<LocalDateTime> {
-//
-//        public final DateTimeFormatter FORMATTER = ofPattern("MM/dd/yyyy hh:mm:ss");
-//
-//        @Override
-//        public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-//            gen.writeString(value.format(FORMATTER));
-//        }
-//    }
-
-//    class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
-//        public final DateTimeFormatter FORMATTER = ofPattern("dd::MM::yyyy");
-//
-//        @Override
-//        public LocalDate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-//            return LocalDate.parse(p.getValueAsString(), FORMATTER);
-//        }
-//    }
-
     @Resource
     private ParticipationRepository participationRepository;
 
