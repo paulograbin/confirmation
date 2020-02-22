@@ -118,6 +118,18 @@
             <version>1.1.0</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.module</groupId>-->
+<!--            <artifactId>jackson-module-parameter-names</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
+<!--            <artifactId>jackson-datatype-jdk8</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
+<!--            <artifactId>jackson-datatype-jsr310</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -125,6 +137,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
