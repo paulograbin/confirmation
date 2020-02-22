@@ -29,15 +29,11 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 
-    // TOOD:
-    // Figure out a way to obtain the token in the controller test calls
-    // Identify if user has permission to invite and confirm users
-    // Get events to which I'm invited
-    // Get events to which I'm invited but haven't confirmed yet
-    // Validations on post requests
-    // Test everything
-    // Exception when user is invited more than once to a event
-    // Make event and user unique in participation model
+    // TODO Figure out a way to obtain the token in the controller test calls
+    // TODO Identify if user has permission to invite and confirm users
+    // TODO Validations on post requests
+    // TODO Test everything
+    // TODO Exception when user is invited more than once to a event
 
 
     public static final String DEFAULT_ADDRESS_JOAO_CORREA = "Avenida João Corrêa, 815";
