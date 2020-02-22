@@ -1,5 +1,7 @@
 package com.paulograbin.confirmation;
 
+import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import org.junit.jupiter.api.Test;

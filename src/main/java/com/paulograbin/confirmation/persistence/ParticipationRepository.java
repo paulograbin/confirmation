@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.persistence;
 
-import com.paulograbin.confirmation.Participation;
+import com.paulograbin.confirmation.domain.Participation;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

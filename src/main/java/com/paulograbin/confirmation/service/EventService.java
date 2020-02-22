@@ -1,9 +1,9 @@
 package com.paulograbin.confirmation.service;
 
 
-import com.paulograbin.confirmation.Event;
-import com.paulograbin.confirmation.Participation;
-import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.Participation;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.NotYourEventException;
 import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;

@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.web;
 
-import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.security.jwt.resource.SignUpRequest;
 import com.paulograbin.confirmation.service.ParticipationService;

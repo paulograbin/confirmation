@@ -1,8 +1,8 @@
 package com.paulograbin.confirmation.service;
 
-import com.paulograbin.confirmation.Role;
-import com.paulograbin.confirmation.RoleName;
-import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.domain.Role;
+import com.paulograbin.confirmation.domain.RoleName;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.EmailNotAvailableException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;

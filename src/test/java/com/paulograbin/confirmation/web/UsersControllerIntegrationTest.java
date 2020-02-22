@@ -1,8 +1,8 @@
 package com.paulograbin.confirmation.web;
 
-import com.jayway.restassured.response.Response;
+import com.google.gson.Gson;
 import com.paulograbin.confirmation.DemoApplication;
-import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.UserService;
 import org.junit.Before;
@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import javax.annotation.Resource;
 
-import static com.jayway.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

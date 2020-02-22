@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation.service;
 
-import com.paulograbin.confirmation.Role;
-import com.paulograbin.confirmation.RoleName;
+import com.paulograbin.confirmation.domain.Role;
+import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.persistence.RoleRepository;
 import org.slf4j.Logger;

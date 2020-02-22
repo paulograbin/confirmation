@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation;
+package com.paulograbin.confirmation.domain;
 
 public enum RoleName {
     ROLE_USER,
