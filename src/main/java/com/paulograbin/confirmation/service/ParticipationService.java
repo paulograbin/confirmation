@@ -25,4 +25,17 @@ public class ParticipationService {
 
         return participationRepository.save(p);
     }
+    public Participation confirmPartitipation(Participation participation) {
+        participation.setStatus(ParticipationStatus.CONFIRMED);
+        participation.setConfirmationDate(LocalDateTime.now());
+
+        return participationRepository.save(participation);
+    }
+
+    public Participation declineParticipation(Participation participation) {
+        participation.setStatus(ParticipationStatus.DECLINED);
+        participation.setConfirmationDate(LocalDateTime.now());
+
+        return participationRepository.save(participation);
+    }
 }
