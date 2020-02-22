@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -76,7 +75,7 @@ public class EventsController {
     public void inviteParticipant(@PathVariable("eventId") final long eventId, @PathVariable("userId") final long userId) {
         log.info(format("Inviting user %s to event %s", userId, eventId));
 
-        eventService.invite2(userId, eventId);
+        eventService.inviteUserForEvent(userId, eventId);
     }
 
     @PostMapping(path = "/event/{eventId}/confirm/{userId}")
