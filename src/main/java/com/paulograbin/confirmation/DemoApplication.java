@@ -29,15 +29,11 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 
-    // TOOD:
-    // Figure out a way to obtain the token in the controller test calls
-    // Identify if user has permission to invite and confirm users
-    // Get events to which I'm invited
-    // Get events to which I'm invited but haven't confirmed yet
-    // Validations on post requests
-    // Test everything
-    // Exception when user is invited more than once to a event
-    // Make event and user unique in participation model
+    // TODO Figure out a way to obtain the token in the controller test calls
+    // TODO Identify if user has permission to invite and confirm users
+    // TODO Validations on post requests
+    // TODO Test everything
+    // TODO Exception when user is invited more than once to a event
 
 
     public static final String DEFAULT_ADDRESS_JOAO_CORREA = "Avenida João Corrêa, 815";
@@ -50,42 +46,6 @@ public class DemoApplication implements CommandLineRunner {
     void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC-3"));
     }
-
-    @Bean
-    HttpTraceRepository configIt() {
-        return new LoggerHttpTrace();
-    }
-
-//    @Bean
-//    @Primary
-//    public ObjectMapper serializingObjectMapper() {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JavaTimeModule javaTimeModule = new JavaTimeModule();
-//
-////        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateSerializer());
-////        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
-//        objectMapper.registerModule(javaTimeModule);
-//        return objectMapper;
-//    }
-
-//    class LocalDateSerializer extends JsonSerializer<LocalDateTime> {
-//
-//        public final DateTimeFormatter FORMATTER = ofPattern("MM/dd/yyyy hh:mm:ss");
-//
-//        @Override
-//        public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-//            gen.writeString(value.format(FORMATTER));
-//        }
-//    }
-
-//    class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
-//        public final DateTimeFormatter FORMATTER = ofPattern("dd::MM::yyyy");
-//
-//        @Override
-//        public LocalDate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-//            return LocalDate.parse(p.getValueAsString(), FORMATTER);
-//        }
-//    }
 
     @Resource
     private ParticipationRepository participationRepository;
@@ -104,9 +64,13 @@ public class DemoApplication implements CommandLineRunner {
 
     @Bean
     ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+        ModelMapper modelMapper = new ModelMapper();
 
+        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        modelMapper.registerModule(new Jsr310Module());
+
+        return modelMapper;
+    }
 
     @Override
     public void run(String... args) throws Exception {
