@@ -64,9 +64,13 @@ public class DemoApplication implements CommandLineRunner {
 
     @Bean
     ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+        ModelMapper modelMapper = new ModelMapper();
 
+        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        modelMapper.registerModule(new Jsr310Module());
+
+        return modelMapper;
+    }
 
     @Override
     public void run(String... args) throws Exception {
