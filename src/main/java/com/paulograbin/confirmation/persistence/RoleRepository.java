@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation.persistence;
 
-import com.paulograbin.confirmation.Role;
-import com.paulograbin.confirmation.RoleName;
+import com.paulograbin.confirmation.domain.Role;
+import com.paulograbin.confirmation.domain.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

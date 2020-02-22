@@ -1,11 +1,15 @@
 package com.paulograbin.confirmation.service;
 
 
-import com.paulograbin.confirmation.Event;
-import com.paulograbin.confirmation.Participation;
-import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.Participation;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
+import com.paulograbin.confirmation.exception.NotYourEventException;
+import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
+import com.paulograbin.confirmation.exception.UserNotInvitedException;
 import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,6 +18,8 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static java.lang.String.format;
 
 @Service
 public class EventService {
@@ -30,30 +36,48 @@ public class EventService {
     ParticipationService participationService;
 
     public Iterable<Event> fetchAllEvents() {
-        log.info("Service - fetch all");
+        log.info("Fetching all events");
 
         return eventRepository.findAll();
     }
 
-    public Event createEvent(Event event) {
-        validate();
+    public Event createEvent(Event event, User eventCreator) {
+        isValid(event);
 
         event.setId(null);
         event.setCreationDate(LocalDateTime.now());
-        return eventRepository.save(event);
+        event.setCreator(eventCreator);
+
+        Event save = eventRepository.save(event);
+
+        Participation creatorPartitipation = participationService.createNew(event, event.getCreator());
+        participationService.confirmPartitipation(creatorPartitipation);
+
+        return save;
+    }
+
+    public Event updateEvent(long eventId, Event event, @CurrentUser User currentUser) {
+        Event eventFromDatabase = fetchById(eventId);
+
+        eventFromDatabase.setTitle(event.getTitle());
+        eventFromDatabase.setDescription(event.getDescription());
+        eventFromDatabase.setAddress(event.getAddress());
+        eventFromDatabase.setDateTime(event.getDateTime());
+
+        return eventRepository.save(eventFromDatabase);
     }
 
     private boolean isValid(Event event) {
         if (event.getTitle().length() < 5) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Título do evento precisa ter pelo menos 5 chars");
         }
 
         if (event.getAddress().isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Faltou informar o endereço");
         }
 
         if (event.getDateTime() == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Faltou informar a data do evento");
         }
 
         return true;
@@ -62,7 +86,7 @@ public class EventService {
     public List<Participation> fetchParticipantsByEvent(final long eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
 
-        Event event = eventOptional.orElseThrow(() -> new EventNotFoundException(format("Event %s not found", eventId)));
+        Event event = eventOptional.orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
 
         return event.getParticipants();
     }
@@ -75,13 +99,24 @@ public class EventService {
         return eventRepository.findById(id).orElseThrow(() -> new NotFoundException("Event with id " + id + " not found!"));
     }
 
-    public void inviteUserForEvent(final long userId, final long eventId) {
+    public Participation inviteUserForEvent(final long userId, final long eventId) {
         User user = userService.fetchById(userId);
         Event event = fetchById(eventId);
 
-        event.addParticipant(user);
+        Optional<Participation> participation = participationService.fetchByEventAndUser(event.getId(), user.getId());
+        if (participation.isPresent()) {
+            throw new UserAlreadyInvitedException(format("User %s is already invited for event %s", userId, eventId));
+        }
 
-        eventRepository.save(event);
+        return participationService.createNew(event, user);
+    }
+
+    public Participation confirmParticipation(long userId, long eventId) {
+        Optional<Participation> participationOptional = participationService.fetchByEventAndUser(eventId, userId);
+
+        Participation participation = participationOptional.orElseThrow(() -> new UserNotInvitedException(format("Participation not found for user %s in event %s", userId, eventId)));
+
+        return participationService.confirmPartitipation(participation);
     }
 
     public Participation declineParticipation(long userId, long eventId) {
@@ -93,15 +128,18 @@ public class EventService {
     }
 
     public void deleteEvent(long eventId, User currentUser) {
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
 
-        if (isCurrentUserCreatorOfThisEvent(currentUser, event)) {
+        if (isCurrentUserCreatorOfThisEvent(currentUser, event) || currentUser.isAdmin()) {
             List<Participation> allParticipationsFromEvent = participationService.getAllParticipationsFromEvent(event.getId());
 
             if (isCreatorTheOnlyInvitedUser(allParticipationsFromEvent)) {
-                participationService.deleteParticipations(allParticipationsFromEvent);
+                participationService.deleteAllParticipationsFromEvent(event.getId());
                 eventRepository.deleteById(event.getId());
             }
+        } else {
+            throw new NotYourEventException("This event was not created by you!");
         }
     }
 

@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation;
+package com.paulograbin.confirmation.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -152,5 +152,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return active;
+    }
+
+    public boolean isAdmin() {
+        return this.getRoles()
+                .stream()
+                .map(Role::getName)
+                .anyMatch(roleName -> roleName.equals(RoleName.ROLE_ADMIN));
     }
 }

@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.persistence;
 
-import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.domain.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 

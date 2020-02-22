@@ -1,20 +1,27 @@
 package com.paulograbin.confirmation;
 
+import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.Role;
+import com.paulograbin.confirmation.domain.RoleName;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.ParticipationRepository;
-import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
+import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.module.jsr310.Jsr310Module;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.TimeZone;
 
 import static java.time.format.DateTimeFormatter.ofPattern;

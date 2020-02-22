@@ -2,7 +2,7 @@ package com.paulograbin.confirmation.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.UserService;
 import org.assertj.core.util.Lists;

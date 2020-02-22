@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.security.jwt;
 
-import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.resource.JwtTokenResponse;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;

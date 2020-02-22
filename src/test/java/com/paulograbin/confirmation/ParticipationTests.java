@@ -1,5 +1,7 @@
 package com.paulograbin.confirmation;
 
+import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.User;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation;
+package com.paulograbin.confirmation.domain;
 
 import lombok.Getter;
 import lombok.Setter;

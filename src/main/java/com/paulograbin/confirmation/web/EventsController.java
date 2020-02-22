@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation.web;
 
-import com.paulograbin.confirmation.Event;
-import com.paulograbin.confirmation.User;
+import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -74,7 +75,7 @@ public class EventsController {
     public void inviteParticipant(@PathVariable("eventId") final long eventId, @PathVariable("userId") final long userId) {
         log.info(format("Inviting user %s to event %s", userId, eventId));
 
-        eventService.invite2(userId, eventId);
+        eventService.inviteUserForEvent(userId, eventId);
     }
 
     @PostMapping(path = "/event/{eventId}/confirm/{userId}")
@@ -100,8 +101,14 @@ public class EventsController {
 
     @PostMapping(path = "/events")
     @ResponseStatus(HttpStatus.CREATED)
-    public Event createNewEvent(@RequestBody Event event, @CurrentUser User currentUser) {
-        return eventService.createEvent(event, currentUser);
+    public EventDetailsDTO createNewEvent(@RequestBody Event eventToCreate, @CurrentUser User currentUser) {
+        Event createdEvent = eventService.createEvent(eventToCreate, currentUser);
+
+        // todo replace with event creation request with only the features whose values are assigned by users
+
+        return modelMapper.map(createdEvent, EventDetailsDTO.class);
+    }
+
     @PutMapping(path = "/events/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public EventDetailsDTO updateEvent(@PathVariable("eventId") long eventId, @RequestBody Event event, @CurrentUser User currentUser) {

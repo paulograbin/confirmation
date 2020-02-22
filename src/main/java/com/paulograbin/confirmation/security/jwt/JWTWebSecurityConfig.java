@@ -1,6 +1,5 @@
 package com.paulograbin.confirmation.security.jwt;
 
-import com.paulograbin.confirmation.RoleName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
