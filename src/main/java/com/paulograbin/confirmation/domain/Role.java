@@ -23,7 +23,12 @@ public class Role {
     @Setter
     private RoleName name;
 
+
     public Role() {
+    }
+
+    public Role(RoleName roleName) {
+        this.name = roleName;
     }
 
     @Override

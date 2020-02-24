@@ -43,11 +43,6 @@ public class User implements UserDetails {
     @Setter
     private String lastName;
 
-//    @OneToMany
-//    @Getter
-//    @Setter
-//    private Set<Event> createdEvents;
-
     @Getter
     @Setter
     private String username;
@@ -59,6 +54,15 @@ public class User implements UserDetails {
     @Getter
     @Setter
     private String password;
+
+    @Getter
+    @Setter
+    private boolean active;
+
+    @Getter
+    @Setter
+    private boolean master;
+
 
     @Getter
     @Setter
@@ -80,11 +84,9 @@ public class User implements UserDetails {
 
     @Getter
     @Setter
-    private boolean active;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Chapter> chapter;
 
-    @Getter
-    @Setter
-    private boolean master;
 
     @OneToMany(mappedBy = "user")
     @Getter
@@ -98,6 +100,8 @@ public class User implements UserDetails {
     @Getter
     @Setter
     private Set<Role> roles = new HashSet<>();
+
+
 
     public User() {
         this.active = true;
@@ -159,5 +163,9 @@ public class User implements UserDetails {
                 .stream()
                 .map(Role::getName)
                 .anyMatch(roleName -> roleName.equals(RoleName.ROLE_ADMIN));
+    }
+
+    public void addChapter(Chapter chapterToAdd) {
+        this.chapter.add(chapterToAdd);
     }
 }
