@@ -1,13 +1,14 @@
 package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.web.dto.EventDTO;
 import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
-import com.paulograbin.confirmation.web.dto.ParticipationDTO;
+import com.paulograbin.confirmation.web.dto.ParticipationWithoutUserDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
@@ -93,10 +94,14 @@ public class EventsController {
     }
 
     @GetMapping(path = "/events/invitations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ParticipationDTO> fetchEventsUserIsInvited(@PathVariable("userId") final long userId) {
+    public List<ParticipationWithoutUserDTO> fetchEventsUserIsInvited(@PathVariable("userId") final long userId) {
         log.info("Looking for events to which user {} is invited to", userId);
 
-        return participationService.getAllParticipationsFromUser(userId);
+        List<Participation> allParticipationsFromUser = participationService.getAllParticipationsFromUser(userId);
+
+        return allParticipationsFromUser.stream()
+                .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
+                .collect(Collectors.toList());
     }
 
     @PostMapping(path = "/events")
