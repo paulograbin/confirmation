@@ -74,15 +74,6 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userToCreate);
     }
 
-    private void setDefaultInformationToNewUser(User userToCreate) {
-        userToCreate.setId(null);
-        userToCreate.setModificationDate(null);
-        userToCreate.setInactivatedIn(null);
-        userToCreate.setActive(true);
-        userToCreate.setCreationDate(LocalDateTime.now());
-        userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
-    }
-
     private User getUserFromRequest(SignUpRequest signUpRequest) {
         User userToCreate = new User();
 
@@ -110,17 +101,15 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public User updateUser(Long id, User user) {
+    public User updateUser(Long id, UpdateUserRequest updateRequest) {
         User userFromDatabase = fetchById(id);
 
-        userFromDatabase.setFirstName(user.getFirstName());
-        userFromDatabase.setLastName(user.getLastName());
-        userFromDatabase.setPassword(passwordEncoder.encode(user.getPassword()));
+        userFromDatabase.setFirstName(updateRequest.getFirstName());
+        userFromDatabase.setLastName(updateRequest.getLastName());
+        userFromDatabase.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
         userFromDatabase.setModificationDate(LocalDateTime.now());
 
-        User updatedUser = userRepository.save(userFromDatabase);
-
-        return updatedUser;
+        return userRepository.save(userFromDatabase);
     }
 
     public User inactivate(Long id) {
