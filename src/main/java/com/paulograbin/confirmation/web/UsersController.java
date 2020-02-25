@@ -116,4 +116,11 @@ public class UsersController {
 
         return modelMapper.map(activatedUser, UserDTO.class);
     }
+
+    @PutMapping(path = "/{userId}/chapter/{chapterId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void addToChapter(@PathVariable("userId") long userId, @PathVariable("chapterId") long chapterId) {
+        log.info("Adding user {} to chapter {}", userId, chapterId);
+        userService.addChapter(userId, chapterId);
+    }
 }

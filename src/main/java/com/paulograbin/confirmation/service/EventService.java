@@ -150,4 +150,15 @@ public class EventService {
     private boolean isCurrentUserCreatorOfThisEvent(User currentUser, Event event) {
         return event.getCreator().getId().equals(currentUser.getId());
     }
+
+    public List<Event> fetchUpComingEventsFromChapter(long chapterId) {
+        LocalDateTime now = LocalDateTime.now();
+
+        return eventRepository.findAllByChapterIdAndDateTimeGreaterThanEqual(chapterId, now);
+    }
+
+    public List<Event> fetchAllEventsFromChapter(long chapterId) {
+        return eventRepository.findAllByChapterId(chapterId);
+    }
+
 }
