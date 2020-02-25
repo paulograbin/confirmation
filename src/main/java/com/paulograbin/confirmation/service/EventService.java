@@ -50,8 +50,8 @@ public class EventService {
 
         Event save = eventRepository.save(event);
 
-        Participation creatorPartitipation = participationService.createNew(event, event.getCreator());
-        participationService.confirmParticipation(creatorPartitipation);
+        Participation creatorParticipation = participationService.createNew(event, event.getCreator());
+        participationService.confirmParticipation(creatorParticipation);
 
         return save;
     }
@@ -79,8 +79,6 @@ public class EventService {
         if (event.getDateTime() == null) {
             throw new IllegalArgumentException("Faltou informar a data do evento");
         }
-
-        return true;
     }
 
     public List<Participation> fetchParticipantsByEvent(final long eventId) {
