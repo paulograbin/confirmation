@@ -51,7 +51,7 @@ public class EventService {
         Event save = eventRepository.save(event);
 
         Participation creatorPartitipation = participationService.createNew(event, event.getCreator());
-        participationService.confirmPartitipation(creatorPartitipation);
+        participationService.confirmParticipation(creatorPartitipation);
 
         return save;
     }
@@ -102,6 +102,7 @@ public class EventService {
     public Participation inviteUserForEvent(final long userId, final long eventId) {
         User user = userService.fetchById(userId);
         Event event = fetchById(eventId);
+        log.info("Inviting user {} to event {}", userId, eventId);
 
         Optional<Participation> participation = participationService.fetchByEventAndUser(event.getId(), user.getId());
         if (participation.isPresent()) {
@@ -116,7 +117,7 @@ public class EventService {
 
         Participation participation = participationOptional.orElseThrow(() -> new UserNotInvitedException(format("Participation not found for user %s in event %s", userId, eventId)));
 
-        return participationService.confirmPartitipation(participation);
+        return participationService.confirmParticipation(participation);
     }
 
     public Participation declineParticipation(long userId, long eventId) {
