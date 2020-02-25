@@ -74,18 +74,15 @@ public class DemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (participationRepository.count() == 0) {
-
-            Role admin = new Role();
-            admin.setName(RoleName.ROLE_ADMIN);
-            Role master = new Role();
-            master.setName(RoleName.ROLE_MC);
-            Role user = new Role();
-            user.setName(RoleName.ROLE_USER);
+        if (roleService.fetchRoleCount() == 0) {
+            Role admin = new Role(RoleName.ROLE_ADMIN);
+            Role master = new Role(RoleName.ROLE_MC);
+            Role user = new Role(RoleName.ROLE_USER);
 
             admin = roleService.save(admin);
             master = roleService.save(master);
             user = roleService.save(user);
+        }
 
             User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
             User mc2 = new User("asimov", "Isaac", "Asimov", "asimov", "aaa");
