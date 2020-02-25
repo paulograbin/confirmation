@@ -89,7 +89,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity webSecurity) throws Exception {
+    public void configure(WebSecurity webSecurity) {
         webSecurity
                 .ignoring()
                 .antMatchers(HttpMethod.OPTIONS, "/**")

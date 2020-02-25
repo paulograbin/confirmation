@@ -1,10 +1,8 @@
 package com.paulograbin.confirmation.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.UserRepository;
-import com.paulograbin.confirmation.security.jwt.resource.SignUpRequest;
 import com.paulograbin.confirmation.service.UserService;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -16,15 +14,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -46,7 +41,7 @@ public class UsersControllerUnitTest {
     private ObjectMapper objectMapper;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(usersController)
                 .build();

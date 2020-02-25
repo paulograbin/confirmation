@@ -4,5 +4,5 @@ public enum ParticipationStatus {
 
     INVITED,
     CONFIRMED,
-    DECLINED;
+    DECLINED
 }

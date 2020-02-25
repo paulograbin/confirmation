@@ -1,6 +1,5 @@
 package com.paulograbin.confirmation.web;
 
-import com.google.gson.Gson;
 import com.paulograbin.confirmation.DemoApplication;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.UserRepository;
@@ -19,6 +18,7 @@ import javax.annotation.Resource;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -39,7 +39,7 @@ public class UsersControllerIntegrationTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         givenThereAreNoUsers();
     }
 
@@ -61,7 +61,7 @@ public class UsersControllerIntegrationTest {
     }
 
     @Test
-    public void listOneUser__whenTheresOneUser() throws Exception {
+    public void listOneUser__whenTheresOneUser() {
         User userFromDatabase = givenExistingUserOnDatabase();
 
 //        Response s = when()
@@ -121,7 +121,7 @@ public class UsersControllerIntegrationTest {
     public void afterDeletingUser__mustNotBeActive() throws Exception {
         User userFromDatabase = givenExistingUser();
 
-        assertEquals(true, userFromDatabase.isActive());
+        assertTrue(userFromDatabase.isActive());
 
         sendDeleteUserRequest(userFromDatabase.getId());
 

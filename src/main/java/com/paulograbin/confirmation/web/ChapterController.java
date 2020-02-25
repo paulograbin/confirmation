@@ -1,7 +1,6 @@
 package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.domain.Chapter;
-import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.ChapterRepository;
 import com.paulograbin.confirmation.service.ChapterService;
 import com.paulograbin.confirmation.web.dto.ChapterDTO;
