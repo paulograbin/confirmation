@@ -85,7 +85,7 @@ public class User implements UserDetails {
     @Getter
     @Setter
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Chapter> chapter;
+    private Set<Chapter> chapter;
 
 
     @OneToMany(mappedBy = "user")

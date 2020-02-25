@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -16,7 +17,7 @@ public class Chapter {
     @Id
     @Getter
     @Setter
-    private long id;
+    private Long id;
 
     @Getter
     @Setter
@@ -25,7 +26,7 @@ public class Chapter {
     @Getter
     @Setter
     @ManyToMany(mappedBy = "chapter")
-    private List<User> users;
+    private Set<User> users;
 
     @Getter
     @Setter
