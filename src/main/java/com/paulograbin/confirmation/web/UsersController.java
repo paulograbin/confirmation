@@ -5,6 +5,7 @@ import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.security.jwt.resource.SignUpRequest;
 import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
+import com.paulograbin.confirmation.usecases.UpdateUserRequest;
 import com.paulograbin.confirmation.web.dto.UserDTO;
 import com.paulograbin.confirmation.web.dto.UserDetailsDTO;
 import org.modelmapper.ModelMapper;
@@ -91,7 +92,7 @@ public class UsersController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody User newUserInformation) {
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest newUserInformation) {
         User user = userService.updateUser(id, newUserInformation);
         return modelMapper.map(user, UserDTO.class);
     }
@@ -114,5 +115,12 @@ public class UsersController {
         User activatedUser = userService.activate(id);
 
         return modelMapper.map(activatedUser, UserDTO.class);
+    }
+
+    @PutMapping(path = "/{userId}/chapter/{chapterId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void addToChapter(@PathVariable("userId") long userId, @PathVariable("chapterId") long chapterId) {
+        log.info("Adding user {} to chapter {}", userId, chapterId);
+        userService.addChapter(userId, chapterId);
     }
 }

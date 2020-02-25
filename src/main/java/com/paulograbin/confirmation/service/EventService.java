@@ -42,7 +42,7 @@ public class EventService {
     }
 
     public Event createEvent(Event event, User eventCreator) {
-        isValid(event);
+        checkValid(event);
 
         event.setId(null);
         event.setCreationDate(LocalDateTime.now());
@@ -50,8 +50,8 @@ public class EventService {
 
         Event save = eventRepository.save(event);
 
-        Participation creatorPartitipation = participationService.createNew(event, event.getCreator());
-        participationService.confirmPartitipation(creatorPartitipation);
+        Participation creatorParticipation = participationService.createNew(event, event.getCreator());
+        participationService.confirmParticipation(creatorParticipation);
 
         return save;
     }
@@ -67,7 +67,7 @@ public class EventService {
         return eventRepository.save(eventFromDatabase);
     }
 
-    private boolean isValid(Event event) {
+    private void checkValid(Event event) {
         if (event.getTitle().length() < 5) {
             throw new IllegalArgumentException("Título do evento precisa ter pelo menos 5 chars");
         }
@@ -79,8 +79,6 @@ public class EventService {
         if (event.getDateTime() == null) {
             throw new IllegalArgumentException("Faltou informar a data do evento");
         }
-
-        return true;
     }
 
     public List<Participation> fetchParticipantsByEvent(final long eventId) {
@@ -102,6 +100,7 @@ public class EventService {
     public Participation inviteUserForEvent(final long userId, final long eventId) {
         User user = userService.fetchById(userId);
         Event event = fetchById(eventId);
+        log.info("Inviting user {} to event {}", userId, eventId);
 
         Optional<Participation> participation = participationService.fetchByEventAndUser(event.getId(), user.getId());
         if (participation.isPresent()) {
@@ -116,7 +115,7 @@ public class EventService {
 
         Participation participation = participationOptional.orElseThrow(() -> new UserNotInvitedException(format("Participation not found for user %s in event %s", userId, eventId)));
 
-        return participationService.confirmPartitipation(participation);
+        return participationService.confirmParticipation(participation);
     }
 
     public Participation declineParticipation(long userId, long eventId) {
@@ -150,4 +149,15 @@ public class EventService {
     private boolean isCurrentUserCreatorOfThisEvent(User currentUser, Event event) {
         return event.getCreator().getId().equals(currentUser.getId());
     }
+
+    public List<Event> fetchUpComingEventsFromChapter(long chapterId) {
+        LocalDateTime now = LocalDateTime.now();
+
+        return eventRepository.findAllByChapterIdAndDateTimeGreaterThanEqual(chapterId, now);
+    }
+
+    public List<Event> fetchAllEventsFromChapter(long chapterId) {
+        return eventRepository.findAllByChapterId(chapterId);
+    }
+
 }

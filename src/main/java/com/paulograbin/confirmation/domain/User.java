@@ -43,11 +43,6 @@ public class User implements UserDetails {
     @Setter
     private String lastName;
 
-//    @OneToMany
-//    @Getter
-//    @Setter
-//    private Set<Event> createdEvents;
-
     @Getter
     @Setter
     private String username;
@@ -59,6 +54,15 @@ public class User implements UserDetails {
     @Getter
     @Setter
     private String password;
+
+    @Getter
+    @Setter
+    private boolean active;
+
+    @Getter
+    @Setter
+    private boolean master;
+
 
     @Getter
     @Setter
@@ -80,11 +84,9 @@ public class User implements UserDetails {
 
     @Getter
     @Setter
-    private boolean active;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Chapter> chapter;
 
-    @Getter
-    @Setter
-    private boolean master;
 
     @OneToMany(mappedBy = "user")
     @Getter
@@ -99,8 +101,13 @@ public class User implements UserDetails {
     @Setter
     private Set<Role> roles = new HashSet<>();
 
+
+
     public User() {
         this.active = true;
+        this.master = false;
+        this.setModificationDate(null);
+        this.setInactivatedIn(null);
     }
 
     public User(String username, String firstName, String lastName, String email, String password) {
@@ -110,8 +117,6 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.master = false;
-        this.creationDate = LocalDateTime.now();
     }
 
     public void makeInactive() {
@@ -159,5 +164,9 @@ public class User implements UserDetails {
                 .stream()
                 .map(Role::getName)
                 .anyMatch(roleName -> roleName.equals(RoleName.ROLE_ADMIN));
+    }
+
+    public void addChapter(Chapter chapterToAdd) {
+        this.chapter.add(chapterToAdd);
     }
 }

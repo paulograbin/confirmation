@@ -46,6 +46,11 @@ public class Event {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime creationDate;
 
+    @ManyToOne
+    @Getter
+    @Setter
+    private Chapter chapter;
+
     @OneToMany(mappedBy = "event")
     @Getter
     @Setter
@@ -54,9 +59,8 @@ public class Event {
     public Event() {
     }
 
-    public Event(String title, String address, String description, User creator, LocalDateTime date) {
-        this();
-
+    public Event(Chapter chapter, String title, String address, String description, User creator, LocalDateTime date) {
+        this.chapter = chapter;
         this.title = title;
         this.address = address;
         this.description = description;

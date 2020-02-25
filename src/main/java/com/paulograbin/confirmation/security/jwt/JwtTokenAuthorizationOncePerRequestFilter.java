@@ -1,7 +1,6 @@
 package com.paulograbin.confirmation.security.jwt;
 
 import com.paulograbin.confirmation.service.UserService;
-import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

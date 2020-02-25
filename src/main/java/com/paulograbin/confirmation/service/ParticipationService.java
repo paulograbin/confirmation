@@ -5,7 +5,6 @@ import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.ParticipationStatus;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.ParticipationRepository;
-import com.paulograbin.confirmation.web.dto.ParticipationDTO;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -50,19 +48,12 @@ public class ParticipationService {
         return eventFromDatabase.getParticipants();
     }
 
-    public List<ParticipationDTO> getAllParticipationsFromUser(final long userId) {
-        log.info(String.format("Fetching every from user %d", userId));
-
+    public List<Participation> getAllParticipationsFromUser(final long userId) {
+        log.info("Fetching every participation from user {}", userId);
         User userFromDatabase = userService.fetchById(userId);
 
-        List<Participation> participants = userFromDatabase.getParticipations();
-
-        return participants.stream()
-                .map(p -> modelMapper.map(p, ParticipationDTO.class))
-                .collect(Collectors.toList());
+        return userFromDatabase.getParticipations();
     }
-
-
 
     public Participation createNew(Event event, User user) {
         Participation p = new Participation(user, event);
@@ -75,7 +66,7 @@ public class ParticipationService {
         return participationRepository.findByEventIdAndUserId(eventId, userId);
     }
 
-    public Participation confirmPartitipation(Participation participation) {
+    public Participation confirmParticipation(Participation participation) {
         participation.setStatus(ParticipationStatus.CONFIRMED);
         participation.setConfirmationDate(LocalDateTime.now());
 
@@ -93,5 +84,9 @@ public class ParticipationService {
         List<Participation> allParticipationsFromEvent = getAllParticipationsFromEvent(eventId);
 
         participationRepository.deleteAll(allParticipationsFromEvent);
+    }
+
+    public long fetchCount() {
+        return participationRepository.count();
     }
 }

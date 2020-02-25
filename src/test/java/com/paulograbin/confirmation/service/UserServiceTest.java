@@ -6,10 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.annotation.Resource;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 
 class UserServiceTest {
 

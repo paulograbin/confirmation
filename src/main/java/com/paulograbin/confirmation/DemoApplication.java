@@ -1,9 +1,7 @@
 package com.paulograbin.confirmation;
 
-import com.paulograbin.confirmation.domain.Event;
-import com.paulograbin.confirmation.domain.Role;
-import com.paulograbin.confirmation.domain.RoleName;
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.domain.*;
+import com.paulograbin.confirmation.persistence.ChapterRepository;
 import com.paulograbin.confirmation.persistence.ParticipationRepository;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
@@ -12,6 +10,8 @@ import com.paulograbin.confirmation.service.UserService;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.module.jsr310.Jsr310Module;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,10 +21,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
-import static java.time.format.DateTimeFormatter.ofPattern;
+import static org.springframework.util.Assert.isTrue;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
@@ -34,6 +35,8 @@ public class DemoApplication implements CommandLineRunner {
     // TODO Validations on post requests
     // TODO Test everything
     // TODO Exception when user is invited more than once to a event
+
+    private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
 
 
     public static final String DEFAULT_ADDRESS_JOAO_CORREA = "Avenida João Corrêa, 815";
@@ -62,6 +65,9 @@ public class DemoApplication implements CommandLineRunner {
     @Resource
     private RoleService roleService;
 
+    @Resource
+    private ChapterRepository chapterRepository;
+
     @Bean
     ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
@@ -74,40 +80,57 @@ public class DemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (participationRepository.count() == 0) {
-
-            Role admin = new Role();
-            admin.setName(RoleName.ROLE_ADMIN);
-            Role master = new Role();
-            master.setName(RoleName.ROLE_MC);
-            Role user = new Role();
-            user.setName(RoleName.ROLE_USER);
+        if (roleService.fetchRoleCount() == 0) {
+            Role admin = new Role(RoleName.ROLE_ADMIN);
+            Role master = new Role(RoleName.ROLE_MC);
+            Role user = new Role(RoleName.ROLE_USER);
 
             admin = roleService.save(admin);
             master = roleService.save(master);
             user = roleService.save(user);
+        }
+
+        if (participationService.fetchCount() == 0) {
+            Chapter gvs = new Chapter();
+            gvs.setId(592L);
+            gvs.setName("Guardiões do Vale dos Sinos");
+            gvs = chapterRepository.save(gvs);
+
+            Chapter p1 = new Chapter();
+            p1.setId(9L);
+            p1.setName("Sir Hughes de Payens");
+            p1 = chapterRepository.save(p1);
 
             User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
-            User mc2 = new User("asimov", "Isaac", "Asimov", "asimov", "aaa");
-            User mc3 = new User("primeiroconselheiro", "Primeiro", "Conselheiro", "primeiroconselheiro", "aaa");
-
             mc1 = userService.createUser(mc1);
             userService.setAsMaster(mc1.getId());
-            userService.grantRoles(mc1.getId(), Set.of(admin));
+            userService.grantRoles(mc1.getId(), Set.of(roleService.getAdmin()));
+            userService.addChapter(mc1.getId(), gvs.getId());
+
+            User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
             mc2 = userService.createUser(mc2);
-            mc3 = userService.createUser(mc3);
+            userService.addChapter(mc2.getId(), gvs.getId());
 
-            Event e01 = new Event("Mais antigo", DEFAULT_ADDRESS_JOAO_CORREA, "Evento mais velho", mc1, LocalDateTime.of(2020, 01, 1, 14, 0, 0));
-            Event e02 = new Event("Proximo", DEFAULT_ADDRESS_JOAO_CORREA, "Proximo", mc1, LocalDateTime.of(2020, 01, 20, 14, 0, 0));
-            Event e03 = new Event("Futuro", DEFAULT_ADDRESS_JOAO_CORREA, "Evento do futuro", mc1, LocalDateTime.of(2020, 02, 1, 14, 0, 0));
 
+            Event e01 = new Event(gvs, "Mais antigo", DEFAULT_ADDRESS_JOAO_CORREA, "Evento mais velho", mc1, LocalDateTime.of(2019, 01, 1, 14, 0, 0));
             e01 = eventService.createEvent(e01, mc1);
+
+            Event e02 = new Event(gvs, "Proximo", DEFAULT_ADDRESS_JOAO_CORREA, "Proximo", mc1, LocalDateTime.of(2020, 03, 20, 14, 0, 0));
             e02 = eventService.createEvent(e02, mc1);
+
+            Event e03 = new Event(gvs, "Futuro", DEFAULT_ADDRESS_JOAO_CORREA, "Evento do futuro", mc1, LocalDateTime.of(2020, 03, 1, 14, 0, 0));
             e03 = eventService.createEvent(e03, mc1);
 
-            if (e01.getParticipants().isEmpty()) {
-                throw new UnsupportedOperationException();
-            }
+            List<Event> upComingEvents = eventService.fetchUpComingEventsFromChapter(gvs.getId());
+            isTrue(upComingEvents.size() == 2, "Two events for GVS");
+
+            List<Event> allEventsFromGVS = eventService.fetchAllEventsFromChapter(gvs.getId());
+            isTrue(allEventsFromGVS.size() == 3, "Three events for GVS");
+
+
+            isTrue(e01.getParticipants().size() == 1, "Only one participant");
+            isTrue(e01.getParticipants().get(0).getStatus() == ParticipationStatus.CONFIRMED, "Participant is confirmed");
+            isTrue(e01.getParticipants().get(0).getUser().getUsername().equals("plgrabin"), "Participant is confirmed");
         }
 
         checkDefaultAdminIsPresent();

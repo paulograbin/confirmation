@@ -46,17 +46,17 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public Long getUserIdFromJWT(String token) {
-        Claims clains = Jwts.parser()
+        Claims claims = Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(clains.getSubject());
+        return Long.parseLong(claims.getSubject());
     }
 
-    public boolean validateToken(String auhtToken) {
+    public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(auhtToken);
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
 
             return true;
         } catch (SignatureException ex) {
