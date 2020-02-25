@@ -105,6 +105,9 @@ public class User implements UserDetails {
 
     public User() {
         this.active = true;
+        this.master = false;
+        this.setModificationDate(null);
+        this.setInactivatedIn(null);
     }
 
     public User(String username, String firstName, String lastName, String email, String password) {
@@ -114,8 +117,6 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.master = false;
-        this.creationDate = LocalDateTime.now();
     }
 
     public void makeInactive() {
