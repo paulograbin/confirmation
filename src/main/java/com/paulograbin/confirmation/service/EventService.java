@@ -42,7 +42,7 @@ public class EventService {
     }
 
     public Event createEvent(Event event, User eventCreator) {
-        isValid(event);
+        checkValid(event);
 
         event.setId(null);
         event.setCreationDate(LocalDateTime.now());
@@ -67,7 +67,7 @@ public class EventService {
         return eventRepository.save(eventFromDatabase);
     }
 
-    private boolean isValid(Event event) {
+    private void checkValid(Event event) {
         if (event.getTitle().length() < 5) {
             throw new IllegalArgumentException("Título do evento precisa ter pelo menos 5 chars");
         }
