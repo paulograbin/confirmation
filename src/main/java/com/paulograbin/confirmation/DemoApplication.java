@@ -78,6 +78,18 @@ public class DemoApplication implements CommandLineRunner {
         return modelMapper;
     }
 
+//    @Bean
+//    public void teste() {
+//    // with 3.0 (or with 2.10 as alternative)
+//    ObjectMapper mapper = JsonMapper.builder() // or different mapper for other format
+//            .addModule(new ParameterNamesModule())
+//            .addModule(new Jdk8Module())
+//            .addModule(new JavaTimeModule())
+//            // and possibly other configuration, modules, then:
+//            .build();
+//    }
+
+
     @Override
     public void run(String... args) throws Exception {
         if (roleService.fetchRoleCount() == 0) {
