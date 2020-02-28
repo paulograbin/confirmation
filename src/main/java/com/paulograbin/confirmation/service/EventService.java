@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -151,9 +152,9 @@ public class EventService {
     }
 
     public List<Event> fetchUpComingEventsFromChapter(long chapterId) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime yesterday = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
 
-        return eventRepository.findAllByChapterIdAndDateTimeGreaterThanEqual(chapterId, now);
+        return eventRepository.findAllByChapterIdAndDateTimeGreaterThanEqual(chapterId, yesterday);
     }
 
     public List<Event> fetchAllEventsFromChapter(long chapterId) {
