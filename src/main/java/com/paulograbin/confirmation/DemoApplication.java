@@ -34,6 +34,7 @@ public class DemoApplication implements CommandLineRunner {
     // TODO Validations on post requests
     // TODO Test everything
     // TODO Exception when user is invited more than once to a event
+    // TODO almoço
 
     private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
 
