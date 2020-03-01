@@ -122,6 +122,14 @@ public class EventsController {
         return modelMapper.map(updatedEvent, EventDetailsDTO.class);
     }
 
+    @PutMapping(path = "/events/{eventId}/publish")
+    @ResponseStatus(HttpStatus.OK)
+    public EventDetailsDTO publishEvent(@PathVariable("eventId") long eventId, @CurrentUser User currentUser) {
+        Event publishedEvent = eventService.publishEvent(eventId, currentUser);
+
+        return modelMapper.map(publishedEvent, EventDetailsDTO.class);
+    }
+
     @DeleteMapping(path = "/events/{eventId}")
     public ResponseEntity<Object> deleteEvent(@PathVariable("eventId") final long eventId, @CurrentUser User currentUser) {
         eventService.deleteEvent(eventId, currentUser);
