@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -52,7 +53,10 @@ public class ParticipationService {
         log.info("Fetching every participation from user {}", userId);
         User userFromDatabase = userService.fetchById(userId);
 
-        return userFromDatabase.getParticipations();
+        List<Participation> userParticipations = userFromDatabase.getParticipations();
+        return userParticipations.stream()
+                .filter(p -> p.getEvent().isPublished())
+                .collect(Collectors.toList());
     }
 
     public Participation createNew(Event event, User user) {
