@@ -13,6 +13,7 @@ public class EventDTO {
     private String description;
     private String address;
     private UserDTO creator;
+    private Boolean published;
     private LocalDateTime dateTime;
     private LocalDateTime creationDate;
 

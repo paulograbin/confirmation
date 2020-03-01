@@ -48,6 +48,10 @@ public class Event {
     @Setter
     private Chapter chapter;
 
+    @Getter
+    @Setter
+    private boolean published;
+
     @OneToMany(mappedBy = "event")
     @Getter
     @Setter
@@ -64,6 +68,7 @@ public class Event {
         this.creator = creator;
         this.dateTime = date;
         this.creationDate = LocalDateTime.now();
+        this.published = false;
 
         Participation p = new Participation(creator, this);
         p.confirmParticipant();
