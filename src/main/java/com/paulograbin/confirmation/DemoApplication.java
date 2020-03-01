@@ -31,7 +31,6 @@ import static org.springframework.util.Assert.isTrue;
 public class DemoApplication implements CommandLineRunner {
 
     // TODO Figure out a way to obtain the token in the controller test calls
-    // TODO Identify if user has permission to invite and confirm users
     // TODO Validations on post requests
     // TODO Test everything
     // TODO Exception when user is invited more than once to a event
