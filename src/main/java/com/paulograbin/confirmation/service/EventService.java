@@ -161,4 +161,18 @@ public class EventService {
         return eventRepository.findAllByChapterId(chapterId);
     }
 
+    public Event publishEvent(long eventId, User currentUser) {
+        log.info("Publishing event {} by user {}", eventId, currentUser.getUsername());
+
+        Event event = this.fetchById(eventId);
+
+        if (event.getCreator().getId().equals(currentUser.getId()) || currentUser.isAdmin()) {
+            event.setPublished(true);
+            this.eventRepository.save(event);
+
+            return event;
+        } else {
+            throw new NotYourEventException("Event " + eventId + " does not belong to you!");
+        }
+    }
 }
