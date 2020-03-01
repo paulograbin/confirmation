@@ -88,12 +88,4 @@ public class Event {
                 ", dateTime=" + dateTime +
                 '}';
     }
-
-    public void confirmParticipant(User firstInvited) {
-        if (participants.contains(firstInvited)) {
-            int i = participants.indexOf(firstInvited);
-            Participation participation = participants.get(i);
-            participation.confirmParticipant();
-        }
-    }
 }
