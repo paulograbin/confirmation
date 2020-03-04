@@ -106,10 +106,8 @@ public class EventsController {
 
     @PostMapping(path = "/events")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventDetailsDTO createNewEvent(@RequestBody Event eventToCreate, @CurrentUser User currentUser) {
+    public EventDetailsDTO createNewEvent(@RequestBody EventCreationRequest eventToCreate, @CurrentUser User currentUser) {
         Event createdEvent = eventService.createEvent(eventToCreate, currentUser);
-
-        // todo replace with event creation request with only the features whose values are assigned by users
 
         return modelMapper.map(createdEvent, EventDetailsDTO.class);
     }

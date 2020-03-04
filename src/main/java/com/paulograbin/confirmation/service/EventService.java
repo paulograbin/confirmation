@@ -10,11 +10,13 @@ import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
 import com.paulograbin.confirmation.exception.UserNotInvitedException;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
+import com.paulograbin.confirmation.web.EventCreationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -40,6 +42,17 @@ public class EventService {
         log.info("Fetching all events");
 
         return eventRepository.findAll();
+    }
+
+    public Event createEvent(EventCreationRequest request, User currentUser) {
+        Event e = new Event();
+        e.setTitle(request.getTitle());
+        e.setDescription(request.getDescription());
+        e.setAddress(request.getAddress());
+        e.setDate(request.getDate());
+        e.setTime(request.getTime());
+
+        return this.createEvent(e, currentUser);
     }
 
     public Event createEvent(Event event, User eventCreator) {
