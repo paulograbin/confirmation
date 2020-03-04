@@ -63,7 +63,8 @@ public class EventService {
         eventFromDatabase.setTitle(event.getTitle());
         eventFromDatabase.setDescription(event.getDescription());
         eventFromDatabase.setAddress(event.getAddress());
-        eventFromDatabase.setDateTime(event.getDateTime());
+        eventFromDatabase.setDate(event.getDate());
+        eventFromDatabase.setTime(event.getTime());
 
         return eventRepository.save(eventFromDatabase);
     }
@@ -77,8 +78,12 @@ public class EventService {
             throw new IllegalArgumentException("Faltou informar o endereço");
         }
 
-        if (event.getDateTime() == null) {
+        if (event.getDate() == null) {
             throw new IllegalArgumentException("Faltou informar a data do evento");
+        }
+
+        if (event.getTitle() == null) {
+            throw new IllegalArgumentException("Faltou informar o horário do evento");
         }
     }
 
