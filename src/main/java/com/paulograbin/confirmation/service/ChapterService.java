@@ -21,10 +21,16 @@ public class ChapterService {
     }
 
     public Chapter createChapter(ChapterCreationRequest creationRequest) {
+        // validate if chapter already exist
+
         Chapter chapterToCreate = new Chapter();
         chapterToCreate.setId(creationRequest.getId());
         chapterToCreate.setName(creationRequest.getName());
 
         return chapterRepository.save(chapterToCreate);
+    }
+
+    public long count() {
+        return chapterRepository.count();
     }
 }
