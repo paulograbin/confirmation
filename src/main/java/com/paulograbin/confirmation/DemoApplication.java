@@ -131,12 +131,12 @@ public class DemoApplication implements CommandLineRunner {
             e01 = eventService.createEvent(e01, mc1);
 
             Event e02 = new Event(gvs, "Proximo", DEFAULT_ADDRESS_JOAO_CORREA, "Proximo", mc1,
-                    LocalDate.of(2020, 03, 20),
+                    LocalDate.of(2020, 06, 20),
                     LocalTime.of(14, 0, 0));
             e02 = eventService.createEvent(e02, mc1);
 
             Event e03 = new Event(gvs, "Futuro", DEFAULT_ADDRESS_JOAO_CORREA, "Evento do futuro", mc1,
-                    LocalDate.of(2020, 03, 1),
+                    LocalDate.of(2020, 06, 1),
                     LocalTime.of(14, 0, 0));
             e03 = eventService.createEvent(e03, mc1);
 

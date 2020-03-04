@@ -63,7 +63,8 @@ public class EventService {
         eventFromDatabase.setTitle(event.getTitle());
         eventFromDatabase.setDescription(event.getDescription());
         eventFromDatabase.setAddress(event.getAddress());
-        eventFromDatabase.setDateTime(event.getDateTime());
+        eventFromDatabase.setDate(event.getDate());
+        eventFromDatabase.setTime(event.getTime());
 
         return eventRepository.save(eventFromDatabase);
     }
@@ -77,8 +78,12 @@ public class EventService {
             throw new IllegalArgumentException("Faltou informar o endereço");
         }
 
-        if (event.getDateTime() == null) {
+        if (event.getDate() == null) {
             throw new IllegalArgumentException("Faltou informar a data do evento");
+        }
+
+        if (event.getTitle() == null) {
+            throw new IllegalArgumentException("Faltou informar o horário do evento");
         }
     }
 
@@ -152,9 +157,9 @@ public class EventService {
     }
 
     public List<Event> fetchUpComingEventsFromChapter(long chapterId) {
-        LocalDateTime yesterday = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
+        LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
 
-        return eventRepository.findAllByChapterIdAndDateTimeGreaterThanEqual(chapterId, yesterday);
+        return eventRepository.findAllByChapterIdAndDateGreaterThanEqual(chapterId, yesterday);
     }
 
     public List<Event> fetchAllEventsFromChapter(long chapterId) {
