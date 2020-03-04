@@ -152,9 +152,9 @@ public class EventService {
     }
 
     public List<Event> fetchUpComingEventsFromChapter(long chapterId) {
-        LocalDateTime yesterday = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
+        LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
 
-        return eventRepository.findAllByChapterIdAndDateTimeGreaterThanEqual(chapterId, yesterday);
+        return eventRepository.findAllByChapterIdAndDateGreaterThanEqual(chapterId, yesterday);
     }
 
     public List<Event> fetchAllEventsFromChapter(long chapterId) {
