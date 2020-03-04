@@ -20,7 +20,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
@@ -124,13 +125,19 @@ public class DemoApplication implements CommandLineRunner {
             userService.addChapter(mc2.getId(), gvs.getId());
 
 
-            Event e01 = new Event(gvs, "Mais antigo", DEFAULT_ADDRESS_JOAO_CORREA, "Evento mais velho", mc1, LocalDateTime.of(2019, 01, 1, 14, 0, 0));
+            Event e01 = new Event(gvs, "Mais antigo", DEFAULT_ADDRESS_JOAO_CORREA, "Evento mais velho", mc1,
+                    LocalDate.of(2019, 01, 1),
+                    LocalTime.of(14, 0, 0));
             e01 = eventService.createEvent(e01, mc1);
 
-            Event e02 = new Event(gvs, "Proximo", DEFAULT_ADDRESS_JOAO_CORREA, "Proximo", mc1, LocalDateTime.of(2020, 03, 20, 14, 0, 0));
+            Event e02 = new Event(gvs, "Proximo", DEFAULT_ADDRESS_JOAO_CORREA, "Proximo", mc1,
+                    LocalDate.of(2020, 03, 20),
+                    LocalTime.of(14, 0, 0));
             e02 = eventService.createEvent(e02, mc1);
 
-            Event e03 = new Event(gvs, "Futuro", DEFAULT_ADDRESS_JOAO_CORREA, "Evento do futuro", mc1, LocalDateTime.of(2020, 03, 1, 14, 0, 0));
+            Event e03 = new Event(gvs, "Futuro", DEFAULT_ADDRESS_JOAO_CORREA, "Evento do futuro", mc1,
+                    LocalDate.of(2020, 03, 1),
+                    LocalTime.of(14, 0, 0));
             e03 = eventService.createEvent(e03, mc1);
 
             List<Event> upComingEvents = eventService.fetchUpComingEventsFromChapter(gvs.getId());

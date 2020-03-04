@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,11 @@ public class Event {
 
     @Getter
     @Setter
-    private LocalDateTime dateTime;
+    private LocalDate date;
+
+    @Getter
+    @Setter
+    private LocalTime time;
 
     @Getter
     @Setter
@@ -60,13 +66,14 @@ public class Event {
     public Event() {
     }
 
-    public Event(Chapter chapter, String title, String address, String description, User creator, LocalDateTime date) {
+    public Event(Chapter chapter, String title, String address, String description, User creator, LocalDate date, LocalTime time) {
         this.chapter = chapter;
         this.title = title;
         this.address = address;
         this.description = description;
         this.creator = creator;
-        this.dateTime = date;
+        this.date = date;
+        this.time = time;
         this.creationDate = LocalDateTime.now();
         this.published = false;
 
@@ -85,7 +92,7 @@ public class Event {
         return "Event{" +
                 "title='" + title + '\'' +
                 ", creator=" + creator.getUsername() +
-                ", dateTime=" + dateTime +
+                ", dateTime=" + date +
                 '}';
     }
 }
