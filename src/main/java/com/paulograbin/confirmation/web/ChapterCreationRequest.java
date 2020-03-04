@@ -1,14 +1,14 @@
 package com.paulograbin.confirmation.web;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Value;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
-@Data
+@Value
 public class ChapterCreationRequest {
 
     @NotNull
