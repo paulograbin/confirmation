@@ -1,12 +1,12 @@
 package com.paulograbin.confirmation.web;
 
-import lombok.Value;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 
-@Value
+@Data
 public class EventCreationRequest {
 
     private String title;
