@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,8 +15,14 @@ public class UserDTO {
     private String lastName;
     private String username;
     private List<ChapterDTO> chapter;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime creationDate;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime modificationDate;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime inactivatedIn;
     private boolean active;
     private boolean master;
