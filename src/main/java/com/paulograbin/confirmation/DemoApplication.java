@@ -16,13 +16,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
 
 import static org.springframework.util.Assert.isTrue;
 
@@ -44,10 +43,10 @@ public class DemoApplication implements CommandLineRunner {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    @PostConstruct
-    void init() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC-3"));
-    }
+//    @PostConstruct
+//    void init() {
+//        TimeZone.setDefault(TimeZone.getTimeZone("UTC-3"));
+//    }
 
     @Resource
     private ParticipationRepository participationRepository;
@@ -80,18 +79,6 @@ public class DemoApplication implements CommandLineRunner {
         return modelMapper;
     }
 
-//    @Bean
-//    public void teste() {
-//    // with 3.0 (or with 2.10 as alternative)
-//    ObjectMapper mapper = JsonMapper.builder() // or different mapper for other format
-//            .addModule(new ParameterNamesModule())
-//            .addModule(new Jdk8Module())
-//            .addModule(new JavaTimeModule())
-//            // and possibly other configuration, modules, then:
-//            .build();
-//    }
-
-
     @Override
     public void run(String... args) throws Exception {
         if (roleService.fetchRoleCount() == 0) {
@@ -115,7 +102,7 @@ public class DemoApplication implements CommandLineRunner {
             User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
             mc1 = userService.createUser(mc1);
             userService.setAsMaster(mc1.getId());
-            userService.grantRoles(mc1.getId(), Set.of(roleService.getAdmin()));
+            userService.grantRoles(mc1.getId(), new HashSet<>(Collections.singletonList(roleService.getAdmin())));
             userService.addChapter(mc1.getId(), gvs.getId());
 
             User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
@@ -198,6 +185,6 @@ public class DemoApplication implements CommandLineRunner {
         }
 
         userService.setAsMaster(defaultAdmin.getId());
-        userService.grantRoles(defaultAdmin.getId(), Set.of(roleService.getByName(RoleName.ROLE_ADMIN)));
+        userService.grantRoles(defaultAdmin.getId(), new HashSet<>(Collections.singletonList(roleService.getByName(RoleName.ROLE_ADMIN))));
     }
 }
