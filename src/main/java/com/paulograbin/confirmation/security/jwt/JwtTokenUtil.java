@@ -42,7 +42,7 @@ public class JwtTokenUtil implements Serializable {
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
 
-        return new JwtTokenResponse(jwtToken, expirationDate, principal.isMaster());
+        return new JwtTokenResponse(jwtToken, expirationDate);
     }
 
     public Long getUserIdFromJWT(String token) {

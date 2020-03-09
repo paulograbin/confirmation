@@ -21,18 +21,19 @@ public class JwtTokenResponse implements Serializable {
 
     @Getter
     @Setter
-    private boolean master;
-
-    @Getter
-    @Setter
     private String tokenType = "Bearer";
 
 
-    public JwtTokenResponse(String token, Date expirationDate, boolean master) {
+    public JwtTokenResponse(String token, Date expirationDate) {
         this.token = token;
         this.expirationDate = expirationDate;
-        this.master = master;
     }
+
+//    public JwtTokenResponse(String token, Date expirationDate, boolean master) {
+//        this.token = token;
+//        this.expirationDate = expirationDate;
+//        this.master = master;
+//    }
 
     public JwtTokenResponse(String token) {
         this.token = token;
