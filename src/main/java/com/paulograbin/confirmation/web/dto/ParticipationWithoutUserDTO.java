@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,11 @@ public class ParticipationWithoutUserDTO {
     long id;
     private EventDTO event;
     private String status;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime invitationDate;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime confirmationDate;
 
 }
