@@ -47,8 +47,10 @@ public class EventService {
 
     public Event createEvent(EventCreationRequest request, User currentUser) {
         Event e = new Event();
+
         e.setTitle(request.getTitle());
         e.setDescription(request.getDescription());
+        e.setPublished(request.isPublished());
         e.setAddress(request.getAddress());
         e.setDate(request.getDate());
         e.setTime(request.getTime());
@@ -72,11 +74,13 @@ public class EventService {
     }
 
     public Event updateEvent(long eventId, Event event, @CurrentUser User currentUser) {
+        log.info("Updating event {}", eventId);
         Event eventFromDatabase = fetchById(eventId);
 
         eventFromDatabase.setTitle(event.getTitle());
         eventFromDatabase.setDescription(event.getDescription());
         eventFromDatabase.setAddress(event.getAddress());
+        eventFromDatabase.setPublished(event.isPublished());
         eventFromDatabase.setDate(event.getDate());
         eventFromDatabase.setTime(event.getTime());
 
@@ -117,8 +121,10 @@ public class EventService {
         return eventRepository.findAllByCreatorId(userId);
     }
 
-    public Event fetchById(long id) {
-        return eventRepository.findById(id).orElseThrow(() -> new NotFoundException("Event with id " + id + " not found!"));
+    public Event fetchById(long eventId) {
+        log.info("Fetching event by id {}", eventId);
+
+        return eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event with id " + eventId + " not found!"));
     }
 
     public Participation inviteUserForEvent(final long userId, final long eventId) {

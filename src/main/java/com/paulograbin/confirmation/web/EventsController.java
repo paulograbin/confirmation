@@ -115,6 +115,8 @@ public class EventsController {
     @PutMapping(path = "/events/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public EventDetailsDTO updateEvent(@PathVariable("eventId") long eventId, @RequestBody Event event, @CurrentUser User currentUser) {
+        log.info("Received message to update event {}", eventId);
+
         Event updatedEvent = eventService.updateEvent(eventId, event, currentUser);
 
         return modelMapper.map(updatedEvent, EventDetailsDTO.class);
