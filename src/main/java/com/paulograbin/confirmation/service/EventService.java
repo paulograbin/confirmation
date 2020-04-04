@@ -104,7 +104,7 @@ public class EventService {
             throw new IllegalArgumentException("Faltou informar a data do evento");
         }
 
-        if (event.getTitle() == null) {
+        if (event.getTime() == null) {
             throw new IllegalArgumentException("Faltou informar o horário do evento");
         }
     }
