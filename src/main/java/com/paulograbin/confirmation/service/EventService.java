@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class EventService {
@@ -83,8 +84,12 @@ public class EventService {
     }
 
     private void checkValid(Event event) {
-        if (event.getTitle().length() < 5) {
-            throw new IllegalArgumentException("Título do evento precisa ter pelo menos 5 chars");
+        if (isBlank(event.getTitle()) || event.getTitle().length() < 5) {
+            throw new IllegalArgumentException("Título do evento precisa ter pelo menos 5 letras");
+        }
+
+        if (isBlank(event.getDescription()) || event.getDescription().length() < 5) {
+            throw new IllegalArgumentException("Descrição do evento precisa ter pelo menos 5 letras");
         }
 
         if (event.getAddress().isEmpty()) {
