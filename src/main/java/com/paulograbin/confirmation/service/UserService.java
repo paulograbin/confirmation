@@ -89,11 +89,11 @@ public class UserService implements UserDetailsService {
     private User getUserFromRequest(SignUpRequest signUpRequest) {
         User userToCreate = new User();
 
-        userToCreate.setFirstName(signUpRequest.getFirstName());
-        userToCreate.setLastName(signUpRequest.getLastName());
-        userToCreate.setEmail(signUpRequest.getEmail());
-        userToCreate.setUsername(signUpRequest.getUsername());
-        userToCreate.setPassword(signUpRequest.getPassword());
+        userToCreate.setFirstName(signUpRequest.getFirstName().trim());
+        userToCreate.setLastName(signUpRequest.getLastName().trim());
+        userToCreate.setEmail(signUpRequest.getEmail().trim().toLowerCase());
+        userToCreate.setUsername(signUpRequest.getUsername().trim().toLowerCase());
+        userToCreate.setPassword(signUpRequest.getPassword().trim());
 
         return userToCreate;
     }
