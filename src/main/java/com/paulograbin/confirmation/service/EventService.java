@@ -130,8 +130,8 @@ public class EventService {
     }
 
     public Participation inviteUserForEvent(final long userId, final long eventId) {
-        User user = userService.fetchById(userId);
-        Event event = fetchById(eventId);
+        final User user = userService.fetchById(userId);
+        final Event event = fetchById(eventId);
         log.info("Inviting user {} to event {}", userId, eventId);
 
         Participation participation = participationService.fetchByEventAndUser(event.getId(), user.getId());
