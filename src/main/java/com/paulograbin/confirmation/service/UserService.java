@@ -91,8 +91,8 @@ public class UserService implements UserDetailsService {
 
         userToCreate.setFirstName(signUpRequest.getFirstName().trim());
         userToCreate.setLastName(signUpRequest.getLastName().trim());
-        userToCreate.setEmail(signUpRequest.getEmail().trim().toLowerCase());
-        userToCreate.setUsername(signUpRequest.getUsername().trim().toLowerCase());
+        userToCreate.setEmail(signUpRequest.getEmail().trim().toLowerCase().trim());
+        userToCreate.setUsername(signUpRequest.getUsername().trim().toLowerCase().trim());
         userToCreate.setPassword(signUpRequest.getPassword().trim());
 
         return userToCreate;
@@ -147,7 +147,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) {
-        return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+        return userRepository.findByUsernameOrEmail(usernameOrEmail.toLowerCase(), usernameOrEmail.toLowerCase())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + usernameOrEmail));
     }
 
