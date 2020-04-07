@@ -4,6 +4,7 @@ import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.ParticipationStatus;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.persistence.ParticipationRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -60,14 +60,17 @@ public class ParticipationService {
     }
 
     public Participation createNew(Event event, User user) {
+        log.info("Inviting user {} to event {}", user.getUsername(), event.getTitle());
+
         Participation p = new Participation(user, event);
         p.setStatus(ParticipationStatus.INVITED);
 
         return participationRepository.save(p);
     }
 
-    public Optional<Participation> fetchByEventAndUser(long eventId, long userId) {
-        return participationRepository.findByEventIdAndUserId(eventId, userId);
+    public Participation fetchByEventAndUser(long eventId, long userId) {
+        return participationRepository.findByEventIdAndUserId(eventId, userId)
+                .orElseThrow(() -> new NotFoundException("User " + userId + " is not invited to " + eventId));
     }
 
     public Participation confirmParticipation(Participation participation) {

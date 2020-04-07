@@ -132,8 +132,8 @@ public class EventService {
         Event event = fetchById(eventId);
         log.info("Inviting user {} to event {}", userId, eventId);
 
-        Optional<Participation> participation = participationService.fetchByEventAndUser(event.getId(), user.getId());
-        if (participation.isPresent()) {
+        Participation participation = participationService.fetchByEventAndUser(event.getId(), user.getId());
+        if (participation != null) {
             throw new UserAlreadyInvitedException(format("User %s is already invited for event %s", userId, eventId));
         }
 
@@ -144,16 +144,15 @@ public class EventService {
         Optional<Participation> participationOptional = participationService.fetchByEventAndUser(eventId, userId);
 
         Participation participation = participationOptional.orElseThrow(() -> new UserNotInvitedException(format("Participation not found for user %s in event %s", userId, eventId)));
+        Participation participationToConfirm = participationService.fetchByEventAndUser(eventId, userId);
 
-        return participationService.confirmParticipation(participation);
+        return participationService.confirmParticipation(participationToConfirm);
     }
 
     public Participation declineParticipation(long userId, long eventId) {
-        Optional<Participation> participationOptional = participationService.fetchByEventAndUser(eventId, userId);
+        Participation participationToDecline = participationService.fetchByEventAndUser(eventId, userId);
 
-        Participation participation = participationOptional.orElseThrow(() -> new UserNotInvitedException(format("Participation not found for user %s in event %s", userId, eventId)));
-
-        return participationService.declineParticipation(participation);
+        return participationService.declineParticipation(participationToDecline);
     }
 
     public void deleteEvent(long eventId, User currentUser) {
