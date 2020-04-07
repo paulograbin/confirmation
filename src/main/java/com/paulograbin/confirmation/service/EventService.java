@@ -160,12 +160,10 @@ public class EventService {
                 .orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
 
         if (isCurrentUserCreatorOfThisEvent(currentUser, event) || currentUser.isAdmin()) {
-            List<Participation> allParticipationsFromEvent = participationService.getAllParticipationsFromEvent(event.getId());
 
-            if (isCreatorTheOnlyInvitedUser(allParticipationsFromEvent)) {
-                participationService.deleteAllParticipationsFromEvent(event.getId());
-                eventRepository.deleteById(event.getId());
-            }
+
+            participationService.deleteAllParticipationsFromEvent(event.getId());
+            eventRepository.deleteById(event.getId());
         } else {
             throw new NotYourEventException("This event was not created by you!");
         }
