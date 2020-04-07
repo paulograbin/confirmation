@@ -1,13 +1,11 @@
 package com.paulograbin.confirmation.service;
 
-
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.NotYourEventException;
 import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
-import com.paulograbin.confirmation.exception.UserNotInvitedException;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.web.EventCreationRequest;
@@ -21,9 +19,11 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+
 
 @Service
 public class EventService {
@@ -43,6 +43,14 @@ public class EventService {
         log.info("Fetching all events");
 
         return eventRepository.findAll();
+    }
+
+
+    public Event fetchById(long eventId) {
+        log.info("Fetching event by id {}", eventId);
+
+        return eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("Event with id " + eventId + " not found!"));
     }
 
     public Event createEvent(EventCreationRequest request, User currentUser) {
@@ -119,12 +127,6 @@ public class EventService {
 
     public List<Event> fetchAllEventsCreatedByUser(long userId) {
         return eventRepository.findAllByCreatorId(userId);
-    }
-
-    public Event fetchById(long eventId) {
-        log.info("Fetching event by id {}", eventId);
-
-        return eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event with id " + eventId + " not found!"));
     }
 
     public Participation inviteUserForEvent(final long userId, final long eventId) {
