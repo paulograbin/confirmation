@@ -90,9 +90,13 @@ public class Event {
     @Override
     public String toString() {
         return "Event{" +
-                "title='" + title + '\'' +
-                ", creator=" + creator.getUsername() +
-                ", dateTime=" + date +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", creator=" + creator.getId() +
+                ", date=" + date +
+                ", time=" + time +
+                ", participants=" + participants.size() +
                 '}';
     }
 }
