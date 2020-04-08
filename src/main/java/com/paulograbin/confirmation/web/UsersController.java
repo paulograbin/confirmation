@@ -121,6 +121,6 @@ public class UsersController {
     @ResponseStatus(HttpStatus.OK)
     public void addToChapter(@PathVariable("userId") long userId, @PathVariable("chapterId") long chapterId) {
         log.info("Adding user {} to chapter {}", userId, chapterId);
-        userService.addChapter(userId, chapterId);
+        userService.assignUserToChapter(userId, chapterId);
     }
 }

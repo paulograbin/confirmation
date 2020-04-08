@@ -175,16 +175,16 @@ public class UserService implements UserDetailsService {
         userRepository.save(userFromDatabase);
     }
 
-    public void addChapter(Long userId, long chapterId) {
-        User userFromDatabase = this.fetchById(userId);
-        Chapter chapterFromDatabase = chapterService.fetchById(chapterId);
+    public void assignUserToChapter(Long userId, long chapterId) {
+        final User userFromDatabase = this.fetchById(userId);
+        final Chapter chapterFromDatabase = chapterService.fetchById(chapterId);
 
         if (userFromDatabase.getChapter().contains(chapterFromDatabase)) {
             throw new UserAlreadyAssignedToChapterException(format("User %s already belongs to %s", userId, chapterId));
         }
 
         userFromDatabase.addChapter(chapterFromDatabase);
-        userRepository.save(userFromDatabase);
+        final User savedUser = userRepository.save(userFromDatabase);
 
         List<Event> upcomingEvents = eventService.fetchUpComingEventsFromChapter(chapterId);
         for (Event upcomingEvent : upcomingEvents) {
