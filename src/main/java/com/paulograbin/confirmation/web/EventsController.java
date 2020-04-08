@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,9 +99,14 @@ public class EventsController {
     public List<ParticipationWithoutUserDTO> fetchEventsUserIsInvited(@PathVariable("userId") final long userId) {
         log.info("Looking for events to which user {} is invited to", userId);
 
-        List<Participation> allParticipationsFromUser = participationService.getAllParticipationsFromUser(userId);
+        final LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
 
-        return allParticipationsFromUser.stream()
+        List<Participation> userParticipationInUpcomingEvents = participationService.getAllParticipationsFromUser(userId)
+                .stream()
+                .filter(p -> p.getEvent().getDate().isAfter(yesterday))
+                .collect(Collectors.toList());
+
+        return userParticipationInUpcomingEvents.stream()
                 .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
                 .collect(Collectors.toList());
     }
