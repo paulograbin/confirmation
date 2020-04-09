@@ -81,6 +81,22 @@ public class EventService {
         return save;
     }
 
+    private void inviteRemainingUsersFromChapterToEvent(Event event) {
+        List<User> users = userService.fetchAllByChapterId(event.getChapter().getId());
+
+        for (User userToInvite : users) {
+            // todo test with parallel streams to check for better performance
+            List<Participation> participations = userToInvite.getParticipations()
+                    .stream()
+                    .filter(p -> p.getEvent().getId().equals(event.getId()))
+                    .collect(Collectors.toList());
+
+            if (participations.isEmpty()) {
+                participationService.createNew(event, userToInvite);
+            }
+        }
+    }
+
     public Event updateEvent(long eventId, Event event, @CurrentUser User currentUser) {
         log.info("Updating event {}", eventId);
         Event eventFromDatabase = fetchById(eventId);
@@ -91,6 +107,8 @@ public class EventService {
         eventFromDatabase.setPublished(event.isPublished());
         eventFromDatabase.setDate(event.getDate());
         eventFromDatabase.setTime(event.getTime());
+
+        inviteRemainingUsersFromChapterToEvent(eventFromDatabase);
 
         return eventRepository.save(eventFromDatabase);
     }
@@ -143,9 +161,6 @@ public class EventService {
     }
 
     public Participation confirmParticipation(long userId, long eventId) {
-        Optional<Participation> participationOptional = participationService.fetchByEventAndUser(eventId, userId);
-
-        Participation participation = participationOptional.orElseThrow(() -> new UserNotInvitedException(format("Participation not found for user %s in event %s", userId, eventId)));
         Participation participationToConfirm = participationService.fetchByEventAndUser(eventId, userId);
 
         return participationService.confirmParticipation(participationToConfirm);
