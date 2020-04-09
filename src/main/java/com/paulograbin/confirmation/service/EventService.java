@@ -66,16 +66,19 @@ public class EventService {
         return this.createEvent(e, currentUser);
     }
 
-    public Event createEvent(Event event, User eventCreator) {
-        checkValid(event);
+    public Event createEvent(Event eventToCreate, User eventCreator) {
+        checkValid(eventToCreate);
 
-        event.setId(null);
-        event.setCreationDate(LocalDateTime.now());
-        event.setCreator(eventCreator);
+        eventToCreate.setId(null);
+        eventToCreate.setCreationDate(LocalDateTime.now());
+        eventToCreate.setCreator(eventCreator);
+        // TODO fix this
+        eventToCreate.setChapter(eventCreator.getChapter().iterator().next());
 
-        Event save = eventRepository.save(event);
+        Event save = eventRepository.save(eventToCreate);
+        inviteRemainingUsersFromChapterToEvent(save);
 
-        Participation creatorParticipation = participationService.createNew(event, event.getCreator());
+        Participation creatorParticipation = participationService.fetchByEventAndUser(eventToCreate.getId(), eventToCreate.getCreator().getId());
         participationService.confirmParticipation(creatorParticipation);
 
         return save;
