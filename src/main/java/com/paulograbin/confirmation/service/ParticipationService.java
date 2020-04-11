@@ -50,8 +50,8 @@ public class ParticipationService {
     }
 
     public List<Participation> getAllParticipationsFromUser(final long userId) {
-        log.info("Fetching every participation from user {}", userId);
-        User userFromDatabase = userService.fetchById(userId);
+        log.info("Fetching every up coming participation from user {}", userId);
+        final User userFromDatabase = userService.fetchById(userId);
 
         List<Participation> userParticipations = userFromDatabase.getParticipations();
         return userParticipations.stream()
