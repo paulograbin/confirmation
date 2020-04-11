@@ -139,39 +139,40 @@ public class DemoApplication implements CommandLineRunner {
         checkDefaultAdminIsPresent();
     }
 
-    private void addDefaultChapters() {
+    private void setDefaultChapters() {
         if (chapterService.count() != 0) {
             return;
         }
 
-        chapterService.createChapter(new ChapterCreationRequest(3L,"Pelotas"));
-        chapterService.createChapter(new ChapterCreationRequest(46L,"Porto Alegre"));
-        chapterService.createChapter(new ChapterCreationRequest(77L,"Mariano Fedele"));
-        chapterService.createChapter(new ChapterCreationRequest(91L,"Bagé"));
-        chapterService.createChapter(new ChapterCreationRequest(95L,"Uruguaiana"));
-        chapterService.createChapter(new ChapterCreationRequest(146L,"Pérola das Colônias"));
-        chapterService.createChapter(new ChapterCreationRequest(196L,"Santa Maria"));
-        chapterService.createChapter(new ChapterCreationRequest(237L,"Ijuí"));
-        chapterService.createChapter(new ChapterCreationRequest(306L,"Santo Ângelo"));
-        chapterService.createChapter(new ChapterCreationRequest(354L,"Rio Grande"));
-        chapterService.createChapter(new ChapterCreationRequest(384L,"Alegrete"));
-        chapterService.createChapter(new ChapterCreationRequest(433L,"Santana do Livramento"));
-        chapterService.createChapter(new ChapterCreationRequest(451L,"Guardiões das Torres"));
-        chapterService.createChapter(new ChapterCreationRequest(465L,"Fênix II"));
-        chapterService.createChapter(new ChapterCreationRequest(493L,"Escudeiros do Oriente"));
-        chapterService.createChapter(new ChapterCreationRequest(514L,"Sentinela das Virtudes"));
-        chapterService.createChapter(new ChapterCreationRequest(580L,"14 de Julho"));
-        chapterService.createChapter(new ChapterCreationRequest(630L,"Cavaleiros do Sol"));
-        chapterService.createChapter(new ChapterCreationRequest(635L,"Garimpeiros das Virtudes"));
-        chapterService.createChapter(new ChapterCreationRequest(805L,"Cavaleiros Templários do Vale do Taquari"));
-        chapterService.createChapter(new ChapterCreationRequest(821L,"Cachoeira"));
-        chapterService.createChapter(new ChapterCreationRequest(825L,"Sentinelas da Atlântida"));
-        chapterService.createChapter(new ChapterCreationRequest(826L,"Guardiões da Luz"));
-        chapterService.createChapter(new ChapterCreationRequest(853L,"Guardiões do Horizonte"));
-        chapterService.createChapter(new ChapterCreationRequest(858L,"Cavaleiros Farroupilhas"));
-        chapterService.createChapter(new ChapterCreationRequest(894L,"Guardiões dos Tapes"));
-        chapterService.createChapter(new ChapterCreationRequest(902L,"Santa Cruz"));
-        chapterService.createChapter(new ChapterCreationRequest(906L,"Venâncio Aires"));
+        chapterService.createChapter(new ChapterCreationRequest(3L, "Pelotas"));
+        chapterService.createChapter(new ChapterCreationRequest(91L, "Bagé"));
+        chapterService.createChapter(new ChapterCreationRequest(95L, "Uruguaiana"));
+        chapterService.createChapter(new ChapterCreationRequest(146L, "Pérola das Colônias"));
+        chapterService.createChapter(new ChapterCreationRequest(196L, "Santa Maria"));
+        chapterService.createChapter(new ChapterCreationRequest(237L, "Ijuí"));
+        chapterService.createChapter(new ChapterCreationRequest(306L, "Santo Ângelo"));
+        chapterService.createChapter(new ChapterCreationRequest(354L, "Rio Grande"));
+        chapterService.createChapter(new ChapterCreationRequest(384L, "Alegrete"));
+        chapterService.createChapter(new ChapterCreationRequest(433L, "Santana do Livramento"));
+        chapterService.createChapter(new ChapterCreationRequest(451L, "Guardiões das Torres"));
+        chapterService.createChapter(new ChapterCreationRequest(465L, "Fênix II"));
+        chapterService.createChapter(new ChapterCreationRequest(46L, "Porto Alegre"));
+        chapterService.createChapter(new ChapterCreationRequest(493L, "Escudeiros do Oriente"));
+        chapterService.createChapter(new ChapterCreationRequest(514L, "Sentinela das Virtudes"));
+        chapterService.createChapter(new ChapterCreationRequest(580L, "14 de Julho"));
+        chapterService.createChapter(new ChapterCreationRequest(592L, "Guardiões do Vale dos Sinos"));
+        chapterService.createChapter(new ChapterCreationRequest(630L, "Cavaleiros do Sol"));
+        chapterService.createChapter(new ChapterCreationRequest(635L, "Garimpeiros das Virtudes"));
+        chapterService.createChapter(new ChapterCreationRequest(77L, "Mariano Fedele"));
+        chapterService.createChapter(new ChapterCreationRequest(805L, "Cavaleiros Templários do Vale do Taquari"));
+        chapterService.createChapter(new ChapterCreationRequest(821L, "Cachoeira"));
+        chapterService.createChapter(new ChapterCreationRequest(825L, "Sentinelas da Atlântida"));
+        chapterService.createChapter(new ChapterCreationRequest(826L, "Guardiões da Luz"));
+        chapterService.createChapter(new ChapterCreationRequest(853L, "Guardiões do Horizonte"));
+        chapterService.createChapter(new ChapterCreationRequest(858L, "Cavaleiros Farroupilhas"));
+        chapterService.createChapter(new ChapterCreationRequest(894L, "Guardiões dos Tapes"));
+        chapterService.createChapter(new ChapterCreationRequest(902L, "Santa Cruz"));
+        chapterService.createChapter(new ChapterCreationRequest(906L, "Venâncio Aires"));
     }
 
     private void checkDefaultAdminIsPresent() {
