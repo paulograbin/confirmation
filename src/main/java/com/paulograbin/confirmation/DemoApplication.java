@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.springframework.util.Assert.isTrue;
+import static org.apache.commons.lang3.Validate.isTrue;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
