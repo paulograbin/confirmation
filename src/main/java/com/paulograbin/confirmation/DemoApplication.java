@@ -81,24 +81,12 @@ public class DemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (roleService.fetchRoleCount() == 0) {
-            Role admin = new Role(RoleName.ROLE_ADMIN);
-            Role master = new Role(RoleName.ROLE_MC);
-            Role user = new Role(RoleName.ROLE_USER);
-
-            admin = roleService.save(admin);
-            master = roleService.save(master);
-            user = roleService.save(user);
-        }
-
-        if (participationService.fetchCount() == 0) {
-            addDefaultChapters();
+        setDefaultRoles();
         setDefaultAdmin();
+        setDefaultChapters();
 
-            Chapter gvs = new Chapter();
-            gvs.setId(592L);
-            gvs.setName("Guardiões do Vale dos Sinos");
-            gvs = chapterRepository.save(gvs);
+        if (userService.fetchCount() == 0 && eventService.fetchCount() == 0) {
+            Chapter gvs = chapterService.fetchById(592L);
 
             User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
             mc1 = userService.createUser(mc1);
@@ -136,8 +124,18 @@ public class DemoApplication implements CommandLineRunner {
             isTrue(e01.getParticipants().get(0).getStatus() == ParticipationStatus.CONFIRMED, "Participant is confirmed");
             isTrue(e01.getParticipants().get(0).getUser().getUsername().equals("plgrabin"), "Participant is confirmed");
         }
+    }
 
-        checkDefaultAdminIsPresent();
+    private void setDefaultRoles() {
+        if (roleService.fetchRoleCount() == 0) {
+            Role admin = new Role(RoleName.ROLE_ADMIN);
+            Role master = new Role(RoleName.ROLE_MC);
+            Role user = new Role(RoleName.ROLE_USER);
+
+            roleService.save(admin);
+            roleService.save(master);
+            roleService.save(user);
+        }
     }
 
     private void setDefaultChapters() {
