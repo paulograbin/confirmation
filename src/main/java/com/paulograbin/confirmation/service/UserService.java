@@ -164,18 +164,18 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userFromDatabase);
     }
 
-    public void grantRoles(final long userId, Set<Role> rolesToAdd) {
-        User userFromDatabase = fetchById(userId);
+    public User grantRoles(final long userId, Set<Role> rolesToAdd) {
+        final User userFromDatabase = fetchById(userId);
 
         Set<Role> roles = userFromDatabase.getRoles();
         roles.addAll(rolesToAdd);
 
         userFromDatabase.setRoles(roles);
 
-        userRepository.save(userFromDatabase);
+        return userRepository.save(userFromDatabase);
     }
 
-    public void assignUserToChapter(Long userId, long chapterId) {
+    public User assignUserToChapter(Long userId, long chapterId) {
         final User userFromDatabase = this.fetchById(userId);
         final Chapter chapterFromDatabase = chapterService.fetchById(chapterId);
 
@@ -196,6 +196,8 @@ public class UserService implements UserDetailsService {
                         e.getMessage());
             }
         }
+
+        return savedUser;
     }
 
     public List<User> fetchAllByChapterId(Long chapterId) {

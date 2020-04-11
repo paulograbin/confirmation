@@ -101,14 +101,13 @@ public class DemoApplication implements CommandLineRunner {
 
             User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
             mc1 = userService.createUser(mc1);
-            userService.setAsMaster(mc1.getId());
-            userService.grantRoles(mc1.getId(), new HashSet<>(Collections.singletonList(roleService.getAdmin())));
-            userService.assignUserToChapter(mc1.getId(), gvs.getId());
+            mc1 = userService.setAsMaster(mc1.getId());
+            mc1 = userService.grantRoles(mc1.getId(), new HashSet<>(Collections.singletonList(roleService.getAdmin())));
+            mc1 = userService.assignUserToChapter(mc1.getId(), gvs.getId());
 
             User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
             mc2 = userService.createUser(mc2);
-            userService.assignUserToChapter(mc2.getId(), gvs.getId());
-
+            mc2 = userService.assignUserToChapter(mc2.getId(), gvs.getId());
 
             Event e01 = new Event(gvs, "Mais antigo", DEFAULT_ADDRESS_JOAO_CORREA, "Evento mais velho", mc1,
                     LocalDate.of(2019, 01, 1),
