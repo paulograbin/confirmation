@@ -221,4 +221,8 @@ public class EventService {
             throw new NotYourEventException("Event " + eventId + " does not belong to you!");
         }
     }
+
+    public long fetchCount() {
+        return eventRepository.count();
+    }
 }

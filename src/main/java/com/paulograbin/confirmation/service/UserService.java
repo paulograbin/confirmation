@@ -201,4 +201,8 @@ public class UserService implements UserDetailsService {
     public List<User> fetchAllByChapterId(Long chapterId) {
         return userRepository.findAllByChapterId(chapterId);
     }
+
+    public long fetchCount() {
+        return userRepository.count();
+    }
 }
