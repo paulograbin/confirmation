@@ -5,6 +5,7 @@ import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.UserService;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = {DemoApplication.class, H2JpaConfig.class})
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
+@Ignore
 public class UsersControllerIntegrationTest {
 
     @Resource

@@ -6,6 +6,7 @@ import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.UserService;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(MockitoJUnitRunner.class)
+@Ignore
 public class UsersControllerUnitTest {
 
     @Mock
