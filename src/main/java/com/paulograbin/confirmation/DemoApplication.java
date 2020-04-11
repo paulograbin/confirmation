@@ -93,6 +93,7 @@ public class DemoApplication implements CommandLineRunner {
 
         if (participationService.fetchCount() == 0) {
             addDefaultChapters();
+        setDefaultAdmin();
 
             Chapter gvs = new Chapter();
             gvs.setId(592L);
@@ -175,15 +176,20 @@ public class DemoApplication implements CommandLineRunner {
         chapterService.createChapter(new ChapterCreationRequest(906L, "Venâncio Aires"));
     }
 
-    private void checkDefaultAdminIsPresent() {
+    private void setDefaultAdmin() {
+        log.info("Checking default admin....");
+
         User defaultAdmin = null;
         try {
             defaultAdmin = (User) userService.loadUserByUsername("plgrabin");
+            log.info("Admin found");
         } catch (UsernameNotFoundException e) {
             defaultAdmin = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
+            log.info("Admin not found, creating it...");
         }
 
+        log.info("Setting admin authorizations....");
         userService.setAsMaster(defaultAdmin.getId());
         userService.grantRoles(defaultAdmin.getId(), new HashSet<>(Collections.singletonList(roleService.getByName(RoleName.ROLE_ADMIN))));
     }
