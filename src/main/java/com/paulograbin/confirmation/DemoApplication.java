@@ -38,6 +38,7 @@ public class DemoApplication implements CommandLineRunner {
 
 
     public static final String DEFAULT_ADDRESS_JOAO_CORREA = "Avenida João Corrêa, 815";
+    public static final String ADMIN_USERNAME = "plgrabin";
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
@@ -85,44 +86,55 @@ public class DemoApplication implements CommandLineRunner {
         setDefaultChapters();
         setDefaultAdmin();
 
-        if (eventService.fetchCount() == 0) {
-            Chapter gvs = chapterService.fetchById(592L);
+        setDefaultUsers();
+        setDefaultEvents();
+    }
 
-            User mc1 = (User) userService.loadUserByUsername("plgrabin");
-            mc1 = userService.setAsMaster(mc1.getId());
-            mc1 = userService.grantRoles(mc1.getId(), new HashSet<>(Collections.singletonList(roleService.getAdmin())));
-            mc1 = userService.assignUserToChapter(mc1.getId(), gvs.getId());
-
-            User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
-            mc2 = userService.createUser(mc2);
-            mc2 = userService.assignUserToChapter(mc2.getId(), gvs.getId());
-
-            Event e01 = new Event(gvs, "Mais antigo", DEFAULT_ADDRESS_JOAO_CORREA, "Evento mais velho", mc1,
-                    LocalDate.of(2019, 01, 1),
-                    LocalTime.of(14, 0, 0));
-            e01 = eventService.createEvent(e01, mc1);
-
-            Event e02 = new Event(gvs, "Proximo", DEFAULT_ADDRESS_JOAO_CORREA, "Proximo", mc1,
-                    LocalDate.of(2020, 06, 20),
-                    LocalTime.of(14, 0, 0));
-            e02 = eventService.createEvent(e02, mc1);
-
-            Event e03 = new Event(gvs, "Futuro", DEFAULT_ADDRESS_JOAO_CORREA, "Evento do futuro", mc1,
-                    LocalDate.of(2020, 06, 1),
-                    LocalTime.of(14, 0, 0));
-            e03 = eventService.createEvent(e03, mc1);
-
-            List<Event> upComingEvents = eventService.fetchUpComingEventsFromChapter(gvs.getId());
-            isTrue(upComingEvents.size() == 2, "Two events for GVS");
-
-            List<Event> allEventsFromGVS = eventService.fetchAllEventsFromChapter(gvs.getId());
-            isTrue(allEventsFromGVS.size() == 3, "Three events for GVS");
-
-
-            isTrue(e01.getParticipants().size() == 1, "Only one participant");
-            isTrue(e01.getParticipants().get(0).getStatus() == ParticipationStatus.CONFIRMED, "Participant is confirmed");
-            isTrue(e01.getParticipants().get(0).getUser().getUsername().equals("plgrabin"), "Participant is confirmed");
+    private void setDefaultEvents() {
+        if (eventService.fetchCount() > 0) {
+            return;
         }
+
+        Chapter gvs = chapterService.fetchById(592L);
+        User mc1 = userService.fetchByUsername(ADMIN_USERNAME);
+
+        Event e01 = new Event(gvs, "Mais antigo", DEFAULT_ADDRESS_JOAO_CORREA, "Evento mais velho", mc1,
+                LocalDate.of(2019, 01, 1),
+                LocalTime.of(14, 0, 0));
+        e01 = eventService.createEvent(e01, mc1);
+
+        Event e02 = new Event(gvs, "Proximo", DEFAULT_ADDRESS_JOAO_CORREA, "Proximo", mc1,
+                LocalDate.of(2020, 06, 20),
+                LocalTime.of(14, 0, 0));
+        e02 = eventService.createEvent(e02, mc1);
+
+        Event e03 = new Event(gvs, "Futuro", DEFAULT_ADDRESS_JOAO_CORREA, "Evento do futuro", mc1,
+                LocalDate.of(2020, 06, 1),
+                LocalTime.of(14, 0, 0));
+        e03 = eventService.createEvent(e03, mc1);
+
+        List<Event> upComingEvents = eventService.fetchUpComingEventsFromChapter(gvs.getId());
+        isTrue(upComingEvents.size() == 2, "Two events for GVS");
+
+        List<Event> allEventsFromGVS = eventService.fetchAllEventsFromChapter(gvs.getId());
+        isTrue(allEventsFromGVS.size() == 3, "Three events for GVS");
+
+
+        isTrue(e01.getParticipants().size() == 1, "Only one participant");
+        isTrue(e01.getParticipants().get(0).getStatus() == ParticipationStatus.CONFIRMED, "Participant is confirmed");
+        isTrue(e01.getParticipants().get(0).getUser().getUsername().equals(ADMIN_USERNAME), "Participant is confirmed");
+    }
+
+    private void setDefaultUsers() {
+        if (userService.fetchCount() > 1) {
+            return;
+        }
+
+        Chapter gvs = chapterService.fetchById(592L);
+
+        User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
+        mc2 = userService.createUser(mc2);
+        mc2 = userService.assignUserToChapter(mc2.getId(), gvs.getId());
     }
 
     private void setDefaultRoles() {
@@ -184,11 +196,11 @@ public class DemoApplication implements CommandLineRunner {
 
         User defaultAdmin = null;
         try {
-            defaultAdmin = (User) userService.loadUserByUsername("plgrabin");
+            defaultAdmin = (User) userService.loadUserByUsername(ADMIN_USERNAME);
             log.info("Admin found");
         } catch (UsernameNotFoundException e) {
             log.info("Admin not found, creating it...");
-            defaultAdmin = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
+            defaultAdmin = new User(ADMIN_USERNAME, "Mestre", "Conselheiro", ADMIN_USERNAME, "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
 
             userService.assignUserToChapter(defaultAdmin.getId(), 592L);

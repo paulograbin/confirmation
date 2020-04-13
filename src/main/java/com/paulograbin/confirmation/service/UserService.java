@@ -145,6 +145,10 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userFromDatabase);
     }
 
+    public User fetchByUsername(final String username) {
+        return (User) this.loadUserByUsername(username);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) {
         return userRepository.findByUsernameOrEmail(usernameOrEmail.toLowerCase(), usernameOrEmail.toLowerCase())
