@@ -79,7 +79,7 @@ public class User implements UserDetails {
     private Set<Chapter> chapter;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @Getter
     @Setter
     private List<Participation> participations;
