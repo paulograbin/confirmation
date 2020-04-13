@@ -82,8 +82,8 @@ public class DemoApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         setDefaultRoles();
-        setDefaultAdmin();
         setDefaultChapters();
+        setDefaultAdmin();
 
         if (userService.fetchCount() == 0 && eventService.fetchCount() == 0) {
             Chapter gvs = chapterService.fetchById(592L);
