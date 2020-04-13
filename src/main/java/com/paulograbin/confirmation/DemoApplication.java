@@ -127,7 +127,11 @@ public class DemoApplication implements CommandLineRunner {
     }
 
     private void setDefaultRoles() {
+        log.info("Checking for default roles...");
+
         if (roleService.fetchRoleCount() == 0) {
+            log.info("Adding default roles to the system");
+
             Role admin = new Role(RoleName.ROLE_ADMIN);
             Role master = new Role(RoleName.ROLE_MC);
             Role user = new Role(RoleName.ROLE_USER);
@@ -139,6 +143,8 @@ public class DemoApplication implements CommandLineRunner {
     }
 
     private void setDefaultChapters() {
+        log.info("Checking for default chapters...");
+
         if (chapterService.count() != 0) {
             return;
         }
@@ -182,8 +188,11 @@ public class DemoApplication implements CommandLineRunner {
             defaultAdmin = (User) userService.loadUserByUsername("plgrabin");
             log.info("Admin found");
         } catch (UsernameNotFoundException e) {
+            log.info("Admin not found, creating it...");
             defaultAdmin = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
+
+            userService.assignUserToChapter(defaultAdmin.getId(), 592L);
         }
 
         log.info("Setting admin authorizations....");

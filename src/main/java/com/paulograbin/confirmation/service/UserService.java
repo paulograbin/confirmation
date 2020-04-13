@@ -157,6 +157,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User setAsMaster(final long userId) {
+        log.info("Setting user {} as master", userId);
         User userFromDatabase = fetchById(userId);
 
         userFromDatabase.setMaster(true);

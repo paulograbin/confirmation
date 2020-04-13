@@ -27,6 +27,8 @@ public class ChapterService {
     }
 
     public Chapter createChapter(ChapterCreationRequest creationRequest) {
+        log.info("Creating new chapter {}", creationRequest.getName());
+
         Chapter chapterToCreate = new Chapter();
         chapterToCreate.setId(creationRequest.getId());
         chapterToCreate.setName(creationRequest.getName());

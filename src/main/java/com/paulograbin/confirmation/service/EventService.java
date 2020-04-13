@@ -67,6 +67,8 @@ public class EventService {
     }
 
     public Event createEvent(Event eventToCreate, User eventCreator) {
+        log.info("Creating event {} for user {}", eventToCreate.getTitle(), eventCreator.getUsername() );
+
         checkValid(eventToCreate);
 
         eventToCreate.setId(null);
@@ -101,7 +103,7 @@ public class EventService {
     }
 
     public Event updateEvent(long eventId, Event event, @CurrentUser User currentUser) {
-        log.info("Updating event {}", eventId);
+        log.info("Updating event {} for user {}", eventId, currentUser.getUsername());
         Event eventFromDatabase = fetchById(eventId);
 
         eventFromDatabase.setTitle(event.getTitle());
@@ -164,6 +166,8 @@ public class EventService {
     }
 
     public Participation confirmParticipation(long userId, long eventId) {
+        log.info("Confirming participation for user {} on event {}", userId, eventId);
+
         Participation participationToConfirm = participationService.fetchByEventAndUser(eventId, userId);
 
         return participationService.confirmParticipation(participationToConfirm);
