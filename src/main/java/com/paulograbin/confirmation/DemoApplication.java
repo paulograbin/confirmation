@@ -184,7 +184,6 @@ public class DemoApplication implements CommandLineRunner {
         } catch (UsernameNotFoundException e) {
             defaultAdmin = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
-            log.info("Admin not found, creating it...");
         }
 
         log.info("Setting admin authorizations....");
