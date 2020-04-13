@@ -85,11 +85,10 @@ public class DemoApplication implements CommandLineRunner {
         setDefaultChapters();
         setDefaultAdmin();
 
-        if (userService.fetchCount() == 0 && eventService.fetchCount() == 0) {
+        if (eventService.fetchCount() == 0) {
             Chapter gvs = chapterService.fetchById(592L);
 
-            User mc1 = new User("plgrabin", "Mestre", "Conselheiro", "plgrabin", "aaa");
-            mc1 = userService.createUser(mc1);
+            User mc1 = (User) userService.loadUserByUsername("plgrabin");
             mc1 = userService.setAsMaster(mc1.getId());
             mc1 = userService.grantRoles(mc1.getId(), new HashSet<>(Collections.singletonList(roleService.getAdmin())));
             mc1 = userService.assignUserToChapter(mc1.getId(), gvs.getId());
