@@ -12,7 +12,7 @@
     <artifactId>Confirmation</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Confirmation</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Confirmation backend</description>
 
     <properties>
         <java.version>11</java.version>
