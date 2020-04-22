@@ -88,10 +88,15 @@ public class DemoApplication implements CommandLineRunner {
 
         setDefaultUsers();
         setDefaultEvents();
+
+        log.info("Application ready to roll.");
     }
 
     private void setDefaultEvents() {
+        log.info("Checking events...");
+
         if (eventService.fetchCount() > 0) {
+            log.info("Skipping default events.");
             return;
         }
 
@@ -126,7 +131,10 @@ public class DemoApplication implements CommandLineRunner {
     }
 
     private void setDefaultUsers() {
+        log.info("Checking users...");
+
         if (userService.fetchCount() > 1) {
+            log.info("Skipping default users");
             return;
         }
 
