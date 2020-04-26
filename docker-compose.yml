@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0.19
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: confirmation
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: root
+      # You can use whatever password you like
+      MYSQL_PASSWORD: root
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: root
+      ports:
+        '3306:3306'
+      expose:
+        '3306'
+
+  core:
+    image: paulograbin/confirmation
+    restart: unless-stopped
+    build: .
+    #    env_file: .env
+    ports:
+      ['3000:3000']
+    depends_on:
+      [db]
+#
+#  web:
+#    image: paulograbin/confirmationfrontend
+#    restart: unless-stopped
+#    ports:
+#      [80:80]
+#    depends_on:
+#      [core]
