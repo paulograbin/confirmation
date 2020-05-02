@@ -11,7 +11,7 @@ public class CorsConfig {
     @Bean
     public CorsConfiguration corsConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("https://paulograbin.github.io/confirmationFrontend/*");
+        corsConfiguration.addAllowedOrigin("https://paulograbin.github.io/**");
 
         return corsConfiguration;
     }
