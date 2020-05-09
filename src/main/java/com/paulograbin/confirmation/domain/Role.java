@@ -8,19 +8,17 @@ import javax.persistence.*;
 
 
 @Entity
+@Getter
+@Setter
 @Table(name = "roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
-    @Setter
     private Long id;
 
     @Enumerated(EnumType.STRING)
     @NaturalId
-    @Getter
-    @Setter
     private RoleName name;
 
 

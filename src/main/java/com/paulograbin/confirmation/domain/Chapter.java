@@ -9,6 +9,8 @@ import java.util.Set;
 
 
 @Entity
+@Getter
+@Setter
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "id"
@@ -17,21 +19,13 @@ import java.util.Set;
 public class Chapter {
 
     @Id
-    @Getter
-    @Setter
     private Long id;
 
-    @Getter
-    @Setter
     private String name;
 
-    @Getter
-    @Setter
     @ManyToMany(mappedBy = "chapter")
     private Set<User> users;
 
-    @Getter
-    @Setter
     @OneToMany(mappedBy = "chapter")
     private List<Event> events;
 

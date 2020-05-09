@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 
 
 @Entity
+@Getter
+@Setter
 @Table(name = "user", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
             "username"
@@ -28,70 +30,31 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
-    @Setter
     private Long id;
-
-    @Getter
-    @Setter
     private String firstName;
-
-    @Getter
-    @Setter
     private String lastName;
-
-    @Getter
-    @Setter
     private String username;
-
-    @Getter
-    @Setter
     private String email;
-
-    @Getter
-    @Setter
     private String password;
-
-    @Getter
-    @Setter
     private boolean active;
-
-    @Getter
-    @Setter
     private boolean master;
 
-
-    @Getter
-    @Setter
     private LocalDateTime creationDate;
-
-    @Getter
-    @Setter
     private LocalDateTime modificationDate;
-
-    @Getter
-    @Setter
     private LocalDateTime inactivatedIn;
 
-    @Getter
-    @Setter
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Chapter> chapter;
 
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @Getter
-    @Setter
     private List<Participation> participations;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @Getter
-    @Setter
     private Set<Role> roles = new HashSet<>();
-
 
 
     public User() {
