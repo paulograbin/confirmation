@@ -3,6 +3,7 @@ package com.paulograbin.confirmation.web;
 import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.persistence.ChapterRepository;
 import com.paulograbin.confirmation.service.ChapterService;
+import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import com.paulograbin.confirmation.web.dto.ChapterDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;

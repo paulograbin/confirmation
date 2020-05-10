@@ -8,7 +8,7 @@ import com.paulograbin.confirmation.exception.NotYourEventException;
 import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
-import com.paulograbin.confirmation.web.EventCreationRequest;
+import com.paulograbin.confirmation.usecases.EventCreationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

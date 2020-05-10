@@ -3,7 +3,7 @@ package com.paulograbin.confirmation.service;
 import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.persistence.ChapterRepository;
-import com.paulograbin.confirmation.web.ChapterCreationRequest;
+import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

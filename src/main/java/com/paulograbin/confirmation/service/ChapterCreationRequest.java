@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation.usecases;
+package com.paulograbin.confirmation.service;
 
 import lombok.Getter;
 import lombok.Setter;
