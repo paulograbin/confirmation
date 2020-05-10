@@ -4,7 +4,7 @@ import com.paulograbin.confirmation.domain.*;
 import com.paulograbin.confirmation.persistence.ChapterRepository;
 import com.paulograbin.confirmation.persistence.ParticipationRepository;
 import com.paulograbin.confirmation.service.*;
-import com.paulograbin.confirmation.web.ChapterCreationRequest;
+import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.module.jsr310.Jsr310Module;
