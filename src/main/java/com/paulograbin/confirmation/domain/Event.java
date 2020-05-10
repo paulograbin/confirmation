@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,59 +13,32 @@ import java.util.List;
 
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Getter
-    @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Getter
-    @Setter
     private String title;
-
-    @Getter
-    @Setter
     private String description;
-
-    @Getter
-    @Setter
     private String address;
-
-    @OneToOne
-    @Getter
-    @Setter
-    private User creator;
-
-    @Getter
-    @Setter
     private LocalDate date;
-
-    @Getter
-    @Setter
     private LocalTime time;
-
-    @Getter
-    @Setter
     private LocalDateTime creationDate;
 
+    @OneToOne
+    private User creator;
+
     @ManyToOne
-    @Getter
-    @Setter
     private Chapter chapter;
 
-    @Getter
-    @Setter
     private boolean published;
 
     @OneToMany(mappedBy = "event")
-    @Getter
-    @Setter
     private List<Participation> participants = new ArrayList<>();
 
-    public Event() {
-    }
 
     public Event(Chapter chapter, String title, String address, String description, User creator, LocalDate date, LocalTime time) {
         this.chapter = chapter;
@@ -79,11 +53,6 @@ public class Event {
 
         Participation p = new Participation(creator, this);
         p.confirmParticipant();
-        participants.add(p);
-    }
-
-    public void addParticipant(User participant) {
-        Participation p = new Participation(participant, this);
         participants.add(p);
     }
 
