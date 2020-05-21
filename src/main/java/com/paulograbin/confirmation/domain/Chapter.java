@@ -22,10 +22,11 @@ public class Chapter {
     private String name;
 
     @ManyToMany(mappedBy = "chapter")
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "chapter")
-    private List<Event> events;
+    private List<Event> events = new ArrayList<>();
+
 
     @Override
     public String toString() {
