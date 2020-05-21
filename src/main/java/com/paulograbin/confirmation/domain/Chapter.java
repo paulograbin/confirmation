@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"id"})
 })
@@ -21,7 +22,6 @@ public class Chapter {
 
     @Id
     private Long id;
-
     private String name;
 
     @ManyToMany(mappedBy = "chapter")
