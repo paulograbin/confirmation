@@ -1,9 +1,12 @@
 package com.paulograbin.confirmation.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +30,10 @@ public class Chapter {
     @OneToMany(mappedBy = "chapter")
     private List<Event> events = new ArrayList<>();
 
+
+    public Chapter(String name) {
+        this.name = name;
+    }
 
     @Override
     public String toString() {
