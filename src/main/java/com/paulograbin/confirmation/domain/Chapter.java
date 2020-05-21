@@ -12,9 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "id"
-        })
+        @UniqueConstraint(columnNames = {"id"})
 })
 public class Chapter {
 
