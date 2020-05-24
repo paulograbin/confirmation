@@ -184,7 +184,7 @@ public class UserService implements UserDetailsService {
         final User userFromDatabase = this.fetchById(userId);
         final Chapter chapterFromDatabase = chapterService.fetchById(chapterId);
 
-        if (userFromDatabase.getChapter().contains(chapterFromDatabase)) {
+        if (userFromDatabase.getChapters().contains(chapterFromDatabase)) {
             throw new UserAlreadyAssignedToChapterException(format("User %s already belongs to %s", userId, chapterId));
         }
 

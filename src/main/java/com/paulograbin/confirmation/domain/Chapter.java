@@ -24,7 +24,7 @@ public class Chapter {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "chapter")
+    @ManyToMany(mappedBy = "chapters")
     private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "chapter")
@@ -45,6 +45,6 @@ public class Chapter {
 
     public void addUser(User aUser) {
         this.getUsers().add(aUser);
-        aUser.getChapter().add(this);
+        aUser.getChapters().add(this);
     }
 }

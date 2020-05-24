@@ -57,7 +57,7 @@ class ChapterTest {
         chapter.addUser(aUser);
 
         assertThat(chapter.getUsers()).isNotEmpty();
-        assertThat(aUser.getChapter()).isNotEmpty();
+        assertThat(aUser.getChapters()).isNotEmpty();
     }
 
     @Test

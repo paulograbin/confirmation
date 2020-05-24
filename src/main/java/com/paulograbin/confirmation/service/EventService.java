@@ -75,7 +75,7 @@ public class EventService {
         eventToCreate.setCreationDate(LocalDateTime.now());
         eventToCreate.setCreator(eventCreator);
         // TODO fix this
-        eventToCreate.setChapter(eventCreator.getChapter().iterator().next());
+        eventToCreate.setChapter(eventCreator.getChapters().iterator().next());
 
         Event save = eventRepository.save(eventToCreate);
         inviteRemainingUsersFromChapterToEvent(save);
