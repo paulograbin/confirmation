@@ -8,10 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -40,11 +37,11 @@ public class User implements UserDetails {
     private LocalDateTime inactivatedIn;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Chapter> chapter;
+    private Set<Chapter> chapters = new HashSet<>();
 
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Participation> participations;
+    private List<Participation> participations = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -67,10 +64,6 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-    }
-
-    public void makeInactive() {
-        this.active = false;
     }
 
     @Override
@@ -117,6 +110,7 @@ public class User implements UserDetails {
     }
 
     public void addChapter(Chapter chapterToAdd) {
-        this.chapter.add(chapterToAdd);
+        this.chapters.add(chapterToAdd);
+        chapterToAdd.addUser(this);
     }
 }
