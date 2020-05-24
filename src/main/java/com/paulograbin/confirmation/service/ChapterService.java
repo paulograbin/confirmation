@@ -33,15 +33,15 @@ public class ChapterService {
         chapterToCreate.setId(creationRequest.getId());
         chapterToCreate.setName(creationRequest.getName());
 
-        validateChapterNumberAvailable(chapterToCreate.getId());
+        if (isChapterNumberAvailable(chapterToCreate.getId())) {
+            throw new RuntimeException("Chapter id " + creationRequest.getId() + " is already taken");
+        }
 
         return chapterRepository.save(chapterToCreate);
     }
 
-    private void validateChapterNumberAvailable(final Long id) {
-        if (chapterRepository.existsById(id)) {
-            throw new RuntimeException("Chapter id " + id + " is already taken");
-        }
+    private boolean isChapterNumberAvailable(final Long id) {
+        return chapterRepository.existsById(id);
     }
 
     public long count() {
