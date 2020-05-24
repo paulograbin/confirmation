@@ -2,7 +2,6 @@ package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
-import com.paulograbin.confirmation.security.jwt.resource.SignUpRequest;
 import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.UpdateUserRequest;
@@ -61,15 +60,15 @@ public class UsersController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO createNewUser(@RequestBody SignUpRequest userToBeCreated) {
-        log.info("Creating new user {}", userToBeCreated.getUsername());
-
-        User createdUser = userService.createUser(userToBeCreated);
-
-        return modelMapper.map(createdUser, UserDTO.class);
-    }
+//    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public UserDTO createNewUser(@RequestBody SignUpRequest userToBeCreated) {
+//        log.info("Creating new user {}", userToBeCreated.getUsername());
+//
+//        User createdUser = userService.createUser(userToBeCreated);
+//
+//        return modelMapper.map(createdUser, UserDTO.class);
+//    }
 
     @GetMapping(path = "/{id}/participations")
     @ResponseStatus(HttpStatus.OK)
