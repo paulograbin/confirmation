@@ -180,6 +180,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userFromDatabase);
     }
 
+    @Transactional
     public User assignUserToChapter(Long userId, long chapterId) {
         final User userFromDatabase = this.fetchById(userId);
         final Chapter chapterFromDatabase = chapterService.fetchById(chapterId);
