@@ -38,9 +38,6 @@ public class UserService implements UserDetailsService {
     private RoleRepository roleRepository;
 
     @Resource
-    private ParticipationService participationService;
-
-    @Resource
     private EventService eventService;
 
     @Resource
@@ -59,19 +56,6 @@ public class UserService implements UserDetailsService {
     }
 
     public User createUser(User userToCreate) {
-        SignUpRequest request = new SignUpRequest();
-        request.setEmail(userToCreate.getEmail());
-        request.setPassword(userToCreate.getPassword());
-        request.setUsername(userToCreate.getUsername());
-        request.setFirstName(userToCreate.getFirstName());
-        request.setLastName(userToCreate.getLastName());
-
-        return this.createUser(request);
-    }
-
-    public User createUser(SignUpRequest signUpRequest) {
-        User userToCreate = getUserFromRequest(signUpRequest);
-
         validateInformation(userToCreate);
         validateAvailableUsername(userToCreate.getUsername());
         validateAvailableEmail(userToCreate.getEmail());
@@ -86,16 +70,6 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userToCreate);
     }
 
-    private User getUserFromRequest(SignUpRequest signUpRequest) {
-        User userToCreate = new User();
-
-        userToCreate.setFirstName(signUpRequest.getFirstName().trim());
-        userToCreate.setLastName(signUpRequest.getLastName().trim());
-        userToCreate.setEmail(signUpRequest.getEmail().trim().toLowerCase().trim());
-        userToCreate.setUsername(signUpRequest.getUsername().trim().toLowerCase().trim());
-        userToCreate.setPassword(signUpRequest.getPassword().trim());
-
-        return userToCreate;
     }
 
     private void validateAvailableEmail(String email) {
