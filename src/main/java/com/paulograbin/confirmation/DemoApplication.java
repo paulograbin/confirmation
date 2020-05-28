@@ -1,9 +1,16 @@
 package com.paulograbin.confirmation;
 
-import com.paulograbin.confirmation.domain.*;
-import com.paulograbin.confirmation.persistence.ChapterRepository;
-import com.paulograbin.confirmation.persistence.ParticipationRepository;
-import com.paulograbin.confirmation.service.*;
+import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.ParticipationStatus;
+import com.paulograbin.confirmation.domain.Role;
+import com.paulograbin.confirmation.domain.RoleName;
+import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.service.ChapterService;
+import com.paulograbin.confirmation.service.EventService;
+import com.paulograbin.confirmation.service.ParticipationService;
+import com.paulograbin.confirmation.service.RoleService;
+import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -49,8 +56,6 @@ public class DemoApplication implements CommandLineRunner {
 //        TimeZone.setDefault(TimeZone.getTimeZone("UTC-3"));
 //    }
 
-    @Resource
-    private ParticipationRepository participationRepository;
 
     @Resource
     private UserService userService;
@@ -63,9 +68,6 @@ public class DemoApplication implements CommandLineRunner {
 
     @Resource
     private RoleService roleService;
-
-    @Resource
-    private ChapterRepository chapterRepository;
 
     @Resource
     private ChapterService chapterService;
@@ -81,7 +83,7 @@ public class DemoApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         setDefaultRoles();
         setDefaultChapters();
         setDefaultAdmin();
