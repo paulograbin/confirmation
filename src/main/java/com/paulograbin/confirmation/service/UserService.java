@@ -1,13 +1,16 @@
 package com.paulograbin.confirmation.service;
 
-import com.paulograbin.confirmation.domain.*;
+import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.Role;
+import com.paulograbin.confirmation.domain.RoleName;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.EmailNotAvailableException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UserAlreadyAssignedToChapterException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.persistence.RoleRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
-import com.paulograbin.confirmation.security.jwt.resource.SignUpRequest;
 import com.paulograbin.confirmation.usecases.UpdateUserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +21,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static java.lang.String.format;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 
 @Service
@@ -52,7 +57,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User fetchById(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User " + id + " not found!"));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User " + id + " not found!"));
     }
 
     public User createUser(User userToCreate) {
@@ -88,7 +94,18 @@ public class UserService implements UserDetailsService {
     }
 
     private void validateInformation(User user) {
+        if (isBlank(user.getEmail())) {
+            throw new IllegalArgumentException("Email do usuário não pode ser nulo");
+        }
 
+        if (isBlank(user.getUsername())) {
+            throw new IllegalArgumentException("Username do usuário não pode ser nulo");
+        }
+
+
+        if (isBlank(user.getPassword())) {
+            throw new IllegalArgumentException("Senha do usuário não pode ser nulao");
+        }
     }
 
     public User updateUser(Long id, UpdateUserRequest updateRequest) {
@@ -132,10 +149,6 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email: " + usernameOrEmail));
     }
 
-    public UserDetails loadUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
-    }
 
     public User setAsMaster(final long userId) {
         log.info("Setting user {} as master", userId);
@@ -184,7 +197,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> fetchAllByChapterId(Long chapterId) {
-        return userRepository.findAllByChapterId(chapterId);
+        return userRepository.findAllByChaptersId(chapterId);
     }
 
     public long fetchCount() {
