@@ -64,12 +64,15 @@ public class UserService implements UserDetailsService {
         userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
         userToCreate.setCreationDate(LocalDateTime.now());
 
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER).orElseThrow(() -> new NotFoundException("Role not found"));
-        userToCreate.setRoles(Collections.singleton(userRole));
+        assignUserRole(userToCreate);
 
         return userRepository.save(userToCreate);
     }
 
+    private void assignUserRole(User userToCreate) {
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new NotFoundException("Role not found"));
+        userToCreate.setRoles(Collections.singleton(userRole));
     }
 
     private void validateAvailableEmail(String email) {
