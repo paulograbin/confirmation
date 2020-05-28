@@ -48,7 +48,7 @@ public class AuthenticationController {
     private UserService userService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtTokenResponse> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest) {
         log.info("Authentication: {}", loginRequest);
 
         try {
@@ -71,7 +71,9 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        User createdUser = userService.createUser(signUpRequest);
+        User userToCreate = new User(signUpRequest.getUsername(), signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getEmail(), signUpRequest.getPassword());
+
+        User createdUser = userService.createUser(userToCreate);
 
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}")
                 .buildAndExpand(createdUser.getId()).toUri();

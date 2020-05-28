@@ -24,6 +24,9 @@ public class JwtTokenResponse implements Serializable {
     private String tokenType = "Bearer";
 
 
+    public JwtTokenResponse() {
+    }
+
     public JwtTokenResponse(String token, Date expirationDate) {
         this.token = token;
         this.expirationDate = expirationDate;
