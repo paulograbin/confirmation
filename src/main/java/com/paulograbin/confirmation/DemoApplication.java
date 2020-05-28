@@ -141,7 +141,7 @@ public class DemoApplication implements CommandLineRunner {
         Chapter gvs = chapterService.fetchById(592L);
 
         User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
-        mc2 = userService.createUser(mc2);
+        userService.createUser(mc2);
         mc2 = userService.assignUserToChapter(mc2.getId(), gvs.getId());
     }
 
