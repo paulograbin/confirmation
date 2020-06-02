@@ -138,4 +138,31 @@ class UserTest {
         assertThat(toString).contains("id='null'");
         assertThat(toString).contains("username='" + USERNAME + "'");
     }
+
+    @Test
+    void justCreatedUserIsNotAdmin() {
+        User user = makeUserWithDataForTest();
+
+        assertThat(user.isAdmin()).isFalse();
+    }
+
+    @Test
+    void justCreatedUserIsNotLocked() {
+        User user = makeUserWithDataForTest();
+
+        assertThat(user.isAccountNonLocked()).isTrue();
+    }
+
+    @Test
+    void userIsCreatedWithoutModificationDate() {
+        User user = makeUserWithDataForTest();
+
+        assertThat(user.getModificationDate()).isNull();
+    }
+    @Test
+    void userIsCreatedWithoutInactivationDate() {
+        User user = makeUserWithDataForTest();
+
+        assertThat(user.getInactivatedIn()).isNull();
+    }
 }
