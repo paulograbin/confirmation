@@ -29,6 +29,7 @@ import static java.lang.String.format;
 
 
 @RestController
+@CrossOrigin("*")
 public class EventsController {
 
     private static final Logger log = LoggerFactory.getLogger(EventsController.class);
