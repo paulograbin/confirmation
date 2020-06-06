@@ -1,15 +1,20 @@
-FROM maven:3-jdk-11-slim as build
+#FROM maven:3-jdk-11-slim as baseImage
+#
+#WORKDIR /opt/confirmation
+#COPY pom.xml /opt/confirmation
+#RUN mvn dependency:go-offline
 
-VOLUME /root/.m2
+
+FROM paulograbin/confirmationbase as build
 
 WORKDIR /opt/confirmation
 COPY pom.xml /opt/confirmation
 COPY . .
 
-RUN mvn clean package
+RUN mvn package -Dmaven.test.skip=true
 
 
-FROM sapmachine/stable:13.0.2 as deploy
+FROM gcr.io/distroless/java:11 as deploy
 
 LABEL maintainer="Paulo Gräbin <paulograbin@gmail.com>"
 LABEL org.label-schema.name="Confirmation backend"
