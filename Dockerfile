@@ -22,7 +22,7 @@ LABEL org.label-schema.description="Confirmation private parts"
 
 EXPOSE 3000
 
-ENV confirmation_mysql_connection=jdbc:mysql://172.17.0.2:3306/confirmation?createDatabaseIfNotExist=true
+ENV confirmation_mysql_connection=jdbc:mysql://db:3306/confirmation?createDatabaseIfNotExist=true
 ENV confirmation_mysql_username=root
 ENV confirmation_mysql_password=root
 
