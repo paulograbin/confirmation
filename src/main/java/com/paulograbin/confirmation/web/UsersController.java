@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/users")
 public class UsersController {
