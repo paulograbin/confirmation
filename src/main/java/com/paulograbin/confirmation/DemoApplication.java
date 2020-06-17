@@ -128,7 +128,7 @@ public class DemoApplication implements CommandLineRunner {
 
 
         isTrue(e01.getParticipants().size() == 1, "Only one participant");
-        isTrue(e01.getParticipants().get(0).getStatus() == ParticipationStatus.CONFIRMED, "Participant is confirmed");
+        isTrue(e01.getParticipants().get(0).getStatus() == ParticipationStatus.CONFIRMADO, "Participant is confirmed");
         isTrue(e01.getParticipants().get(0).getUser().getUsername().equals(ADMIN_USERNAME), "Participant is confirmed");
     }
 

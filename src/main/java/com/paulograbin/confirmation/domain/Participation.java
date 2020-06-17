@@ -50,11 +50,11 @@ public class Participation {
         this.user = user;
         this.event = event;
         this.invitationDate = LocalDateTime.now();
-        this.status = ParticipationStatus.INVITED;
+        this.status = ParticipationStatus.CONVIDADO;
     }
 
     public void confirmParticipant() {
-        this.status = ParticipationStatus.CONFIRMED;
+        this.status = ParticipationStatus.CONFIRMADO;
     }
 
 
