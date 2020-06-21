@@ -4,23 +4,20 @@ import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.persistence.UserRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceIntegrationTest {
 
@@ -35,10 +32,11 @@ public class UserServiceIntegrationTest {
     @Test
     public void contextLoads() {
         assertThat(userService).isNotNull();
+        assertThat(userRepository).isNotNull();
     }
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() {
         userRepository.deleteAll();
     }
 
@@ -84,14 +82,13 @@ public class UserServiceIntegrationTest {
         return userService.createUser(user);
     }
 
-    @Test(expected = UsernameNotAvailableException.class)
+    @Test
     public void givenAlreadyTakenUsername__whenCreatingUser__shouldThrowException() {
         User user = makeUser();
 
         userService.createUser(user);
-        userService.createUser(user);
 
-        fail("Should throw exception before reaching this line");
+        assertThrows(UsernameNotAvailableException.class, () -> userService.createUser(user));
     }
 
     private User makeUser() {

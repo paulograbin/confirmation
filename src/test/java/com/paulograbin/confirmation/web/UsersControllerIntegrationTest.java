@@ -4,10 +4,9 @@ import com.paulograbin.confirmation.DemoApplication;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.UserService;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -25,9 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = {DemoApplication.class, H2JpaConfig.class})
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-@Ignore
+@Disabled
 public class UsersControllerIntegrationTest {
 
     @Resource
@@ -40,7 +39,7 @@ public class UsersControllerIntegrationTest {
     private MockMvc mockMvc;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         givenThereAreNoUsers();
     }
