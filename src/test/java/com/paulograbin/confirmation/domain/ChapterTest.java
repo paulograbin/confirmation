@@ -13,7 +13,9 @@ class ChapterTest {
     static final String CHAPTER_NAME = "Capitulo teste";
 
     private Chapter makeChapterForTest() {
-        return new Chapter(CHAPTER_NAME);
+        var id = new Random().nextLong();
+
+        return new Chapter(id, CHAPTER_NAME);
     }
 
     @Test
@@ -73,7 +75,7 @@ class ChapterTest {
         System.out.println(chapterToString);
 
         assertThat(chapterToString).contains(CHAPTER_NAME);
-        assertThat(chapterToString).contains("null");
+        assertThat(chapterToString).contains(chapter.getId() + "");
     }
 
     @Test

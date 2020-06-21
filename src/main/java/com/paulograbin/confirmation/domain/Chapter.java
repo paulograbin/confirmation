@@ -31,7 +31,8 @@ public class Chapter {
     private List<Event> events = new ArrayList<>();
 
 
-    public Chapter(String name) {
+    public Chapter(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
