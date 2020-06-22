@@ -48,14 +48,6 @@ class ChapterTest {
     }
 
     @Test
-    @Disabled //  behavior changed
-    void chapterIsCreatedWithoutId() {
-        Chapter c = makeChapterForTest();
-
-        assertThat(c.getId()).isNull();
-    }
-
-    @Test
     void whenUserIsAssignedToChapter_ChapterIsAssignedToUser() {
         Chapter chapter = makeChapterForTest();
 
