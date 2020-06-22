@@ -14,7 +14,8 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String username;
-    private List<ChapterDTO> chapter;
+    private List<ChapterDTO> chapters;
+    private ChapterDTO chapter;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime creationDate;
