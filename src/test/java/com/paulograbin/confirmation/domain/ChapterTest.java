@@ -1,7 +1,5 @@
 package com.paulograbin.confirmation.domain;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -13,7 +11,7 @@ class ChapterTest {
     static final String CHAPTER_NAME = "Capitulo teste";
 
     private Chapter makeChapterForTest() {
-        var id = new Random().nextLong();
+        Long id = new Random().nextLong();
 
         return new Chapter(id, CHAPTER_NAME);
     }
