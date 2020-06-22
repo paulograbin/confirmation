@@ -51,11 +51,6 @@ public class DemoApplication implements CommandLineRunner {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-//    @PostConstruct
-//    void init() {
-//        TimeZone.setDefault(TimeZone.getTimeZone("UTC-3"));
-//    }
-
 
     @Resource
     private UserService userService;
@@ -63,8 +58,6 @@ public class DemoApplication implements CommandLineRunner {
     @Resource
     private EventService eventService;
 
-    @Resource
-    private ParticipationService participationService;
 
     @Resource
     private RoleService roleService;
