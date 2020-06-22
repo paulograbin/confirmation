@@ -58,6 +58,7 @@ public class UserServiceIntegrationTest {
         User returnedUser = userService.fetchById(user.getId());
 
         assertThat(returnedUser).isNotNull();
+        assertThat(returnedUser.getId()).isNotNull();
     }
 
     @Test
@@ -68,7 +69,6 @@ public class UserServiceIntegrationTest {
 
         assertThat(returnedUser).isNotNull();
     }
-
 
     @Test
     public void givenInvalidId_whenFindingUserById_mustThrowException() {
