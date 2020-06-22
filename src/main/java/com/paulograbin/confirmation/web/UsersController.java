@@ -5,6 +5,7 @@ import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.UpdateUserRequest;
+import com.paulograbin.confirmation.web.dto.ChapterDTO;
 import com.paulograbin.confirmation.web.dto.UserDTO;
 import com.paulograbin.confirmation.web.dto.UserDetailsDTO;
 import org.modelmapper.ModelMapper;
@@ -33,9 +34,6 @@ public class UsersController {
     private UserService userService;
 
     @Resource
-    private ParticipationService participationService;
-
-    @Resource
     private ModelMapper modelMapper;
 
 
@@ -44,7 +42,12 @@ public class UsersController {
         log.info("Fetching /me for user {}", currentUser.getId());
         User userFromDatabase = userService.fetchById(currentUser.getId());
 
-        return modelMapper.map(userFromDatabase, UserDTO.class);
+        UserDTO userDTO = modelMapper.map(userFromDatabase, UserDTO.class);
+
+        // todo remove this
+        userDTO.setChapter(modelMapper.map(userFromDatabase.getChapters().iterator().next(), ChapterDTO.class));
+
+        return userDTO;
     }
 
     @GetMapping
