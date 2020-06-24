@@ -29,6 +29,7 @@ import static java.lang.String.format;
 
 
 @RestController
+@RequestMapping(value = "/events")
 @CrossOrigin("*")
 public class EventsController {
 
@@ -44,7 +45,7 @@ public class EventsController {
     private ModelMapper modelMapper;
 
 
-    @GetMapping(path = "/events")
+    @GetMapping
     public List<EventDTO> listAllEvents() {
         log.info("All events");
 
@@ -56,7 +57,7 @@ public class EventsController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(path = "/events/{id}")
+    @GetMapping(path = "/{id}")
     public EventDetailsDTO fetchEventDetails(@PathVariable("id") long eventId) {
         log.info("All details of event {}", eventId);
 
@@ -65,7 +66,7 @@ public class EventsController {
         return modelMapper.map(event, EventDetailsDTO.class);
     }
 
-    @GetMapping(path = "/events/createdBy/{userId}")
+    @GetMapping(path = "/createdBy/{userId}")
     public List<EventDetailsDTO> fetchEventsCreatedByUser(@PathVariable("userId") long userId) {
         log.info("Fetching all events created by user {}", userId);
 
@@ -74,28 +75,28 @@ public class EventsController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(path = "/event/{eventId}/invite/{userId}")
+    @PostMapping(path = "/{eventId}/invite/{userId}")
     public void inviteParticipant(@PathVariable("eventId") final long eventId, @PathVariable("userId") final long userId) {
         log.info(format("Inviting user %s to event %s", userId, eventId));
 
         eventService.inviteUserForEvent(userId, eventId);
     }
 
-    @PostMapping(path = "/event/{eventId}/confirm/{userId}")
+    @PostMapping(path = "/{eventId}/confirm/{userId}")
     public void confirmParticipation(@PathVariable("eventId") final long eventId, @PathVariable("userId") final long userId) {
         log.info("Confirming user {} to event {}", userId, eventId);
 
         eventService.confirmParticipation(userId, eventId);
     }
 
-    @PostMapping(path = "/event/{eventId}/decline/{userId}")
+    @PostMapping(path = "/{eventId}/decline/{userId}")
     public void declineParticipation(@PathVariable("eventId") final long eventId, @PathVariable("userId") final long userId) {
         log.info("Declining user {} to event {}", userId, eventId);
 
         eventService.declineParticipation(userId, eventId);
     }
 
-    @GetMapping(path = "/events/invitations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/invitations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ParticipationWithoutUserDTO> fetchUpcomingEventsUserIsInvited(@PathVariable("userId") final long userId) {
         log.info("Looking for events to which user {} is invited to", userId);
 
@@ -104,7 +105,7 @@ public class EventsController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping(path = "/events")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EventDetailsDTO createNewEvent(@RequestBody EventCreationRequest eventToCreate, @CurrentUser User currentUser) {
         Event createdEvent = eventService.createEvent(eventToCreate, currentUser);
@@ -112,7 +113,7 @@ public class EventsController {
         return modelMapper.map(createdEvent, EventDetailsDTO.class);
     }
 
-    @PutMapping(path = "/events/{eventId}")
+    @PutMapping(path = "/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public EventDetailsDTO updateEvent(@PathVariable("eventId") long eventId, @RequestBody Event event, @CurrentUser User currentUser) {
         log.info("Received message to update event {}", eventId);
@@ -122,7 +123,7 @@ public class EventsController {
         return modelMapper.map(updatedEvent, EventDetailsDTO.class);
     }
 
-    @PutMapping(path = "/events/{eventId}/publish")
+    @PutMapping(path = "/{eventId}/publish")
     @ResponseStatus(HttpStatus.OK)
     public EventDetailsDTO publishEvent(@PathVariable("eventId") long eventId, @CurrentUser User currentUser) {
         Event publishedEvent = eventService.publishEvent(eventId, currentUser);
@@ -130,7 +131,7 @@ public class EventsController {
         return modelMapper.map(publishedEvent, EventDetailsDTO.class);
     }
 
-    @DeleteMapping(path = "/events/{eventId}")
+    @DeleteMapping(path = "/{eventId}")
     public ResponseEntity<Object> deleteEvent(@PathVariable("eventId") final long eventId, @CurrentUser User currentUser) {
         eventService.deleteEvent(eventId, currentUser);
 
