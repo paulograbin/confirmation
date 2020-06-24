@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,8 +51,20 @@ public class ParticipationService {
         return eventFromDatabase.getParticipants();
     }
 
-    public List<Participation> getAllParticipationsFromUser(final long userId) {
+
+    public List<Participation> getAllUpcomingParticipationsFromUser(final long userId) {
         log.info("Fetching every up coming participation from user {}", userId);
+
+        final LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
+
+        return getAllParticipationsFromUser(userId).stream()
+                .filter(p -> p.getEvent().getDate().isAfter(yesterday))
+                .collect(Collectors.toList());
+    }
+
+
+    public List<Participation> getAllParticipationsFromUser(final long userId) {
+        log.info("Fetching every participation from user {}", userId);
         final User userFromDatabase = userService.fetchById(userId);
 
         List<Participation> userParticipations = userFromDatabase.getParticipations();

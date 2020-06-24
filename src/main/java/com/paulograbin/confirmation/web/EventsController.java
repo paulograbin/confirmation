@@ -98,17 +98,10 @@ public class EventsController {
     }
 
     @GetMapping(path = "/events/invitations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ParticipationWithoutUserDTO> fetchEventsUserIsInvited(@PathVariable("userId") final long userId) {
+    public List<ParticipationWithoutUserDTO> fetchUpcomingEventsUserIsInvited(@PathVariable("userId") final long userId) {
         log.info("Looking for events to which user {} is invited to", userId);
 
-        final LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
-
-        List<Participation> userParticipationInUpcomingEvents = participationService.getAllParticipationsFromUser(userId)
-                .stream()
-                .filter(p -> p.getEvent().getDate().isAfter(yesterday))
-                .collect(Collectors.toList());
-
-        return userParticipationInUpcomingEvents.stream()
+        return participationService.getAllUpcomingParticipationsFromUser(userId).stream()
                 .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
                 .collect(Collectors.toList());
     }
