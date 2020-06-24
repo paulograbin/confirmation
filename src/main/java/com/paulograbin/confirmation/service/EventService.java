@@ -67,7 +67,7 @@ public class EventService {
     }
 
     public Event createEvent(Event eventToCreate, User eventCreator) {
-        log.info("Creating event {} for user {}", eventToCreate.getTitle(), eventCreator.getUsername() );
+        log.info("Creating event {} for user {}", eventToCreate.getTitle(), eventCreator.getUsername());
 
         checkValid(eventToCreate);
 
@@ -147,6 +147,14 @@ public class EventService {
         Event event = eventOptional.orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
 
         return event.getParticipants();
+    }
+
+    public List<Event> fetchAllUpcomingEventsCreatedByUser(long userId) {
+        final LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
+
+        return eventRepository.findAllByCreatorId(userId).stream()
+                .filter(e -> e.getDate().isAfter(yesterday))
+                .collect(Collectors.toList());
     }
 
     public List<Event> fetchAllEventsCreatedByUser(long userId) {

@@ -69,9 +69,7 @@ public class EventsController {
     public List<EventDetailsDTO> fetchEventsCreatedByUser(@PathVariable("userId") long userId) {
         log.info("Fetching all events created by user {}", userId);
 
-        List<Event> events = eventService.fetchAllEventsCreatedByUser(userId);
-
-        return events.stream()
+        return eventService.fetchAllUpcomingEventsCreatedByUser(userId).stream()
                 .map(e -> modelMapper.map(e, EventDetailsDTO.class))
                 .collect(Collectors.toList());
     }
