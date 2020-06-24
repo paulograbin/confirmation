@@ -74,6 +74,7 @@ public class EventService {
         eventToCreate.setId(null);
         eventToCreate.setCreationDate(LocalDateTime.now());
         eventToCreate.setCreator(eventCreator);
+        eventToCreate.setPublished(true);
         // TODO fix this
         eventToCreate.setChapter(eventCreator.getChapters().iterator().next());
 
