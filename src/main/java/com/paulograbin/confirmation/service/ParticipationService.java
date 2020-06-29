@@ -65,10 +65,9 @@ public class ParticipationService {
 
     public List<Participation> getAllParticipationsFromUser(final long userId) {
         log.info("Fetching every participation from user {}", userId);
-        final User userFromDatabase = userService.fetchById(userId);
 
-        List<Participation> userParticipations = userFromDatabase.getParticipations();
-        return userParticipations.stream()
+        return participationRepository.findByUserId(userId)
+                .stream()
                 .filter(p -> p.getEvent().isPublished())
                 .collect(Collectors.toList());
     }
