@@ -1,11 +1,15 @@
 package com.paulograbin.confirmation.web;
 
+import com.paulograbin.confirmation.domain.ParticipationStatus;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
+import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.UpdateUserRequest;
 import com.paulograbin.confirmation.web.dto.ChapterDTO;
+import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
+import com.paulograbin.confirmation.web.dto.ParticipationWithoutUserDTO;
 import com.paulograbin.confirmation.web.dto.UserDTO;
 import com.paulograbin.confirmation.web.dto.UserDetailsDTO;
 import org.modelmapper.ModelMapper;
@@ -31,6 +35,12 @@ public class UsersController {
     private static final Logger log = LoggerFactory.getLogger(UsersController.class);
 
     @Resource
+    private ParticipationService participationService;
+
+    @Resource
+    private EventService eventService;
+
+    @Resource
     private UserService userService;
 
     @Resource
@@ -39,10 +49,23 @@ public class UsersController {
 
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO getCurrentUser(@CurrentUser User currentUser) {
-        log.info("Fetching /me for user {}", currentUser.getId());
-        User userFromDatabase = userService.fetchById(currentUser.getId());
+        Long currentUserId = currentUser.getId();
+        log.info("Fetching /me for user {}", currentUserId);
+
+        User userFromDatabase = userService.fetchById(currentUserId);
+
+        List<ParticipationWithoutUserDTO> participations = participationService.getAllUpcomingParticipationsFromUser(currentUserId).stream()
+                .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
+                .collect(Collectors.toList());
+
+        List<EventDetailsDTO> createdEvents = eventService.fetchAllUpcomingEventsCreatedByUser(currentUserId).stream()
+                .map(e -> modelMapper.map(e, EventDetailsDTO.class))
+                .collect(Collectors.toList());
 
         UserDTO userDTO = modelMapper.map(userFromDatabase, UserDTO.class);
+        userDTO.setParticipations(participations);
+        userDTO.setCreatedEvents(createdEvents);
+
 
         // todo remove this
         userDTO.setChapter(modelMapper.map(userFromDatabase.getChapters().iterator().next(), ChapterDTO.class));

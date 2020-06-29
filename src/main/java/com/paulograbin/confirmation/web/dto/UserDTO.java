@@ -27,6 +27,8 @@ public class UserDTO {
     private LocalDateTime inactivatedIn;
     private boolean active;
     private boolean master;
-    private List<RoleDTO> roles;
+
+    private List<ParticipationWithoutUserDTO> participations;
+    private List<EventDetailsDTO> createdEvents;
 
 }
