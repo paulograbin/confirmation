@@ -57,11 +57,11 @@ public class Participation {
         this.status = ParticipationStatus.CONFIRMADO;
     }
 
-
     @Override
     public String toString() {
         return "Participation{" +
-                "user=" + user.getUsername() +
+                "id=" + id +
+                ", user=" + user.getUsername() +
                 ", event=" + event.getTitle() +
                 ", status=" + status +
                 '}';
