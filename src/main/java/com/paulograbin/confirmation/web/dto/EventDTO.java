@@ -15,7 +15,7 @@ public class EventDTO {
     private String title;
     private String description;
     private String address;
-    private UserDTO creator;
+    private UserSimpleDTO creator;
     private Boolean published;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
