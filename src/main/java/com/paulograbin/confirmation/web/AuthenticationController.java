@@ -49,8 +49,6 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<JwtTokenResponse> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest) {
-        log.info("Authentication: {}", loginRequest);
-
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
