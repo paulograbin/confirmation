@@ -20,7 +20,7 @@ public class ChapterService {
     private ChapterRepository chapterRepository;
 
     public Chapter fetchById(long chapterId) {
-        log.info("Fetching chapter {}", chapterId);
+        log.info("Fetching chapter by id: {}", chapterId);
 
         return chapterRepository.findById(chapterId)
                 .orElseThrow(() -> new NotFoundException("Chapter " + chapterId + " not found!"));
