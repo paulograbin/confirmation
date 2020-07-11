@@ -32,7 +32,6 @@ public class Participation {
     private Event event;
 
     @Getter
-    @Setter
     private ParticipationStatus status;
 
     @Getter
@@ -44,6 +43,7 @@ public class Participation {
     private LocalDateTime confirmationDate;
 
     public Participation() {
+        this.status = ParticipationStatus.CONVIDADO;
     }
 
     public Participation(User user, Event event) {
@@ -53,8 +53,16 @@ public class Participation {
         this.status = ParticipationStatus.CONVIDADO;
     }
 
+    public void inviteParticipant() {
+        this.status = ParticipationStatus.CONVIDADO;
+    }
+
     public void confirmParticipant() {
         this.status = ParticipationStatus.CONFIRMADO;
+    }
+
+    public void declineParticipant() {
+        this.status = ParticipationStatus.RECUSADO;
     }
 
     @Override

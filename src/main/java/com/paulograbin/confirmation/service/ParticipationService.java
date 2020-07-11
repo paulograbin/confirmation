@@ -76,7 +76,7 @@ public class ParticipationService {
         log.info("Inviting user {} to event {}", user.getUsername(), event.getTitle());
 
         Participation p = new Participation(user, event);
-        p.setStatus(ParticipationStatus.CONVIDADO);
+        p.inviteParticipant();
 
         return participationRepository.save(p);
     }
@@ -87,14 +87,14 @@ public class ParticipationService {
     }
 
     public Participation confirmParticipation(Participation participation) {
-        participation.setStatus(ParticipationStatus.CONFIRMADO);
+        participation.confirmParticipant();
         participation.setConfirmationDate(LocalDateTime.now());
 
         return participationRepository.save(participation);
     }
 
     public Participation declineParticipation(Participation participation) {
-        participation.setStatus(ParticipationStatus.RECUSADO);
+        participation.declineParticipant();
         participation.setConfirmationDate(LocalDateTime.now());
 
         return participationRepository.save(participation);
