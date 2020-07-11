@@ -13,6 +13,7 @@ public class UserDTO {
     private int id;
     private String firstName;
     private String lastName;
+    private String email;
     private String username;
     private List<ChapterDTO> chapters;
     private ChapterDTO chapter;
