@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -66,6 +67,7 @@ public class EventService {
         return this.createEvent(e, currentUser);
     }
 
+    @Transactional
     public Event createEvent(Event eventToCreate, User eventCreator) {
         log.info("Creating event {} for user {}", eventToCreate.getTitle(), eventCreator.getUsername());
 
