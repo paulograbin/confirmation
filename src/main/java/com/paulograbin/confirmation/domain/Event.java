@@ -44,15 +44,23 @@ public class Event {
         this.title = title;
         this.address = address;
         this.description = description;
-        this.creator = creator;
         this.date = date;
         this.time = time;
         this.creationDate = LocalDateTime.now();
         this.published = false;
 
+        addUserAsCreator(creator);
+        addUserAsParticipant(creator);
+    }
+
+    private void addUserAsParticipant(User creator) {
         Participation p = new Participation(creator, this);
         p.confirmParticipant();
         participants.add(p);
+    }
+
+    public void addUserAsCreator(final User creator) {
+        this.creator = creator;
     }
 
     @Override

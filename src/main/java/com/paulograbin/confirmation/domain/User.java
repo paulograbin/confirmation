@@ -39,8 +39,7 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Chapter> chapters = new HashSet<>();
 
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<Participation> participations = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
