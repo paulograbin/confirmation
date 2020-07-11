@@ -27,6 +27,7 @@ public class Event {
     private LocalDate date;
     private LocalTime time;
     private LocalDateTime creationDate;
+    private boolean published;
 
     @OneToOne
     private User creator;
@@ -34,9 +35,7 @@ public class Event {
     @ManyToOne
     private Chapter chapter;
 
-    private boolean published;
-
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
     private List<Participation> participants = new ArrayList<>();
 
 
