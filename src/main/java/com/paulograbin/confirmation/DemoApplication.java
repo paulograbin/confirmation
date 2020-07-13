@@ -2,13 +2,11 @@ package com.paulograbin.confirmation;
 
 import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.domain.Event;
-import com.paulograbin.confirmation.domain.ParticipationStatus;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.service.ChapterService;
 import com.paulograbin.confirmation.service.EventService;
-import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
@@ -44,8 +42,9 @@ public class DemoApplication implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
 
 
-    public static final String DEFAULT_ADDRESS_JOAO_CORREA = "Avenida João Corrêa, 815";
-    public static final String ADMIN_USERNAME = "plgrabin";
+    private static final String DEFAULT_ADDRESS_JOAO_CORREA = "Avenida João Corrêa, 815";
+    private static final String ADMIN_USERNAME = "plgrabin";
+    private static final String ADMIN_EMAIL = "plgrabin@gmail.com";
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
@@ -57,7 +56,6 @@ public class DemoApplication implements CommandLineRunner {
 
     @Resource
     private EventService eventService;
-
 
     @Resource
     private RoleService roleService;
@@ -203,7 +201,7 @@ public class DemoApplication implements CommandLineRunner {
             log.info("Admin found");
         } catch (UsernameNotFoundException e) {
             log.info("Admin not found, creating it...");
-            defaultAdmin = new User(ADMIN_USERNAME, "Mestre", "Conselheiro", ADMIN_USERNAME, "aaa");
+            defaultAdmin = new User(ADMIN_USERNAME, "Mestre", "Conselheiro", ADMIN_EMAIL, "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
 
             userService.assignUserToChapter(defaultAdmin.getId(), 592L);
