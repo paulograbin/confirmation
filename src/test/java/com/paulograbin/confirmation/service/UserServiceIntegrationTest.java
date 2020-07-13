@@ -25,6 +25,8 @@ public class UserServiceIntegrationTest {
     @Resource
     UserRepository userRepository;
 
+    private User user;
+
     @Test
     public void contextLoads() {
         assertThat(userService).isNotNull();
@@ -34,31 +36,28 @@ public class UserServiceIntegrationTest {
     @BeforeEach
     public void setUp() {
         userRepository.deleteAll();
+        user = null;
     }
 
     @Test
     public void duringCreation_userReceivesId() {
-        User userToCreate = makeUser();
+        givenUser();
 
-        insertUserIntoDatabase(userToCreate);
-
-        assertThat(userToCreate.getId()).isNotNull();
-        assertThat(userToCreate.getCreationDate()).isNotNull();
-        assertThat(userToCreate.getRoles()).isNotEmpty();
+        assertThat(user.getId()).isNotNull();
+        assertThat(user.getCreationDate()).isNotNull();
+        assertThat(user.getRoles()).isNotEmpty();
     }
 
     @Test
     void recentlyCreatedUserHasNoParticipations() {
-        var userToCreate = makeUser();
-
-        var user = insertUserIntoDatabase(userToCreate);
+        givenUser();
 
         assertThat(user.getParticipations()).hasSize(0);
     }
 
     @Test
     public void givenValidUser__whenCreatingUser__shouldBeCreated() {
-        User user = insertUserIntoDatabase(makeUser());
+        givenUser();
 
         User returnedUser = userService.fetchById(user.getId());
 
@@ -68,7 +67,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void givenValidId_whenFindingUserById_mustReturnUser() {
-        User user = insertUserIntoDatabase(makeUser());
+        givenUser();
 
         User returnedUser = userService.fetchById(user.getId());
 
@@ -83,17 +82,22 @@ public class UserServiceIntegrationTest {
     }
 
 
-    private User insertUserIntoDatabase(User user) {
-        return userService.createUser(user);
-    }
-
     @Test
     public void givenAlreadyTakenUsername__whenCreatingUser__shouldThrowException() {
-        User user = makeUser();
+        user = makeUser();
 
         userService.createUser(user);
 
         assertThrows(UsernameNotAvailableException.class, () -> userService.createUser(user));
+    }
+
+    private void givenUser() {
+        user = makeUser();
+        insertUserIntoDatabase(user);
+    }
+
+    private void insertUserIntoDatabase(User user) {
+        userService.createUser(user);
     }
 
     private User makeUser() {
