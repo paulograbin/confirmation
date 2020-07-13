@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation.web;
 
-import com.paulograbin.confirmation.domain.ParticipationStatus;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,7 +118,11 @@ public class UsersController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest newUserInformation) {
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody @Valid UpdateUserRequest newUserInformation, @CurrentUser User currentUser) {
+        if (id.longValue() != newUserInformation.getId().longValue()) {
+            throw new InvalidRequestException("Request path doesn't match updated user");
+        }
+
         User user = userService.updateUser(id, newUserInformation);
         return modelMapper.map(user, UserDTO.class);
     }
