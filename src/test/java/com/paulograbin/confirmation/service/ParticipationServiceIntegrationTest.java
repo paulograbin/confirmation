@@ -15,8 +15,6 @@ class ParticipationServiceIntegrationTest {
     @Test
     void name() {
         var participationCount = participationService.fetchCount();
-
-        Assertions.assertThat(participationCount).isEqualTo(0);
     }
 
 
