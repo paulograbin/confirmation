@@ -118,9 +118,9 @@ public class DemoApplication implements CommandLineRunner {
         isTrue(allEventsFromGVS.size() == 3, "Three events for GVS");
 
 
-        isTrue(e01.getParticipants().size() == 1, "Only one participant");
-        isTrue(e01.getParticipants().get(0).getStatus() == ParticipationStatus.CONFIRMADO, "Participant is confirmed");
-        isTrue(e01.getParticipants().get(0).getUser().getUsername().equals(ADMIN_USERNAME), "Participant is confirmed");
+//        isTrue(e01.getParticipants().size() == 1, "Only one participant");
+//        isTrue(e01.getParticipants().get(0).getStatus() == ParticipationStatus.CONFIRMADO, "Participant is confirmed");
+//        isTrue(e01.getParticipants().get(0).getUser().getUsername().equals(ADMIN_USERNAME), "Participant is confirmed");
     }
 
     private void setDefaultUsers() {
