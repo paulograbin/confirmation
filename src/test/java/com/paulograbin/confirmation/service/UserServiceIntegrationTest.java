@@ -6,8 +6,6 @@ import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
@@ -20,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class UserServiceIntegrationTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceIntegrationTest.class);
 
     @Resource
     UserService userService;
@@ -44,7 +40,7 @@ public class UserServiceIntegrationTest {
     public void duringCreation_userReceivesId() {
         User userToCreate = makeUser();
 
-        createUser(userToCreate);
+        insertUserIntoDatabase(userToCreate);
 
         assertThat(userToCreate.getId()).isNotNull();
         assertThat(userToCreate.getCreationDate()).isNotNull();
@@ -52,8 +48,17 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
+    void recentlyCreatedUserHasNoParticipations() {
+        var userToCreate = makeUser();
+
+        var user = insertUserIntoDatabase(userToCreate);
+
+        assertThat(user.getParticipations()).hasSize(0);
+    }
+
+    @Test
     public void givenValidUser__whenCreatingUser__shouldBeCreated() {
-        User user = createUser(makeUser());
+        User user = insertUserIntoDatabase(makeUser());
 
         User returnedUser = userService.fetchById(user.getId());
 
@@ -63,7 +68,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void givenValidId_whenFindingUserById_mustReturnUser() {
-        User user = createUser(makeUser());
+        User user = insertUserIntoDatabase(makeUser());
 
         User returnedUser = userService.fetchById(user.getId());
 
@@ -78,7 +83,7 @@ public class UserServiceIntegrationTest {
     }
 
 
-    private User createUser(User user) {
+    private User insertUserIntoDatabase(User user) {
         return userService.createUser(user);
     }
 

@@ -59,6 +59,19 @@ class UserServiceTest {
     }
 
     @Test
+    void givenJustCreatedUser__whenFetching__mustHaveNoParticipations() {
+        User expectedUser = makeTestUser();
+        expectedUser.setId(333L);
+
+        Mockito.when(userRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(expectedUser));
+
+        User user = userService.fetchById(333L);
+
+        assertThat(user.getParticipations()).hasSize(0);
+    }
+
+    @Test
     void givenCustomer__whenFetchingItByID__mustReturn() {
         User expectedUser = makeTestUser();
         expectedUser.setId(333L);
