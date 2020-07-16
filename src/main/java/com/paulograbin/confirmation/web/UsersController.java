@@ -67,10 +67,6 @@ public class UsersController {
         userDTO.setParticipations(participations);
         userDTO.setCreatedEvents(createdEvents);
 
-
-        // todo remove this
-        userDTO.setChapter(modelMapper.map(userFromDatabase.getChapters().iterator().next(), ChapterDTO.class));
-
         return userDTO;
     }
 
