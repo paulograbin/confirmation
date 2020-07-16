@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -42,7 +43,7 @@ public class ParticipationService {
     }
 
 
-    public List<Participation> getAllParticipationsFromEvent(final long eventId) {
+    public Set<Participation> getAllParticipationsFromEvent(final long eventId) {
         log.info(String.format("Fetching every from event %d", eventId));
 
         Event eventFromDatabase = eventService.fetchById(eventId);
@@ -100,7 +101,7 @@ public class ParticipationService {
     }
 
     public void deleteAllParticipationsFromEvent(Long eventId) {
-        List<Participation> allParticipationsFromEvent = getAllParticipationsFromEvent(eventId);
+        Set<Participation> allParticipationsFromEvent = getAllParticipationsFromEvent(eventId);
 
         participationRepository.deleteAll(allParticipationsFromEvent);
     }

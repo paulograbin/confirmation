@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -78,7 +78,11 @@ public class UserService implements UserDetailsService {
     private void assignUserRole(User userToCreate) {
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new NotFoundException("Role not found"));
-        userToCreate.setRoles(Collections.singleton(userRole));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRole);
+
+        userToCreate.setRoles(roles);
     }
 
     private void validateAvailableEmail(String email) {

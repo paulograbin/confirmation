@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -78,7 +79,7 @@ public class EventService {
         eventToCreate.setCreator(eventCreator);
         eventToCreate.setPublished(true);
         // TODO fix this
-        eventToCreate.setChapter(eventCreator.getChapters().iterator().next());
+        eventToCreate.setChapter(eventCreator.getChapter());
 
         Event save = eventRepository.save(eventToCreate);
         inviteRemainingUsersFromChapterToEvent(save);
@@ -141,9 +142,13 @@ public class EventService {
         if (event.getTime() == null) {
             throw new IllegalArgumentException("Faltou informar o horário do evento");
         }
+
+        if (event.getCreator().getChapter() == null) {
+            throw new IllegalArgumentException("Criador do evento precisa pertencer a algum capitulo");
+        }
     }
 
-    public List<Participation> fetchParticipantsByEvent(final long eventId) {
+    public Set<Participation> fetchParticipantsByEvent(final long eventId) {
         Optional<Event> eventOptional = eventRepository.findById(eventId);
 
         Event event = eventOptional.orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));

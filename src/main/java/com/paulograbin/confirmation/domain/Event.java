@@ -9,7 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -36,7 +38,7 @@ public class Event {
     private Chapter chapter;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
-    private List<Participation> participants = new ArrayList<>();
+    private Set<Participation> participants = new HashSet<>();
 
 
     public Event(Chapter chapter, String title, String address, String description, User creator, LocalDate date, LocalTime time) {

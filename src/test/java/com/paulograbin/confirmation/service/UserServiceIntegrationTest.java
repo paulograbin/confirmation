@@ -1,14 +1,21 @@
 package com.paulograbin.confirmation.service;
 
+import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.domain.Role;
+import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,26 +24,55 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
+@Transactional
 public class UserServiceIntegrationTest {
 
-    @Resource
-    UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceIntegrationTest.class);
 
     @Resource
-    UserRepository userRepository;
+    UserService service;
+
+    @Resource
+    UserRepository repository;
+
+    @Resource
+    ChapterService chapterService;
 
     private User user;
 
-    @Test
-    public void contextLoads() {
-        assertThat(userService).isNotNull();
-        assertThat(userRepository).isNotNull();
-    }
-
+    
     @BeforeEach
     public void setUp() {
-        userRepository.deleteAll();
         user = null;
+    }
+    
+    @Test
+    public void contextLoads() {
+        assertThat(service).isNotNull();
+        assertThat(repository).isNotNull();
+    }
+
+    @Test
+    void assignUserToChapter() {
+        givenUser();
+
+        ChapterCreationRequest request = new ChapterCreationRequest(666L, "Chapter for test");
+        Chapter chapter = chapterService.createChapter(request);
+
+        user = service.assignUserToChapter(user.getId(), chapter.getId());
+
+        assertThat(user.getChapter()).isNotNull();
+        assertThat(chapter.getUsers()).hasSize(1);
+    }
+
+    @Test
+    void userIsCreatedWithUserRole() {
+        givenUser();
+
+        assertThat(user.getRoles()).hasSize(1);
+
+        Role next = user.getRoles().iterator().next();
+        assertThat(next.getName()).isEqualByComparingTo(RoleName.ROLE_USER);
     }
 
     @Test
@@ -59,7 +95,7 @@ public class UserServiceIntegrationTest {
     public void givenValidUser__whenCreatingUser__shouldBeCreated() {
         givenUser();
 
-        User returnedUser = userService.fetchById(user.getId());
+        User returnedUser = service.fetchById(user.getId());
 
         assertThat(returnedUser).isNotNull();
         assertThat(returnedUser.getId()).isNotNull();
@@ -69,14 +105,14 @@ public class UserServiceIntegrationTest {
     public void givenValidId_whenFindingUserById_mustReturnUser() {
         givenUser();
 
-        User returnedUser = userService.fetchById(user.getId());
+        User returnedUser = service.fetchById(user.getId());
 
         assertThat(returnedUser).isNotNull();
     }
 
     @Test
     public void givenInvalidId_whenFindingUserById_mustThrowException() {
-        Throwable throwable = catchThrowable(() -> userService.fetchById(323232L));
+        Throwable throwable = catchThrowable(() -> service.fetchById(323232L));
 
         assertThat(throwable).isInstanceOf(NotFoundException.class);
     }
@@ -86,9 +122,9 @@ public class UserServiceIntegrationTest {
     public void givenAlreadyTakenUsername__whenCreatingUser__shouldThrowException() {
         user = makeUser();
 
-        userService.createUser(user);
+        service.createUser(user);
 
-        assertThrows(UsernameNotAvailableException.class, () -> userService.createUser(user));
+        assertThrows(UsernameNotAvailableException.class, () -> service.createUser(user));
     }
 
     private void givenUser() {
@@ -97,7 +133,7 @@ public class UserServiceIntegrationTest {
     }
 
     private void insertUserIntoDatabase(User user) {
-        userService.createUser(user);
+        service.createUser(user);
     }
 
     private User makeUser() {
@@ -107,8 +143,8 @@ public class UserServiceIntegrationTest {
 
         user.setFirstName("Paulo" + randomNumber);
         user.setLastName("Grabin" + randomNumber);
-        user.setUsername("plgrabin" + randomNumber);
-        user.setEmail("plgrabin@gmail.com" + randomNumber);
+        user.setUsername("generic" + randomNumber);
+        user.setEmail("blabla@gmail.com" + randomNumber);
         user.setPassword("123" + randomNumber);
         return user;
     }
