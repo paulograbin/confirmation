@@ -62,7 +62,7 @@ class UserTest {
     void userIsCreatedNotAssignedToAnyChapter() {
         User user = makeUserWithoutDataForTest();
 
-        assertThat(user.getChapters()).isEmpty();
+        assertThat(user.getChapter()).isNull();
     }
 
     @Test
@@ -70,9 +70,9 @@ class UserTest {
         User user = makeUserWithoutDataForTest();
 
         Chapter c = new Chapter();
-        user.addChapter(c);
+        user.addToChapter(c);
 
-        assertThat(user.getChapters()).hasSize(1);
+        assertThat(user.getChapter()).isNotNull();
         assertThat(c.getUsers()).hasSize(1);
     }
 

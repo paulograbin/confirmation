@@ -15,7 +15,6 @@ public class UserDTO {
     private String lastName;
     private String email;
     private String username;
-    private List<ChapterDTO> chapters;
     private ChapterDTO chapter;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")

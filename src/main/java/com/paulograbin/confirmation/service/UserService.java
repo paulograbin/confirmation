@@ -7,10 +7,10 @@ import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.EmailNotAvailableException;
 import com.paulograbin.confirmation.exception.NotFoundException;
-import com.paulograbin.confirmation.exception.UserAlreadyAssignedToChapterException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.persistence.RoleRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.UpdateUserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +108,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
+
     public User updateUser(Long id, UpdateUserRequest updateRequest) {
         User userFromDatabase = fetchById(id);
 
@@ -175,12 +176,17 @@ public class UserService implements UserDetailsService {
         final User userFromDatabase = this.fetchById(userId);
         final Chapter chapterFromDatabase = chapterService.fetchById(chapterId);
 
-        if (userFromDatabase.getChapters().contains(chapterFromDatabase)) {
-            throw new UserAlreadyAssignedToChapterException(format("User %s already belongs to %s", userId, chapterId));
-        }
+//        if (userFromDatabase.getChapter().getId().equals(chapterFromDatabase.getId())) {
+//            throw new UserAlreadyAssignedToChapterException(format("User %s already belongs to %s", userId, chapterId));
+//        }
 
-        userFromDatabase.addChapter(chapterFromDatabase);
-        final User savedUser = userRepository.save(userFromDatabase);
+//        var chapters = userFromDatabase.getChapters();
+//        chapters.add(chapterFromDatabase);
+//        userFromDatabase.setChapters(new ArrayList<>(chapters));
+
+        userFromDatabase.addToChapter(chapterFromDatabase);
+
+        userRepository.save(userFromDatabase);
 
         List<Event> upcomingEvents = eventService.fetchUpComingEventsFromChapter(chapterId);
         for (Event upcomingEvent : upcomingEvents) {
@@ -193,11 +199,11 @@ public class UserService implements UserDetailsService {
             }
         }
 
-        return savedUser;
+        return userFromDatabase;
     }
 
     public List<User> fetchAllByChapterId(Long chapterId) {
-        return userRepository.findAllByChaptersId(chapterId);
+        return userRepository.findAllByChapterId(chapterId);
     }
 
     public long fetchCount() {

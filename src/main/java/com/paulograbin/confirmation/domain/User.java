@@ -36,16 +36,15 @@ public class User implements UserDetails {
     private LocalDateTime modificationDate;
     private LocalDateTime inactivatedIn;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Chapter> chapters = new HashSet<>();
+    @ManyToOne
+    private Chapter chapter;
 
-    @OneToMany(mappedBy = "user")
-    private List<Participation> participations = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Participation> participations = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id"))
+        joinColumns = @JoinColumn(name = "user_id"))
     private Set<Role> roles = new HashSet<>();
 
 
@@ -108,8 +107,8 @@ public class User implements UserDetails {
                 .anyMatch(roleName -> roleName.equals(RoleName.ROLE_ADMIN));
     }
 
-    public void addChapter(Chapter chapterToAdd) {
-        this.chapters.add(chapterToAdd);
+    public void addToChapter(Chapter chapterToAdd) {
+        this.chapter = chapterToAdd;
         chapterToAdd.addUser(this);
     }
 }
