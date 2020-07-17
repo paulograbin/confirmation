@@ -76,6 +76,13 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
+    void userIsCreatedActive() {
+        givenUser();
+
+        assertThat(user.isActive()).isTrue();
+    }
+
+    @Test
     public void duringCreation_userReceivesId() {
         givenUser();
 
@@ -125,6 +132,34 @@ public class UserServiceIntegrationTest {
         service.createUser(user);
 
         assertThrows(UsernameNotAvailableException.class, () -> service.createUser(user));
+    }
+
+    @Test
+    void inactivate() {
+        givenUser();
+
+        service.inactivate(user.getId());
+
+        assertThat(user.isActive()).isFalse();
+    }
+
+    @Test
+    void activeInactiveUser() {
+        givenUser();
+
+        service.inactivate(user.getId());
+        service.activate(user.getId());
+
+        assertThat(user.isActive()).isTrue();
+    }
+
+    @Test
+    void activeActiveUser() {
+        givenUser();
+
+        service.activate(user.getId());
+
+        assertThat(user.isActive()).isTrue();
     }
 
     private void givenUser() {

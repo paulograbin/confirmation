@@ -110,7 +110,6 @@ class EventServiceIntegratioTest {
         user.setEmail("plgrabin@gmail.com" + randomNumber);
         user.setPassword("123" + randomNumber);
 
-
         ChapterCreationRequest chapterCreationRequest = new ChapterCreationRequest(666L, "Test Chapter");
         Chapter chapter = chapterService.createChapter(chapterCreationRequest);
         user.setChapter(chapter);
