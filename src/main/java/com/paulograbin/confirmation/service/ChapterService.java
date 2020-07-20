@@ -47,4 +47,8 @@ public class ChapterService {
     public long count() {
         return chapterRepository.count();
     }
+
+    public void update(Chapter chapter) {
+        chapterRepository.save(chapter);
+    }
 }
