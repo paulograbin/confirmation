@@ -36,7 +36,7 @@ public class ChapterController {
 
     @GetMapping
     public List<ChapterDTO> fetchAllChapters() {
-        log.info("All chapter");
+        log.info("Listing all chapters");
 
         Iterable<Chapter> eventIterator = chapterRepository.findAll();
         List<Chapter> arrayList = Lists.from(eventIterator.iterator());

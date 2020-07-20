@@ -73,7 +73,7 @@ public class UsersController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> listAll() {
-        log.info("Listing every user");
+        log.info("Listing all user");
 
         Iterable<User> users = userService.fetchAll();
         List<User> arrayList = Lists.from(users.iterator());

@@ -47,7 +47,7 @@ public class EventsController {
 
     @GetMapping
     public List<EventDTO> listAllEvents() {
-        log.info("All events");
+        log.info("Listing all events");
 
         Iterable<Event> eventIterator = eventService.fetchAllEvents();
         List<Event> arrayList = Lists.from(eventIterator.iterator());
