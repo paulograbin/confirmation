@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.service;
 
+import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.User;
@@ -37,6 +38,9 @@ public class EventService {
 
     @Resource
     UserService userService;
+
+    @Resource
+    ChapterService chapterService;
 
     @Resource
     ParticipationService participationService;
@@ -82,6 +86,11 @@ public class EventService {
         eventToCreate.setChapter(eventCreator.getChapter());
 
         Event save = eventRepository.save(eventToCreate);
+
+        Chapter chapter = eventCreator.getChapter();
+        chapter.getEvents().add(save);
+        chapterService.update(chapter);
+
         inviteRemainingUsersFromChapterToEvent(save);
 
         Participation creatorParticipation = participationService.fetchByEventAndUser(eventToCreate.getId(), eventToCreate.getCreator().getId());
