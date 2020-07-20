@@ -17,6 +17,7 @@ public class EventDTO {
     private String address;
     private UserSimpleDTO creator;
     private Boolean published;
+    private ChapterDTO chapter;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate date;
