@@ -43,7 +43,7 @@ class LocalDateSerializer extends JsonSerializer {
 
     @Override
     public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        log.info("Serializing");
+//        log.info("Serializing");
         LocalDate v = (LocalDate) value;
 
         gen.writeString(v.format(FORMATTER));
@@ -57,7 +57,7 @@ class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
 
     @Override
     public LocalDate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        log.info("DE-Serializing");
+//        log.info("DE-Serializing");
          return LocalDate.parse(p.getValueAsString(), FORMATTER);
     }
 }
