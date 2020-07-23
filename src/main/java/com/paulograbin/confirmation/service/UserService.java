@@ -3,12 +3,10 @@ package com.paulograbin.confirmation.service;
 import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Role;
-import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.EmailNotAvailableException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
-import com.paulograbin.confirmation.persistence.RoleRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.UpdateUserRequest;
@@ -40,7 +38,7 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Resource
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Resource
     private EventService eventService;
@@ -54,6 +52,14 @@ public class UserService implements UserDetailsService {
 
     public Iterable<User> fetchAll() {
         return userRepository.findAll();
+    }
+
+    public boolean isAdmin(User currentUser) {
+        final Role adminRole = roleService.getAdminRole();
+
+        return currentUser.getRoles().stream()
+//                .map(Role::getName)
+                .anyMatch(p -> p.equals(adminRole));
     }
 
     public User fetchById(long id) {
@@ -76,8 +82,7 @@ public class UserService implements UserDetailsService {
     }
 
     private void assignUserRole(User userToCreate) {
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new NotFoundException("Role not found"));
+        Role userRole = roleService.getUserRole();
 
         Set<Role> roles = new HashSet<>();
         roles.add(userRole);

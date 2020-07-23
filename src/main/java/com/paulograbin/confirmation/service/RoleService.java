@@ -37,7 +37,13 @@ public class RoleService {
                 .orElseThrow(() -> new NotFoundException(format("Role %s not found", role.toString())));
     }
 
-    public Role getAdmin() {
+    public Role getUserRole() {
+        Optional<Role> adminOptional = roleRepository.findByName(RoleName.ROLE_USER);
+
+        return adminOptional.orElseThrow(() -> new NotFoundException("Role ADMIN not found!"));
+    }
+
+    public Role getAdminRole() {
         Optional<Role> adminOptional = roleRepository.findByName(RoleName.ROLE_ADMIN);
 
         return adminOptional.orElseThrow(() -> new NotFoundException("Role ADMIN not found!"));
