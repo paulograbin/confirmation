@@ -85,7 +85,7 @@ class UserServiceTest {
     }
 
     @Test
-    void givenThreeUsers__whenFetchingAll__mustReturnTreeUsers() {
+    void givenThreeUsers__whenRegularUserFetchingAll__mustReturnZeroUsers() {
         List<User> expected = new ArrayList<>();
 
         expected.add(makeTestUser());
@@ -95,7 +95,8 @@ class UserServiceTest {
         Mockito.when(userRepository.findAll())
                 .thenReturn(expected);
 
-        Iterable<User> actualAllUsers = userService.fetchAll();
+        User regularUser = new User();
+        Iterable<User> actualAllUsers = userService.fetchAll(regularUser);
 
         assertThat(actualAllUsers).hasSize(expected.size());
     }
@@ -107,7 +108,8 @@ class UserServiceTest {
         Mockito.when(userRepository.findAll())
                 .thenReturn(expected);
 
-        Iterable<User> actualAllUsers = userService.fetchAll();
+        User adminuser = new User();
+        Iterable<User> actualAllUsers = userService.fetchAll(adminuser);
 
         assertThat(actualAllUsers).hasSize(expected.size());
     }

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +51,11 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
 
-    public Iterable<User> fetchAll() {
+    public Iterable<User> fetchAll(User currentUser) {
+        if (!isAdmin(currentUser)) {
+            return Collections.emptyList();
+        }
+
         return userRepository.findAll();
     }
 
