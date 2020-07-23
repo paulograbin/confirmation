@@ -70,12 +70,19 @@ public class UsersController {
         return userDTO;
     }
 
+    @GetMapping(value = "/panel", produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean canOpenAdminPanel(@CurrentUser User currentUser) {
+        log.info("Fetching /panel for user {}", currentUser.getId());
+
+        return userService.isAdmin(currentUser);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> listAll() {
+    public List<UserDTO> listAll(@CurrentUser User currentUser) {
         log.info("Listing all user");
 
-        Iterable<User> users = userService.fetchAll();
+        Iterable<User> users = userService.fetchAll(currentUser);
         List<User> arrayList = Lists.from(users.iterator());
 
         return arrayList.stream()
