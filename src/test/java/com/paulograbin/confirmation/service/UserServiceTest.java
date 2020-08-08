@@ -38,7 +38,7 @@ class UserServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Mock
     private UserRepository userRepository;
@@ -98,7 +98,7 @@ class UserServiceTest {
         User regularUser = new User();
         Iterable<User> actualAllUsers = userService.fetchAll(regularUser);
 
-        assertThat(actualAllUsers).hasSize(expected.size());
+        assertThat(actualAllUsers).hasSize(0);
     }
 
     @Test
@@ -203,7 +203,7 @@ class UserServiceTest {
     @Test
     void userJustCreatedHasNecessaryInformation() {
         when(passwordEncoder.encode(anyString())).thenReturn("aaa");
-        when(roleRepository.findByName(any())).thenReturn(Optional.of(new Role(RoleName.ROLE_USER)));
+        when(roleService.getUserRole()).thenReturn(new Role(RoleName.ROLE_USER));
 
         User mockCreatedUser = makeTestUser();
         mockCreatedUser.setId(44L);
