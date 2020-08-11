@@ -27,7 +27,7 @@ public class Chapter {
     @OneToMany(mappedBy = "chapter")
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "chapter")
+    @OneToMany(mappedBy = "chapter", fetch = FetchType.EAGER)
     private List<Event> events = new ArrayList<>();
 
 
@@ -42,11 +42,12 @@ public class Chapter {
                 "id=" + id +
                 ", name='" + name +
                 ", members=" + users.size() +
+                ", events=" + events.size() +
                 '}';
     }
 
-    public void addUser(User aUser) {
-        this.getUsers().add(aUser);
-        aUser.setChapter(this);
+    public void addUser(User anUser) {
+        this.getUsers().add(anUser);
+        anUser.setChapter(this);
     }
 }
