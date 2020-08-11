@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,8 @@ public class ChapterController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public List<ChapterDTO> fetchAllChapters() {
+    @Cacheable("chapters")
+    public List<ChapterDTO> fetchAllChapters() throws InterruptedException {
         log.info("Listing all chapters");
 
         Iterable<Chapter> eventIterator = chapterRepository.findAll();

@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -31,6 +32,7 @@ import java.util.List;
 import static org.apache.commons.lang3.Validate.isTrue;
 
 @SpringBootApplication
+@EnableCaching
 public class DemoApplication implements CommandLineRunner {
 
     // TODO Figure out a way to obtain the token in the controller test calls
@@ -129,16 +131,21 @@ public class DemoApplication implements CommandLineRunner {
         Chapter gvs = chapterService.fetchById(592L);
 
         User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
-        createUserIfDoesntExist(mc2, gvs);
+        createUserIfDoesntExist(mc2, gvs, false);
 
         User bebber = new User("bebber", "Henrique", "Bebber", "henrique10bebber@yahoo.com", "aaa123");
-        createUserIfDoesntExist(bebber, gvs);
+        createUserIfDoesntExist(bebber, gvs, true);
     }
 
-    private void createUserIfDoesntExist(User newUser, Chapter gvs) {
+    private void createUserIfDoesntExist(User newUser, Chapter gvs, boolean setAsMaster) {
         try {
             userService.createUser(newUser);
             userService.assignUserToChapter(newUser.getId(), gvs.getId());
+
+            if (setAsMaster) {
+                log.info("Setting {} as master", newUser.getUsername());
+                userService.setAsMaster(newUser.getId());
+            }
         } catch (RuntimeException e) {
             log.info("User {} already exists, no need to create it again");
         }
