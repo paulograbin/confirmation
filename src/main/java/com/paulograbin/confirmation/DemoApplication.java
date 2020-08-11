@@ -126,16 +126,22 @@ public class DemoApplication implements CommandLineRunner {
     private void setDefaultUsers() {
         log.info("Checking users...");
 
-        if (userService.fetchCount() > 1) {
-            log.info("Skipping default users");
-            return;
-        }
-
         Chapter gvs = chapterService.fetchById(592L);
 
         User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
-        userService.createUser(mc2);
-        mc2 = userService.assignUserToChapter(mc2.getId(), gvs.getId());
+        createUserIfDoesntExist(mc2, gvs);
+
+        User bebber = new User("bebber", "Henrique", "Bebber", "henrique10bebber@yahoo.com", "aaa123");
+        createUserIfDoesntExist(bebber, gvs);
+    }
+
+    private void createUserIfDoesntExist(User newUser, Chapter gvs) {
+        try {
+            userService.createUser(newUser);
+            userService.assignUserToChapter(newUser.getId(), gvs.getId());
+        } catch (RuntimeException e) {
+            log.info("User {} already exists, no need to create it again");
+        }
     }
 
     private void setDefaultRoles() {
