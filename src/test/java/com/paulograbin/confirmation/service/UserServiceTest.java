@@ -4,10 +4,12 @@ import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.EmailNotAvailableException;
+import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
-import com.paulograbin.confirmation.persistence.RoleRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.service.mail.EmailService;
+import com.paulograbin.confirmation.usecases.UpdateUserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -42,6 +46,9 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private EmailService emailService;
 
     @BeforeEach
     void setUp() {
@@ -231,5 +238,43 @@ class UserServiceTest {
 
         User user = userService.fetchByUsername("plgrabin@gmail.com");
         assertThat(user).isNotNull();
+    }
+
+    @Test
+    void whenUpdatingNonExistingUser__mustThrowException() {
+        assertThrows(NotFoundException.class,
+                () -> userService.updateUser(534343L, new UpdateUserRequest()));
+    }
+
+    @Test
+    void whenUpdatingUserIdMustMatchRequest() {
+        User expectedUser = makeTestUser();
+        expectedUser.setId(333L);
+
+        Mockito.when(userRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(expectedUser));
+
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+        updateUserRequest.setId(55L);
+
+        assertThrows(InvalidRequestException.class,
+                () -> userService.updateUser(50L, updateUserRequest));
+    }
+
+    @Test
+    void whenUpdatingExistingUser__mustSendMail() {
+        User expectedUser = makeTestUser();
+        expectedUser.setId(333L);
+
+        Mockito.when(userRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.of(expectedUser));
+
+
+        UpdateUserRequest updateRequest = new UpdateUserRequest();
+        updateRequest.setId(333L);
+
+        userService.updateUser(333L, updateRequest);
+
+        verify(emailService, times(1)).sendPasswordChangedMail(any());
     }
 }

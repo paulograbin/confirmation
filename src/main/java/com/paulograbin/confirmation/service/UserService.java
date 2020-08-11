@@ -5,6 +5,7 @@ import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.EmailNotAvailableException;
+import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.persistence.UserRepository;
@@ -48,6 +49,9 @@ public class UserService implements UserDetailsService {
     private ChapterService chapterService;
 
     @Resource
+    private EmailService emailService;
+
+    @Resource
     private PasswordEncoder passwordEncoder;
 
 
@@ -56,6 +60,10 @@ public class UserService implements UserDetailsService {
             return Collections.emptyList();
         }
 
+        return fetchAll();
+    }
+
+    private Iterable<User> fetchAll() {
         return userRepository.findAll();
     }
 
@@ -126,10 +134,16 @@ public class UserService implements UserDetailsService {
     public User updateUser(Long id, UpdateUserRequest updateRequest) {
         User userFromDatabase = fetchById(id);
 
+        if (!id.equals(updateRequest.getId())) {
+            throw new InvalidRequestException("Provided id and request don't match");
+        }
+
         userFromDatabase.setFirstName(updateRequest.getFirstName());
         userFromDatabase.setLastName(updateRequest.getLastName());
         userFromDatabase.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
         userFromDatabase.setModificationDate(LocalDateTime.now());
+
+        emailService.sendPasswordChangedMail(userFromDatabase);
 
         return userRepository.save(userFromDatabase);
     }
