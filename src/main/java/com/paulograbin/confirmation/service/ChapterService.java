@@ -48,6 +48,13 @@ public class ChapterService {
         return chapterRepository.count();
     }
 
+    public Chapter update(ChapterCreationRequest updateRequest, String a) {
+        Chapter chapterToUpdate = new Chapter();
+        chapterToUpdate.setId(updateRequest.getId());
+        chapterToUpdate.setName(updateRequest.getName());
+
+        return chapterRepository.save(chapterToUpdate);
+    }
     public void update(Chapter chapter) {
         chapterRepository.save(chapter);
     }
