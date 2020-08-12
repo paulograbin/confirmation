@@ -46,7 +46,7 @@ public class ChapterController {
 
     @GetMapping
     @Cacheable("chapters")
-    public List<ChapterDTO> fetchAllChapters() throws InterruptedException {
+    public List<ChapterDTO> fetchAllChapters() {
         log.info("Listing all chapters");
 
         Iterable<Chapter> eventIterator = chapterRepository.findAll();

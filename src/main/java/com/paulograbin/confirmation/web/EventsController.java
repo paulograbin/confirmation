@@ -66,11 +66,12 @@ public class EventsController {
         return modelMapper.map(event, EventDetailsDTO.class);
     }
 
-    @GetMapping(path = "/createdBy/{userId}")
-    public List<EventDetailsDTO> fetchEventsCreatedByUser(@PathVariable("userId") long userId) {
-        log.info("Fetching all events created by user {}", userId);
+    @GetMapping(path = "/chapter")
+    public List<EventDetailsDTO> fetchEventsFromChapter(@CurrentUser User currentUser) {
+        log.info("Fetching all events from chapter {}", currentUser.getChapter().getId());
 
-        return eventService.fetchAllUpcomingEventsCreatedByUser(userId).stream()
+        return eventService.fetchUpComingEventsFromChapter(currentUser.getChapter().getId())
+                .stream()
                 .map(e -> modelMapper.map(e, EventDetailsDTO.class))
                 .collect(Collectors.toList());
     }
