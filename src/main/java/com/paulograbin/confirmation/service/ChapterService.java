@@ -51,4 +51,8 @@ public class ChapterService {
     public void update(Chapter chapter) {
         chapterRepository.save(chapter);
     }
+
+    public Iterable<Chapter> findAll() {
+        return chapterRepository.findAll();
+    }
 }

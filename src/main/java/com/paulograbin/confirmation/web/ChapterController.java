@@ -39,9 +39,6 @@ public class ChapterController {
     private ChapterService chapterService;
 
     @Resource
-    private ChapterRepository chapterRepository;
-
-    @Resource
     private ModelMapper modelMapper;
 
     @GetMapping
@@ -49,7 +46,7 @@ public class ChapterController {
     public List<ChapterDTO> fetchAllChapters() {
         log.info("Listing all chapters");
 
-        Iterable<Chapter> eventIterator = chapterRepository.findAll();
+        Iterable<Chapter> eventIterator = chapterService.findAll();
         List<Chapter> arrayList = Lists.from(eventIterator.iterator());
 
         return arrayList.stream()
