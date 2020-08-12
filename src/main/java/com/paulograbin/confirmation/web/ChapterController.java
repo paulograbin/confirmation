@@ -1,7 +1,6 @@
 package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.domain.Chapter;
-import com.paulograbin.confirmation.persistence.ChapterRepository;
 import com.paulograbin.confirmation.service.ChapterService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import com.paulograbin.confirmation.web.dto.ChapterDTO;
@@ -13,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/chapter")
 public class ChapterController {
@@ -80,14 +82,21 @@ public class ChapterController {
         return modelMapper.map(createdChapter, ChapterDTO.class);
     }
 
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{chapterId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ChapterDTO updateChapter(@Valid @RequestBody ChapterCreationRequest updateRequest) {
+    public ChapterDTO updateChapter(@PathVariable("chapterId") long chapterId, @Valid @RequestBody ChapterCreationRequest updateRequest) {
         log.info("Updating chapter {}", updateRequest);
 
-        Chapter createdChapter = chapterService.update(updateRequest, "a");
+        Chapter createdChapter = chapterService.update(chapterId, updateRequest);
 
         return modelMapper.map(createdChapter, ChapterDTO.class);
     }
 
+    @DeleteMapping(path = "/{chapterId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteCapter(@PathVariable("chapterId") long chapterId) {
+        log.info("Deleting chapter {}", chapterId);
+
+        chapterService.deleteChapter(chapterId);
+    }
 }

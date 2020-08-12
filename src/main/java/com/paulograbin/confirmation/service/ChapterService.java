@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.service;
 
 import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.persistence.ChapterRepository;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
@@ -48,13 +49,24 @@ public class ChapterService {
         return chapterRepository.count();
     }
 
-    public Chapter update(ChapterCreationRequest updateRequest, String a) {
-        Chapter chapterToUpdate = new Chapter();
+    public Chapter update(Long id, ChapterCreationRequest updateRequest) {
+        if (!id.equals(updateRequest.getId())) {
+            throw new InvalidRequestException("Provided id and request don't match");
+        }
+
+        Chapter chapterToUpdate = fetchById(updateRequest.getId());
         chapterToUpdate.setId(updateRequest.getId());
         chapterToUpdate.setName(updateRequest.getName());
 
         return chapterRepository.save(chapterToUpdate);
     }
+
+    public void deleteChapter(long chapterId) {
+        Chapter chapter = fetchById(chapterId);
+
+        chapterRepository.delete(chapter);
+    }
+
     public void update(Chapter chapter) {
         chapterRepository.save(chapter);
     }

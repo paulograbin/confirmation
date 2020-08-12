@@ -2,13 +2,11 @@ package com.paulograbin.confirmation.usecases;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Value;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
-@Value
 public class ChapterCreationRequest {
 
     @NotNull
@@ -21,4 +19,11 @@ public class ChapterCreationRequest {
     @Setter
     private String name;
 
+    public ChapterCreationRequest() {
+    }
+
+    public ChapterCreationRequest(@NotNull Long id, @NotBlank String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
