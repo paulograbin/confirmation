@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +72,7 @@ public class UsersController {
     }
 
     @GetMapping(value = "/panel", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Cacheable(value = "admin", key = "#currentUser.id")
     public boolean canOpenAdminPanel(@CurrentUser User currentUser) {
         log.info("Fetching /panel for user {}", currentUser.getId());
 
