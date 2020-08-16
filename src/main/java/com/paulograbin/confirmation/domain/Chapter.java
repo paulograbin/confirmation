@@ -50,4 +50,22 @@ public class Chapter {
         this.getUsers().add(anUser);
         anUser.setChapter(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Chapter chapter = (Chapter) o;
+
+        if (!id.equals(chapter.id)) return false;
+        return name.equals(chapter.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
+    }
 }
