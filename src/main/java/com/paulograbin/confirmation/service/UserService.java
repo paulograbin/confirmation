@@ -68,6 +68,8 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean isAdmin(User currentUser) {
+        log.info("Checking if user {} is admin", currentUser.getId());
+
         final Role adminRole = roleService.getAdminRole();
 
         return currentUser.getRoles().stream()
