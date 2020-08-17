@@ -68,6 +68,7 @@ public class EventService {
         e.setAddress(request.getAddress());
         e.setDate(request.getDate());
         e.setTime(request.getTime());
+        e.setCreator(currentUser);
 
         return this.createEvent(e, currentUser);
     }
