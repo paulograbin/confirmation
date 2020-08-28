@@ -10,8 +10,10 @@ import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,15 +49,22 @@ public class ChapterController {
 
     @GetMapping
     @Cacheable("chapters")
-    public List<ChapterDTO> fetchAllChapters() {
+    public ResponseEntity<List<ChapterDTO>> fetchAllChapters() {
         log.info("Listing all chapters");
 
         Iterable<Chapter> eventIterator = chapterService.findAll();
-        List<Chapter> arrayList = Lists.from(eventIterator.iterator());
+        List<Chapter> chapterList = Lists.from(eventIterator.iterator());
 
-        return arrayList.stream()
+        CacheControl cc = CacheControl.maxAge(Duration.ofMinutes(10)).cachePrivate();
+
+
+        List<ChapterDTO> dtoList = chapterList.stream()
                 .map(u -> modelMapper.map(u, ChapterDTO.class))
                 .collect(Collectors.toList());
+
+        return ResponseEntity.ok()
+                .cacheControl(cc)
+                .body(dtoList);
     }
 
     @GetMapping(path = "/{id}")
