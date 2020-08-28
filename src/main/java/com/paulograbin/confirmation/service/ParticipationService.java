@@ -73,7 +73,7 @@ public class ParticipationService {
     }
 
     public Participation createNew(Event event, User user) {
-        log.info("Inviting user {} to event {}", user.getUsername(), event.getTitle());
+        log.info("Inviting user {}-{} to event {}-{}", user.getId(), user.getUsername(), event.getId(), event.getTitle());
 
         Participation p = new Participation(user, event);
         p.inviteParticipant();
