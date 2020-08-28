@@ -1,12 +1,13 @@
 package com.paulograbin.confirmation.web;
 
+import com.google.gson.Gson;
 import com.paulograbin.confirmation.domain.Event;
-import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
-import com.paulograbin.confirmation.usecases.EventCreationRequest;
+import com.paulograbin.confirmation.usecases.event.creation.EventCreationRequest;
+import com.paulograbin.confirmation.usecases.event.creation.EventCreationResponse;
 import com.paulograbin.confirmation.web.dto.EventDTO;
 import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
 import com.paulograbin.confirmation.web.dto.ParticipationWithoutUserDTO;
@@ -20,8 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,12 +106,14 @@ public class EventsController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping
+    @Transactional
     @ResponseStatus(HttpStatus.CREATED)
-    public EventDetailsDTO createNewEvent(@RequestBody EventCreationRequest eventToCreate, @CurrentUser User currentUser) {
-        Event createdEvent = eventService.createEvent(eventToCreate, currentUser);
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public String createNewEvent(@RequestBody EventCreationRequest eventToCreate, @CurrentUser User currentUser) {
+        EventCreationResponse event = eventService.createEvent(eventToCreate, currentUser);
 
-        return modelMapper.map(createdEvent, EventDetailsDTO.class);
+        return new Gson().toJson(event);
+//        return modelMapper.map(createdEvent, EventDetailsDTO.class);
     }
 
     @PutMapping(path = "/{eventId}")

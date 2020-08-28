@@ -9,7 +9,9 @@ import com.paulograbin.confirmation.exception.NotYourEventException;
 import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
-import com.paulograbin.confirmation.usecases.EventCreationRequest;
+import com.paulograbin.confirmation.usecases.event.creation.EventCreationRequest;
+import com.paulograbin.confirmation.usecases.event.creation.EventCreationResponse;
+import com.paulograbin.confirmation.usecases.event.creation.EventCreationUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -59,25 +62,24 @@ public class EventService {
                 .orElseThrow(() -> new NotFoundException("Event with id " + eventId + " not found!"));
     }
 
-    public Event createEvent(EventCreationRequest request, User currentUser) {
-        Event e = new Event();
+    public EventCreationResponse createEvent(EventCreationRequest request, User currentUser) {
+        EventCreationResponse eventCreationResponse = new EventCreationResponse();
+        request.setCreator(currentUser);
 
-        e.setTitle(request.getTitle());
-        e.setDescription(request.getDescription());
-        e.setPublished(request.isPublished());
-        e.setAddress(request.getAddress());
-        e.setDate(request.getDate());
-        e.setTime(request.getTime());
-        e.setCreator(currentUser);
+        new EventCreationUseCase().execute(request, eventCreationResponse, eventRepository);
 
-        return this.createEvent(e, currentUser);
+        if (eventCreationResponse.successful) {
+            Event createdEvent = fetchById(eventCreationResponse.createdEventId);
+
+            inviteRemainingUsersFromChapterToEvent(createdEvent);
+        }
+
+        return eventCreationResponse;
     }
 
     @Transactional
     public Event createEvent(Event eventToCreate, User eventCreator) {
         log.info("Creating event {} for user {}", eventToCreate.getTitle(), eventCreator.getUsername());
-
-        checkValid(eventToCreate);
 
         eventToCreate.setId(null);
         eventToCreate.setCreationDate(LocalDateTime.now());
@@ -86,18 +88,18 @@ public class EventService {
         // TODO fix this
         eventToCreate.setChapter(eventCreator.getChapter());
 
-        Event save = eventRepository.save(eventToCreate);
+        Event createdEvent = eventRepository.save(eventToCreate);
 
         Chapter chapter = eventCreator.getChapter();
-        chapter.getEvents().add(save);
+        chapter.getEvents().add(createdEvent);
         chapterService.update(chapter);
 
-        inviteRemainingUsersFromChapterToEvent(save);
+        inviteRemainingUsersFromChapterToEvent(createdEvent);
 
         Participation creatorParticipation = participationService.fetchByEventAndUser(eventToCreate.getId(), eventToCreate.getCreator().getId());
         participationService.confirmParticipation(creatorParticipation);
 
-        return save;
+        return createdEvent;
     }
 
     private void inviteRemainingUsersFromChapterToEvent(Event event) {
@@ -130,32 +132,6 @@ public class EventService {
         inviteRemainingUsersFromChapterToEvent(eventFromDatabase);
 
         return eventRepository.save(eventFromDatabase);
-    }
-
-    private void checkValid(Event event) {
-        if (isBlank(event.getTitle()) || event.getTitle().length() < 5) {
-            throw new IllegalArgumentException("Título do evento precisa ter pelo menos 5 letras");
-        }
-
-        if (isBlank(event.getDescription()) || event.getDescription().length() < 5) {
-            throw new IllegalArgumentException("Descrição do evento precisa ter pelo menos 5 letras");
-        }
-
-        if (event.getAddress().isEmpty()) {
-            throw new IllegalArgumentException("Faltou informar o endereço");
-        }
-
-        if (event.getDate() == null) {
-            throw new IllegalArgumentException("Faltou informar a data do evento");
-        }
-
-        if (event.getTime() == null) {
-            throw new IllegalArgumentException("Faltou informar o horário do evento");
-        }
-
-        if (event.getCreator().getChapter() == null) {
-            throw new IllegalArgumentException("Criador do evento precisa pertencer a algum capitulo");
-        }
     }
 
     public Set<Participation> fetchParticipantsByEvent(final long eventId) {
