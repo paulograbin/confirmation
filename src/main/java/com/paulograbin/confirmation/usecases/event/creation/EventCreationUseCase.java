@@ -9,17 +9,20 @@ import java.time.format.DateTimeParseException;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+
 public class EventCreationUseCase {
 
-    private EventCreationRequest request;
-    private EventCreationResponse response;
-    private EventRepository eventRepository;
+    private final EventCreationRequest request;
+    private final EventCreationResponse response;
+    private final EventRepository eventRepository;
 
-    public void execute(EventCreationRequest request, EventCreationResponse response, EventRepository eventRepository) {
+    public EventCreationUseCase(EventCreationRequest request, EventCreationResponse eventCreationResponse, EventRepository eventRepository) {
         this.request = request;
-        this.response = response;
+        this.response = eventCreationResponse;
         this.eventRepository = eventRepository;
+    }
 
+    public void execute() {
         isValid();
         createEvent();
     }

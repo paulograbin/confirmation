@@ -77,12 +77,12 @@ public class DemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        setDefaultRoles();
-        setDefaultChapters();
-        setDefaultAdmin();
-
-        setDefaultUsers();
-        setDefaultEvents();
+//        setDefaultRoles();
+//        setDefaultChapters();
+//        setDefaultAdmin();
+//
+//        setDefaultUsers();
+//        setDefaultEvents();
 
         log.info("Application ready to roll.");
     }
@@ -113,11 +113,11 @@ public class DemoApplication implements CommandLineRunner {
                 LocalTime.of(14, 0, 0));
         e03 = eventService.createEvent(e03, mc1);
 
-        List<Event> upComingEvents = eventService.fetchUpComingEventsFromChapter(gvs.getId());
-        isTrue(upComingEvents.size() == 2, "Two events for GVS");
-
-        List<Event> allEventsFromGVS = eventService.fetchAllEventsFromChapter(gvs.getId());
-        isTrue(allEventsFromGVS.size() == 3, "Three events for GVS");
+//        List<Event> upComingEvents = eventService.fetchUpComingEventsFromChapter(gvs.getId());
+//        isTrue(upComingEvents.size() == 2, "Two events for GVS");
+//
+//        List<Event> allEventsFromGVS = eventService.fetchAllEventsFromChapter(gvs.getId());
+//        isTrue(allEventsFromGVS.size() == 3, "Three events for GVS");
 
 
 //        isTrue(e01.getParticipants().size() == 1, "Only one participant");
@@ -128,13 +128,22 @@ public class DemoApplication implements CommandLineRunner {
     private void setDefaultUsers() {
         log.info("Checking users...");
 
-        Chapter gvs = chapterService.fetchById(592L);
+        Chapter chapter100 = chapterService.fetchById(100L);
 
         User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
-        createUserIfDoesntExist(mc2, gvs, false);
+        createUserIfDoesntExist(mc2, chapter100, false);
 
-        User bebber = new User("bebber", "Henrique", "Bebber", "henrique10bebber@yahoo.com", "aaa123");
-        createUserIfDoesntExist(bebber, gvs, true);
+        User bebber = new User("bebber", "Henrique", "Bebber", "henrique10bebber@yahoo.com", "aaa");
+        createUserIfDoesntExist(bebber, chapter100, true);
+
+
+        Chapter chapter200 = chapterService.fetchById(200L);
+        User master_2 = new User("master2", "Mestre 2", "Sobrenome @", "mestre@100.com", "aaa");
+        createUserIfDoesntExist(master_2, chapter200, true);
+
+        User not_master_2 = new User("notmaster2", "Not Mestre 2", "Not Sobrenome @", "not_mestre@100.com", "aaa");
+        createUserIfDoesntExist(not_master_2, chapter200, false);
+
     }
 
     private void createUserIfDoesntExist(User newUser, Chapter gvs, boolean setAsMaster) {
@@ -174,35 +183,9 @@ public class DemoApplication implements CommandLineRunner {
             return;
         }
 
-        chapterService.createChapter(new ChapterCreationRequest(3L, "Pelotas"));
-        chapterService.createChapter(new ChapterCreationRequest(91L, "Bagé"));
-        chapterService.createChapter(new ChapterCreationRequest(95L, "Uruguaiana"));
-        chapterService.createChapter(new ChapterCreationRequest(146L, "Pérola das Colônias"));
-        chapterService.createChapter(new ChapterCreationRequest(196L, "Santa Maria"));
-        chapterService.createChapter(new ChapterCreationRequest(237L, "Ijuí"));
-        chapterService.createChapter(new ChapterCreationRequest(306L, "Santo Ângelo"));
-        chapterService.createChapter(new ChapterCreationRequest(354L, "Rio Grande"));
-        chapterService.createChapter(new ChapterCreationRequest(384L, "Alegrete"));
-        chapterService.createChapter(new ChapterCreationRequest(433L, "Santana do Livramento"));
-        chapterService.createChapter(new ChapterCreationRequest(451L, "Guardiões das Torres"));
-        chapterService.createChapter(new ChapterCreationRequest(465L, "Fênix II"));
-        chapterService.createChapter(new ChapterCreationRequest(46L, "Porto Alegre"));
-        chapterService.createChapter(new ChapterCreationRequest(493L, "Escudeiros do Oriente"));
-        chapterService.createChapter(new ChapterCreationRequest(514L, "Sentinela das Virtudes"));
-        chapterService.createChapter(new ChapterCreationRequest(580L, "14 de Julho"));
-        chapterService.createChapter(new ChapterCreationRequest(592L, "Guardiões do Vale dos Sinos"));
-        chapterService.createChapter(new ChapterCreationRequest(630L, "Cavaleiros do Sol"));
-        chapterService.createChapter(new ChapterCreationRequest(635L, "Garimpeiros das Virtudes"));
-        chapterService.createChapter(new ChapterCreationRequest(77L, "Mariano Fedele"));
-        chapterService.createChapter(new ChapterCreationRequest(805L, "Cavaleiros Templários do Vale do Taquari"));
-        chapterService.createChapter(new ChapterCreationRequest(821L, "Cachoeira"));
-        chapterService.createChapter(new ChapterCreationRequest(825L, "Sentinelas da Atlântida"));
-        chapterService.createChapter(new ChapterCreationRequest(826L, "Guardiões da Luz"));
-        chapterService.createChapter(new ChapterCreationRequest(853L, "Guardiões do Horizonte"));
-        chapterService.createChapter(new ChapterCreationRequest(858L, "Cavaleiros Farroupilhas"));
-        chapterService.createChapter(new ChapterCreationRequest(894L, "Guardiões dos Tapes"));
-        chapterService.createChapter(new ChapterCreationRequest(902L, "Santa Cruz"));
-        chapterService.createChapter(new ChapterCreationRequest(906L, "Venâncio Aires"));
+        chapterService.createChapter(new ChapterCreationRequest(100L, "Capitulo AAAAAAAAA"));
+        chapterService.createChapter(new ChapterCreationRequest(200L, "Capitulo BBBBBBBBB"));
+        chapterService.createChapter(new ChapterCreationRequest(592L, "GVS"));
     }
 
     private void setDefaultAdmin() {
@@ -217,7 +200,7 @@ public class DemoApplication implements CommandLineRunner {
             defaultAdmin = new User(ADMIN_USERNAME, "Mestre", "Conselheiro", ADMIN_EMAIL, "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
 
-            userService.assignUserToChapter(defaultAdmin.getId(), 592L);
+            userService.assignUserToChapter(defaultAdmin.getId(), 100L);
         }
 
         log.info("Setting admin authorizations....");

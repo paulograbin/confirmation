@@ -66,7 +66,7 @@ public class EventService {
         EventCreationResponse eventCreationResponse = new EventCreationResponse();
         request.setCreator(currentUser);
 
-        new EventCreationUseCase().execute(request, eventCreationResponse, eventRepository);
+        new EventCreationUseCase(request, eventCreationResponse, eventRepository).execute();
 
         if (eventCreationResponse.successful) {
             Event createdEvent = fetchById(eventCreationResponse.createdEventId);
