@@ -31,7 +31,7 @@ import static java.lang.String.format;
 @RestController
 @RequestMapping(value = "/events")
 @CrossOrigin("*")
-public class EventsController {
+class EventsController {
 
     private static final Logger log = LoggerFactory.getLogger(EventsController.class);
 

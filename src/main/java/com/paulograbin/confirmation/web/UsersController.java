@@ -7,7 +7,6 @@ import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.UpdateUserRequest;
-import com.paulograbin.confirmation.web.dto.ChapterDTO;
 import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
 import com.paulograbin.confirmation.web.dto.ParticipationWithoutUserDTO;
 import com.paulograbin.confirmation.web.dto.UserDTO;
@@ -17,15 +16,20 @@ import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +39,7 @@ import static java.lang.String.format;
 @CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/users")
-public class UsersController {
+class UsersController {
 
     private static final Logger log = LoggerFactory.getLogger(UsersController.class);
 
