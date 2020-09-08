@@ -1,10 +1,14 @@
 package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.ChapterService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import com.paulograbin.confirmation.web.dto.ChapterDTO;
+import com.paulograbin.confirmation.web.dto.ChapterSimpleDTO;
 import com.paulograbin.confirmation.web.dto.UserDTO;
+import com.paulograbin.confirmation.web.dto.UserSimpleDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
@@ -28,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.time.Duration;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +70,22 @@ public class ChapterController {
         return ResponseEntity.ok()
                 .cacheControl(cc)
                 .body(dtoList);
+    }
+
+    @GetMapping(path = "/meucapitulo")
+    @ResponseStatus(HttpStatus.OK)
+    public ChapterSimpleDTO mychapter(@CurrentUser User currentUser) {
+        log.info("Fetching chapter for user {}", currentUser.getId());
+
+        Chapter chapter = chapterService.fetchById(currentUser.getChapter().getId());
+        ChapterSimpleDTO chapterDTO = modelMapper.map(chapter, ChapterSimpleDTO.class);
+
+        chapterDTO.setMembers(chapter.getUsers().stream()
+                .map(u -> modelMapper.map(u, UserSimpleDTO.class))
+                .collect(Collectors.toList()));
+        chapterDTO.getMembers().sort(Comparator.comparing(UserSimpleDTO::getId));
+
+        return chapterDTO;
     }
 
     @GetMapping(path = "/{id}")
