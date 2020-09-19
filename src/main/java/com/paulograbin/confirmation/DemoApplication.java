@@ -77,12 +77,12 @@ public class DemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-//        setDefaultRoles();
-//        setDefaultChapters();
-//        setDefaultAdmin();
-//
-//        setDefaultUsers();
-//        setDefaultEvents();
+        setDefaultRoles();
+        setDefaultChapters();
+        setDefaultAdmin();
+
+        setDefaultUsers();
+        setDefaultEvents();
 
         log.info("Application ready to roll.");
     }
@@ -128,13 +128,10 @@ public class DemoApplication implements CommandLineRunner {
     private void setDefaultUsers() {
         log.info("Checking users...");
 
-        Chapter chapter100 = chapterService.fetchById(100L);
+        Chapter chapter_gvs = chapterService.fetchById(592L);
 
         User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
-        createUserIfDoesntExist(mc2, chapter100, false);
-
-        User bebber = new User("bebber", "Henrique", "Bebber", "henrique10bebber@yahoo.com", "aaa");
-        createUserIfDoesntExist(bebber, chapter100, true);
+        createUserIfDoesntExist(mc2, chapter_gvs, false);
 
 
         Chapter chapter200 = chapterService.fetchById(200L);
@@ -144,6 +141,58 @@ public class DemoApplication implements CommandLineRunner {
         User not_master_2 = new User("notmaster2", "Not Mestre 2", "Not Sobrenome @", "not_mestre@100.com", "aaa");
         createUserIfDoesntExist(not_master_2, chapter200, false);
 
+
+
+        createUserIfDoesntExist(new User("arthurdeazambuja@gmail.com", "Arthur de Azambuja", "", "arthurdeazambuja@gmail.com", "arthurdeazambuja@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("augustolemosborges123@gmail.com", "Augusto Lemos Borges", "", "augustolemosborges123@gmail.com", "augustolemosborges123@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("brunocachoeira50@gmail.com", "Bruno Bueno da Silva Walterman Cachoeira", "", "brunocachoeira50@gmail.com", "brunocachoeira50@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("carpesbruno29@gmail.com", "Bruno Carpes Cardoso", "", "carpesbruno29@gmail.com", "carpesbruno29@gmail.com"), chapter_gvs, true);
+        createUserIfDoesntExist(new User("brunopachecojost@hotmail.com", "Bruno Henrique Pachaco Jost", "", "brunopachecojost@hotmail.com", "brunopachecojost@hotmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("brunoleonardof.rocha@gmail.com", "Bruno Leonardo Fernandes da Rocha", "", "brunoleonardof.rocha@gmail.com", "brunoleonardof.rocha@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("bruno.rostoliveira@gmail.com", "Bruno Rost de Oliveira da Silva", "", "bruno.rostoliveira@gmail.com", "bruno.rostoliveira@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("serafinibruno67@gmail.com", "Bruno Serafini da Silva", "", "serafinibruno67@gmail.com", "serafinibruno67@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("bruwillrich@gmail.com", "Bruno Willrich", "", "bruwillrich@gmail.com", "bruwillrich@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("cassioclds@gmail.com", "Cássio Alexandre Dornelles Bolsoni", "", "cassioclds@gmail.com", "cassioclds@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("cris.fs10@gmail.com", "Cristiano Fernandes dos Santos", "", "cris.fs10@gmail.com", "cris.fs10@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("crizantearaujodequadrosneto@gmail.com", "Crizante Araujo de Quadros Neto", "", "crizantearaujodequadrosneto@gmail.com", "crizantearaujodequadrosneto@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("daniel.maciel305@gmail.com", "Daniel França Maciel", "", "daniel.maciel305@gmail.com", "daniel.maciel305@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("godyskiper@gmail.com", "Eduardo Godoi da Silveira", "", "godyskiper@gmail.com", "godyskiper@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("bampiemanuel@gmail.com", "Emanuel da Silva Bampi", "", "bampiemanuel@gmail.com", "bampiemanuel@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("lipeschn@gmail.com", "Felipe Schneider Bomfim", "", "lipeschn@gmail.com", "lipeschn@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("fernandoschulzdossantos@gmail.com", "Fernando Schulz dos Santos", "", "fernandoschulzdossantos@gmail.com", "fernandoschulzdossantos@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("fernando.wassum@hotmail.com", "Fernando Wassum", "", "fernando.wassum@hotmail.com", "fernando.wassum@hotmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("filipefidelis25@gmail.com", "Filipe Fidelis Wolffenbuttel", "", "filipefidelis25@gmail.com", "filipefidelis25@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("gabriels.bampi@gmail.com", "Gabriel da Silva Bampi", "", "gabriels.bampi@gmail.com", "gabriels.bampi@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("guilima76@hotmail.com", "Guilherme de Lima Rodrigues", "", "guilima76@hotmail.com", "guilima76@hotmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("guilherme.o.lealii@gmail.com", "Guilherme de Oliveira Leal", "", "guilherme.o.lealii@gmail.com", "guilherme.o.lealii@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("gustavo2002humann@gmail.com", "Gustavo Humann", "", "gustavo2002humann@gmail.com", "gustavo2002humann@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("henrique10bebber@yahoo.com", "Henrique Bebber da Rosa", "", "henrique10bebber@yahoo.com", "henrique10bebber@yahoo.com"), chapter_gvs, true);
+        createUserIfDoesntExist(new User("joaojj5056@hotmail.com", "João Lucas Ramos Belmonte", "", "joaojj5056@hotmail.com", "joaojj5056@hotmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("kauapower@hotmail.com", "Kauã Fogaça Cezar", "", "kauapower@hotmail.com", "kauapower@hotmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("xavier.leobecker@gmail.com", "Leonardo Becker Antunes Xavier", "", "xavier.leobecker@gmail.com", "xavier.leobecker@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("machadoiileonardo@gmail.com", "Leonardo Machado II", "", "machadoiileonardo@gmail.com", "machadoiileonardo@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("leonardo.oliveira@gmail.com", "Leonardo Muller de Oliveira", "", "leonardo.oliveira@gmail.com", "leonardo.oliveira@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("lokinalua@gmail.com", "Luan Guedes da Rocha", "", "lokinalua@gmail.com", "lokinalua@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("lucasmouramaidana@gmail.com", "Lucas de Moura Maidana", "", "lucasmouramaidana@gmail.com", "lucasmouramaidana@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("luishenriquecouto@hotmail.com", "Luis Henrique de Oliveira Couto", "", "luishenriquecouto@hotmail.com", "luishenriquecouto@hotmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("luis.otavioccm@hotmail.com", "Luis Otávio Cabral Carniel Marques", "", "luis.otavioccm@hotmail.com", "luis.otavioccm@hotmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("theteuferreira@gmail.com", "Matheus Ferreira da Silva", "", "theteuferreira@gmail.com", "theteuferreira@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("mgodoidasilveira@gmail.com", "Matheus Godoi da Silveira", "", "mgodoidasilveira@gmail.com", "mgodoidasilveira@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("matheuszini28@gmail.com", "Matheus Lucas Zini", "", "matheuszini28@gmail.com", "matheuszini28@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("nicolasdbohrer@gmail.com", "Nícolas Dias Bohrer", "", "nicolasdbohrer@gmail.com", "nicolasdbohrer@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("pabloborbaz@gmail.com", "Pablo de Borba", "", "pabloborbaz@gmail.com", "pabloborbaz@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("pedroaraujodasilvasauro@gmail.com", "Pedro Araujo da Silva", "", "pedroaraujodasilvasauro@gmail.com", "pedroaraujodasilvasauro@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("kuhn@terra.com.br", "Pedro Henrique Kuhn", "", "kuhn@terra.com.br", "kuhn@terra.com.br"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("pedrohenriquefontoura487@gmail.com", "Pedro Henrique Rosa da Fontoura", "", "pedrohenriquefontoura487@gmail.com", "pedrohenriquefontoura487@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("pedrocrocodilo@gmail.com", "Pedro Vargas de Moura", "", "pedrocrocodilo@gmail.com", "pedrocrocodilo@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("petersonmetzlima@gmail.com", "Peterson Metz Lima", "", "petersonmetzlima@gmail.com", "petersonmetzlima@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("gurisdonato@gmail.com", "Rafael Franco Donato", "", "gurisdonato@gmail.com", "gurisdonato@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("richardmilzarek24@gmail.com", "Richard Gustavo Milczarek de Abreu", "", "richardmilzarek24@gmail.com", "richardmilzarek24@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("sergioabcdef@outlook.com", "Sérgio Mário Arsand Neto", "", "sergioabcdef@outlook.com", "sergioabcdef@outlook.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("tiagofreitassilva4@gmail.com", "Tiago de Freitas da Silva", "", "tiagofreitassilva4@gmail.com", "tiagofreitassilva4@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("sartoritobias14@gmail.com", "Tobias Sartori da Silva", "", "sartoritobias14@gmail.com", "sartoritobias14@gmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("vitinho0303@hotmail.com", "Victor Hugo Andreon de Camargo", "", "vitinho0303@hotmail.com", "vitinho0303@hotmail.com"), chapter_gvs, false);
+        createUserIfDoesntExist(new User("willl.sauer0@gmail.com", "William Leichtweis Sauer", "", "willl.sauer0@gmail.com", "willl.sauer0@gmail.com"), chapter_gvs, false);
     }
 
     private void createUserIfDoesntExist(User newUser, Chapter gvs, boolean setAsMaster) {
@@ -156,7 +205,7 @@ public class DemoApplication implements CommandLineRunner {
                 userService.setAsMaster(newUser.getId());
             }
         } catch (RuntimeException e) {
-            log.info("User {} already exists, no need to create it again");
+            log.info("User {} already exists, no need to create it again", newUser.getId());
         }
     }
 
@@ -197,10 +246,10 @@ public class DemoApplication implements CommandLineRunner {
             log.info("Admin found");
         } catch (UsernameNotFoundException e) {
             log.info("Admin not found, creating it...");
-            defaultAdmin = new User(ADMIN_USERNAME, "Mestre", "Conselheiro", ADMIN_EMAIL, "aaa");
+            defaultAdmin = new User(ADMIN_USERNAME, "Paulo", "Gräbin", ADMIN_EMAIL, "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
 
-            userService.assignUserToChapter(defaultAdmin.getId(), 100L);
+            userService.assignUserToChapter(defaultAdmin.getId(), 592L);
         }
 
         log.info("Setting admin authorizations....");
