@@ -18,6 +18,9 @@ public class UserDTO {
     private ChapterDTO chapter;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime lastLogin;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime creationDate;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
