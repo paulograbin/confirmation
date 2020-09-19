@@ -134,12 +134,12 @@ public class DemoApplication implements CommandLineRunner {
         createUserIfDoesntExist(mc2, chapter_gvs, false);
 
 
-        Chapter chapter200 = chapterService.fetchById(200L);
-        User master_2 = new User("master2", "Mestre 2", "Sobrenome @", "mestre@100.com", "aaa");
-        createUserIfDoesntExist(master_2, chapter200, true);
-
-        User not_master_2 = new User("notmaster2", "Not Mestre 2", "Not Sobrenome @", "not_mestre@100.com", "aaa");
-        createUserIfDoesntExist(not_master_2, chapter200, false);
+//        Chapter chapter200 = chapterService.fetchById(200L);
+//        User master_2 = new User("master2", "Mestre 2", "Sobrenome @", "mestre@100.com", "aaa");
+//        createUserIfDoesntExist(master_2, chapter200, true);
+//
+//        User not_master_2 = new User("notmaster2", "Not Mestre 2", "Not Sobrenome @", "not_mestre@100.com", "aaa");
+//        createUserIfDoesntExist(not_master_2, chapter200, false);
 
 
 
@@ -232,8 +232,8 @@ public class DemoApplication implements CommandLineRunner {
             return;
         }
 
-        chapterService.createChapter(new ChapterCreationRequest(100L, "Capitulo AAAAAAAAA"));
-        chapterService.createChapter(new ChapterCreationRequest(200L, "Capitulo BBBBBBBBB"));
+//        chapterService.createChapter(new ChapterCreationRequest(100L, "Capitulo AAAAAAAAA"));
+//        chapterService.createChapter(new ChapterCreationRequest(200L, "Capitulo BBBBBBBBB"));
         chapterService.createChapter(new ChapterCreationRequest(592L, "GVS"));
     }
 
