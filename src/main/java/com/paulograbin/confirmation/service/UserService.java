@@ -239,4 +239,11 @@ public class UserService implements UserDetailsService {
     public long fetchCount() {
         return userRepository.count();
     }
+
+    public void updateLoginDate(UserDetails userDetails) {
+        User user = (User) userDetails;
+        user.setLastLogin(LocalDateTime.now());
+
+        userRepository.save(user);
+    }
 }

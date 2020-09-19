@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private boolean active;
     private boolean master;
 
+    private LocalDateTime lastLogin;
     private LocalDateTime creationDate;
     private LocalDateTime modificationDate;
     private LocalDateTime inactivatedIn;
