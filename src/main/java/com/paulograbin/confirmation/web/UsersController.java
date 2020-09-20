@@ -143,6 +143,8 @@ class UsersController {
     @PutMapping(path = "/{id}/admin")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO updateUserForAdmin(@PathVariable Long id, @RequestBody @Valid UpdateUserRequestAdmin updateUserRequest, @CurrentUser User currentUser) {
+        log.info("New update user for admin request");
+
         if (!userService.isAdmin(currentUser)) {
             throw new RuntimeException("Not admin");
         }
@@ -158,7 +160,7 @@ class UsersController {
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO inactivateUser(@PathVariable Long id) {
-        log.info(format("Inactivating user %d", id));
+        log.info("Inactivating user {}", id);
         User inactivatedUser = userService.inactivate(id);
 
         // todo lock this endpoint

@@ -158,6 +158,7 @@ public class UserService implements UserDetailsService {
 
     public User updateUserForAdmin(Long id, UpdateUserRequestAdmin updateRequest) {
         User userFromDatabase = fetchById(id);
+        log.info("Updating user {}", userFromDatabase.getUsername());
 
         if (!id.equals(updateRequest.getId())) {
             throw new InvalidRequestException("Provided id and request don't match");
@@ -184,6 +185,7 @@ public class UserService implements UserDetailsService {
 
     public User inactivate(Long id) {
         User userFromDatabase = fetchById(id);
+        log.info("Inactivating user {}", userFromDatabase.getUsername());
 
         userFromDatabase.setActive(false);
         userFromDatabase.setInactivatedIn(LocalDateTime.now());
@@ -194,6 +196,7 @@ public class UserService implements UserDetailsService {
 
     public User activate(Long id) {
         User userFromDatabase = fetchById(id);
+        log.info("Activating user {}", userFromDatabase.getUsername());
 
         userFromDatabase.setActive(true);
         userFromDatabase.setInactivatedIn(null);
