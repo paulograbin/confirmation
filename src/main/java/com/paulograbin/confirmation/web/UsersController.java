@@ -139,6 +139,21 @@ class UsersController {
         return modelMapper.map(user, UserDTO.class);
     }
 
+    @PutMapping(path = "/{id}/admin")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO updateUserForAdmin(@PathVariable Long id, @RequestBody @Valid UpdateUserRequestAdmin updateUserRequest, @CurrentUser User currentUser) {
+        if (!userService.isAdmin(currentUser)) {
+            throw new RuntimeException("Not admin");
+        }
+
+        if (id.longValue() != updateUserRequest.getId().longValue()) {
+            throw new InvalidRequestException("Request path doesn't match updated user");
+        }
+
+        User user = userService.updateUserForAdmin(id, updateUserRequest);
+        return modelMapper.map(user, UserDTO.class);
+    }
+
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO inactivateUser(@PathVariable Long id) {

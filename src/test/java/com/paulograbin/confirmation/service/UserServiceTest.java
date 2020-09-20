@@ -9,7 +9,7 @@ import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.mail.EmailService;
-import com.paulograbin.confirmation.usecases.UpdateUserRequest;
+import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -10,7 +10,10 @@ import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.mail.EmailService;
-import com.paulograbin.confirmation.usecases.UpdateUserRequest;
+import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
+import com.paulograbin.confirmation.usecases.user.UpdateUserRequestAdmin;
+import com.paulograbin.confirmation.usecases.user.UpdateUserResponse;
+import com.paulograbin.confirmation.usecases.user.UpdateUserUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -134,6 +137,9 @@ public class UserService implements UserDetailsService {
 
 
     public User updateUser(Long id, UpdateUserRequest updateRequest) {
+        UpdateUserResponse response = new UpdateUserResponse();
+        new UpdateUserUseCase(userRepository, updateRequest, response).execute();
+
         User userFromDatabase = fetchById(id);
 
         if (!id.equals(updateRequest.getId())) {
@@ -146,6 +152,32 @@ public class UserService implements UserDetailsService {
         userFromDatabase.setModificationDate(LocalDateTime.now());
 
         emailService.sendPasswordChangedMail(userFromDatabase);
+
+        return userRepository.save(userFromDatabase);
+    }
+
+    public User updateUserForAdmin(Long id, UpdateUserRequestAdmin updateRequest) {
+        User userFromDatabase = fetchById(id);
+
+        if (!id.equals(updateRequest.getId())) {
+            throw new InvalidRequestException("Provided id and request don't match");
+        }
+
+        userFromDatabase.setEmail(updateRequest.getEmail());
+        userFromDatabase.setUsername(updateRequest.getUsername());
+        userFromDatabase.setFirstName(updateRequest.getFirstName());
+        userFromDatabase.setLastName(updateRequest.getLastName());
+        userFromDatabase.setMaster(updateRequest.getMaster());
+        userFromDatabase.setModificationDate(LocalDateTime.now());
+
+        if (!updateRequest.getActive()) {
+            inactivate(userFromDatabase.getId());
+        } else {
+            activate(userFromDatabase.getId());
+        }
+
+//        userFromDatabase.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+//        emailService.sendPasswordChangedMail(userFromDatabase);
 
         return userRepository.save(userFromDatabase);
     }
