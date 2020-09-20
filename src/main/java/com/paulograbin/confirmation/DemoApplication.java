@@ -2,15 +2,10 @@ package com.paulograbin.confirmation;
 
 import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.domain.Event;
-import com.paulograbin.confirmation.domain.Role;
-import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.service.ChapterService;
 import com.paulograbin.confirmation.service.EventService;
-import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
-import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
-import com.paulograbin.confirmation.usecases.UpdateUserRequest;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.module.jsr310.Jsr310Module;
@@ -21,20 +16,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 
 @SpringBootApplication
 @EnableCaching
-public class DemoApplication implements CommandLineRunner {
+public class DemoApplication {
 
     // TODO Figure out a way to obtain the token in the controller test calls
     // TODO Validations on post requests
@@ -44,11 +35,6 @@ public class DemoApplication implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
 
-
-    private static final String DEFAULT_ADDRESS_JOAO_CORREA = "Avenida João Corrêa, 815";
-    private static final String ADMIN_USERNAME = "plgrabin";
-    private static final String ADMIN_EMAIL = "plgrabin@gmail.com";
-
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
@@ -57,11 +43,7 @@ public class DemoApplication implements CommandLineRunner {
     @Resource
     private UserService userService;
 
-    @Resource
-    private EventService eventService;
 
-    @Resource
-    private RoleService roleService;
 
     @Resource
     private ChapterService chapterService;
@@ -74,56 +56,6 @@ public class DemoApplication implements CommandLineRunner {
         modelMapper.registerModule(new Jsr310Module());
 
         return modelMapper;
-    }
-
-    @Override
-    public void run(String... args) {
-        setDefaultRoles();
-//        setDefaultChapters();
-        setDefaultAdmin();
-
-//        setDefaultUsers();
-//        setDefaultEvents();
-
-        log.info("Application ready to roll.");
-    }
-
-    private void setDefaultEvents() {
-        log.info("Checking events...");
-
-        if (eventService.fetchCount() > 0) {
-            log.info("Skipping default events.");
-            return;
-        }
-
-        Chapter gvs = chapterService.fetchById(592L);
-        User mc1 = userService.fetchByUsername(ADMIN_USERNAME);
-
-        Event e01 = new Event(gvs, "Mais antigo", DEFAULT_ADDRESS_JOAO_CORREA, "Evento mais velho", mc1,
-                LocalDate.of(2019, 01, 1),
-                LocalTime.of(14, 0, 0));
-        e01 = eventService.createEvent(e01, mc1);
-
-        Event e02 = new Event(gvs, "Proximo", DEFAULT_ADDRESS_JOAO_CORREA, "Proximo", mc1,
-                LocalDate.of(2021, 06, 20),
-                LocalTime.of(14, 0, 0));
-        e02 = eventService.createEvent(e02, mc1);
-
-        Event e03 = new Event(gvs, "Futuro", DEFAULT_ADDRESS_JOAO_CORREA, "Evento do futuro", mc1,
-                LocalDate.of(2021, 06, 1),
-                LocalTime.of(14, 0, 0));
-        e03 = eventService.createEvent(e03, mc1);
-
-//        List<Event> upComingEvents = eventService.fetchUpComingEventsFromChapter(gvs.getId());
-//        isTrue(upComingEvents.size() == 2, "Two events for GVS");
-//
-//        List<Event> allEventsFromGVS = eventService.fetchAllEventsFromChapter(gvs.getId());
-//        isTrue(allEventsFromGVS.size() == 3, "Three events for GVS");
-
-
-//        isTrue(e01.getParticipants().size() == 1, "Only one participant");
-//        isTrue(e01.getParticipants().get(0).getStatus() == ParticipationStatus.CONFIRMADO, "Participant is confirmed");
-//        isTrue(e01.getParticipants().get(0).getUser().getUsername().equals(ADMIN_USERNAME), "Participant is confirmed");
     }
 
     private void setDefaultUsers() {
@@ -208,59 +140,5 @@ public class DemoApplication implements CommandLineRunner {
         } catch (RuntimeException e) {
             log.info("User {} already exists, no need to create it again", newUser.getId());
         }
-    }
-
-    private void setDefaultRoles() {
-        log.info("Checking for default roles...");
-
-        if (roleService.fetchRoleCount() == 0) {
-            log.info("Adding default roles to the system");
-
-            Role admin = new Role(RoleName.ROLE_ADMIN);
-            Role master = new Role(RoleName.ROLE_MC);
-            Role user = new Role(RoleName.ROLE_USER);
-
-            roleService.save(admin);
-            roleService.save(master);
-            roleService.save(user);
-        }
-    }
-
-    private void setDefaultChapters() {
-        log.info("Checking for default chapters...");
-
-        if (chapterService.count() != 0) {
-            return;
-        }
-
-//        chapterService.createChapter(new ChapterCreationRequest(100L, "Capitulo AAAAAAAAA"));
-//        chapterService.createChapter(new ChapterCreationRequest(200L, "Capitulo BBBBBBBBB"));
-        chapterService.createChapter(new ChapterCreationRequest(592L, "GVS"));
-    }
-
-    private void setDefaultAdmin() {
-        log.info("Checking default admin....");
-
-        User defaultAdmin = null;
-        try {
-            defaultAdmin = (User) userService.loadUserByUsername(ADMIN_USERNAME);
-            log.info("Admin found");
-        } catch (UsernameNotFoundException e) {
-            log.info("Admin not found, creating it...");
-            defaultAdmin = new User(ADMIN_USERNAME, "Paulo", "Gräbin", ADMIN_EMAIL, "aaa");
-            defaultAdmin = userService.createUser(defaultAdmin);
-
-            userService.assignUserToChapter(defaultAdmin.getId(), 592L);
-        }
-
-        log.info("Setting admin password....");
-        UpdateUserRequest defaultPasswordRequest = new UpdateUserRequest();
-        defaultPasswordRequest.setId(defaultAdmin.getId());
-        defaultPasswordRequest.setPassword("123123123");
-        userService.updateUser(defaultAdmin.getId(), defaultPasswordRequest);
-
-        log.info("Setting admin authorizations....");
-        userService.setAsMaster(defaultAdmin.getId());
-        userService.grantRoles(defaultAdmin.getId(), new HashSet<>(Collections.singletonList(roleService.getByName(RoleName.ROLE_ADMIN))));
     }
 }
