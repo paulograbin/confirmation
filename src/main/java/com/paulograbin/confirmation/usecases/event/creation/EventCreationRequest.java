@@ -11,23 +11,12 @@ import java.time.LocalTime;
 @Data
 public class EventCreationRequest {
 
-    @NotBlank
-    @Size(min = 3)
     private String title;
-
-    @NotBlank
-    @Size(min = 3)
     private String description;
-
-    @NotBlank
     private String address;
-    private boolean published;
-
-    @NotBlank
     private String date;
     private LocalTime time;
-
+    private boolean published;
     private User creator;
-
 
 }
