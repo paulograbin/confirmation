@@ -79,7 +79,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js")
                         .permitAll()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers(HttpMethod.DELETE).hasAnyRole("ADMIN", "MASTER")
+//                .antMatchers(HttpMethod.DELETE).hasAnyRole("ADMIN", "MC")
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
