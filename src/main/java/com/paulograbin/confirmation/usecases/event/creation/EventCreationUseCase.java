@@ -19,6 +19,7 @@ public class EventCreationUseCase {
     public static final int DESCRIPTION_MAX_LENGTH = 250;
     public static final int DESCRIPTION_MINIMUM_LENGTH = 5;
     public static final int TITLE_MINIMUM_LENGTH = 5;
+    public static final int TITLE_MAX_LENGTH = 250;
 
     private final EventCreationRequest request;
     private final EventCreationResponse response;
@@ -44,17 +45,17 @@ public class EventCreationUseCase {
     private void returnErrors() {
         if (isBlank(request.getTitle()) || request.getTitle().length() < TITLE_MINIMUM_LENGTH) {
             response.invalidTitle = true;
-            response.errorMessage = "Título do evento precisa ter pelo menos 5 letras";
+            response.errorMessage = "Título do evento precisa ter pelo menos " + TITLE_MINIMUM_LENGTH + " letras";
         }
 
         if (isBlank(request.getDescription()) || request.getDescription().length() < DESCRIPTION_MINIMUM_LENGTH) {
             response.invalidDescription = true;
-            response.errorMessage = "Descrição do evento precisa ter pelo menos 5 letras";
+            response.errorMessage = "Descrição do evento precisa ter pelo menos " + DESCRIPTION_MINIMUM_LENGTH + " letras";
         }
 
         if (isBlank(request.getDescription()) || request.getDescription().length() >= DESCRIPTION_MAX_LENGTH) {
             response.invalidDescription = true;
-            response.errorMessage = "Descrição deve conter menos de 500 caracteres";
+            response.errorMessage = "Descrição deve conter menos de " + DESCRIPTION_MAX_LENGTH + " letras";
         }
 
         if (request.getAddress().isEmpty()) {
@@ -96,7 +97,12 @@ public class EventCreationUseCase {
     private void createEvent() {
         try {
             Event eventToCreate = new Event();
-            eventToCreate.setTitle(request.getTitle());
+
+            if (request.getTitle().length() > TITLE_MAX_LENGTH) {
+                eventToCreate.setTitle(request.getTitle().substring(0, TITLE_MAX_LENGTH));
+            } else {
+                eventToCreate.setTitle(request.getTitle());
+            }
 
             if (request.getDescription().length() >= DESCRIPTION_MAX_LENGTH) {
                 eventToCreate.setDescription(request.getDescription().substring(0, DESCRIPTION_MAX_LENGTH));
