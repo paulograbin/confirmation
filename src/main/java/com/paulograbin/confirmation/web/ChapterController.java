@@ -79,7 +79,9 @@ public class ChapterController {
         Chapter chapter = chapterService.fetchById(currentUser.getChapter().getId());
         ChapterSimpleDTO chapterDTO = modelMapper.map(chapter, ChapterSimpleDTO.class);
 
-        chapterDTO.setMembers(chapter.getUsers().stream()
+        chapterDTO.setMembers(chapter.getUsers()
+                .stream()
+                .filter(User::isActive)
                 .map(u -> modelMapper.map(u, UserSimpleDTO.class))
                 .collect(Collectors.toList()));
         chapterDTO.getMembers().sort(Comparator.comparing(UserSimpleDTO::getId));
