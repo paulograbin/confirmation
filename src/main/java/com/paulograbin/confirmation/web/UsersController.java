@@ -41,7 +41,7 @@ import static java.lang.String.format;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 class UsersController {
 
     private static final Logger log = LoggerFactory.getLogger(UsersController.class);
@@ -59,7 +59,7 @@ class UsersController {
     private ModelMapper modelMapper;
 
 
-    @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/me")
     public UserDTO getCurrentUser(@CurrentUser User currentUser) {
         Long currentUserId = currentUser.getId();
         log.info("Fetching /me for user {}", currentUserId);
@@ -81,7 +81,7 @@ class UsersController {
         return userDTO;
     }
 
-    @GetMapping(value = "/panel", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/panel")
     @Cacheable(value = "admin", key = "#currentUser.id")
     public boolean canOpenAdminPanel(@CurrentUser User currentUser) {
         log.info("Fetching /panel for user {}", currentUser.getId());
