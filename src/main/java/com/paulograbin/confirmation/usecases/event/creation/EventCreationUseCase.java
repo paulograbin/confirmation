@@ -93,7 +93,7 @@ public class EventCreationUseCase {
         try {
             Event eventToCreate = new Event();
             eventToCreate.setTitle(request.getTitle());
-            eventToCreate.setDescription(request.getDescription());
+            eventToCreate.setDescription(request.getDescription().substring(0, 499));
             eventToCreate.setAddress(request.getAddress());
             eventToCreate.setChapter(request.getCreator().getChapter());
             eventToCreate.setPublished(request.isPublished());
