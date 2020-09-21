@@ -16,7 +16,7 @@ public class EventCreationUseCase {
 
     private static final Logger logger = LoggerFactory.getLogger(EventCreationUseCase.class);
 
-    public static final int DESCRIPTION_MAX_LENGTH = 250;
+    public static final int DESCRIPTION_MAX_LENGTH = 500;
     public static final int DESCRIPTION_MINIMUM_LENGTH = 5;
     public static final int TITLE_MINIMUM_LENGTH = 5;
     public static final int TITLE_MAX_LENGTH = 250;
@@ -105,7 +105,7 @@ public class EventCreationUseCase {
             }
 
             if (request.getDescription().length() >= DESCRIPTION_MAX_LENGTH) {
-                eventToCreate.setDescription(request.getDescription().substring(0, DESCRIPTION_MAX_LENGTH));
+                eventToCreate.setDescription(request.getDescription().substring(0, DESCRIPTION_MAX_LENGTH-1));
             } else {
                 eventToCreate.setDescription(request.getDescription());
             }
