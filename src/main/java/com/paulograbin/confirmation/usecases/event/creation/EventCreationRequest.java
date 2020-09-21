@@ -1,14 +1,14 @@
 package com.paulograbin.confirmation.usecases.event.creation;
 
 import com.paulograbin.confirmation.domain.User;
+import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.LocalTime;
 
 
 @Data
+@Builder(setterPrefix = "with")
 public class EventCreationRequest {
 
     private String title;

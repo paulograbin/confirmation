@@ -41,7 +41,7 @@ public class EventCreationUseCase {
             response.errorMessage = "Descrição do evento precisa ter pelo menos 5 letras";
         }
 
-        if (request.getDescription().length() >= 500) {
+        if (isBlank(request.getDescription()) || request.getDescription().length() >= 500) {
             response.invalidDescription = true;
             response.errorMessage = "Descrição deve conter menos de 500 caracteres";
         }

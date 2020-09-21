@@ -1,11 +1,15 @@
 package com.paulograbin.confirmation.usecases.event.creation;
 
+
+import lombok.Data;
+
+@Data
 public class EventCreationResponse {
 
     public String errorMessage = "";
 
     public boolean successful;
-    public long createdEventId;
+    public Long createdEventId;
 
     public boolean invalidTitle;
     public boolean invalidDescription;
