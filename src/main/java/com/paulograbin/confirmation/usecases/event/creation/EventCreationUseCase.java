@@ -3,6 +3,8 @@ package com.paulograbin.confirmation.usecases.event.creation;
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.persistence.EventRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -11,6 +13,8 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 
 public class EventCreationUseCase {
+
+    private static final Logger logger = LoggerFactory.getLogger(EventCreationUseCase.class);
 
     private final EventCreationRequest request;
     private final EventCreationResponse response;
@@ -23,6 +27,9 @@ public class EventCreationUseCase {
     }
 
     public void execute() {
+        logger.info("Executing event creation with the following request");
+        logger.info(request.toString());
+
         if (isValid()) {
             createEvent();
         } else {
@@ -77,6 +84,9 @@ public class EventCreationUseCase {
             response.invalidChapter = true;
             response.errorMessage = "Criador do evento precisa pertencer a algum capitulo";
         }
+
+        logger.info("Event creation failed");
+        logger.info(response.toString());
     }
 
     private void createEvent() {
@@ -99,6 +109,8 @@ public class EventCreationUseCase {
             response.successful = true;
             response.createdEventId = createdEvent.getId();
 
+            logger.info("Event created successfully");
+            logger.info(response.toString());
         } catch (DateTimeParseException e) {
             response.invalidDate = true;
         }
