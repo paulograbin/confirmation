@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.net.URI;
 
 
@@ -58,7 +57,7 @@ class AuthenticationController {
     private UserService userService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<JwtTokenResponse> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtTokenResponse> createAuthenticationToken(@RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -81,7 +80,7 @@ class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<ApiResponse> registerUser(@RequestBody SignUpRequest signUpRequest) {
         User userToCreate = new User(signUpRequest.getUsername(), signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getEmail(), signUpRequest.getPassword());
 
         User createdUser = userService.createUser(userToCreate);

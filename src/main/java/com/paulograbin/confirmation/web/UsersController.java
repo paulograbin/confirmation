@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -131,7 +130,7 @@ class UsersController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody @Valid UpdateUserRequest newUserInformation, @CurrentUser User currentUser) {
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest newUserInformation, @CurrentUser User currentUser) {
         if (id.longValue() != newUserInformation.getId().longValue()) {
             throw new InvalidRequestException("Request path doesn't match updated user");
         }
@@ -142,7 +141,7 @@ class UsersController {
 
     @PutMapping(path = "/{id}/admin")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO updateUserForAdmin(@PathVariable Long id, @RequestBody @Valid UpdateUserRequestAdmin updateUserRequest, @CurrentUser User currentUser) {
+    public UserDTO updateUserForAdmin(@PathVariable Long id, @RequestBody UpdateUserRequestAdmin updateUserRequest, @CurrentUser User currentUser) {
         log.info("New update user for admin request");
 
         if (!userService.isAdmin(currentUser)) {

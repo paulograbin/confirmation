@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
@@ -105,7 +104,7 @@ public class ChapterController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ChapterDTO createNewChapter(@Valid @RequestBody ChapterCreationRequest creationRequest) {
+    public ChapterDTO createNewChapter( @RequestBody ChapterCreationRequest creationRequest) {
         log.info("Creating new chapter {}", creationRequest);
 
         Chapter createdChapter = chapterService.createChapter(creationRequest);
@@ -115,7 +114,7 @@ public class ChapterController {
 
     @PutMapping(path = "/{chapterId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ChapterDTO updateChapter(@PathVariable("chapterId") long chapterId, @Valid @RequestBody ChapterCreationRequest updateRequest) {
+    public ChapterDTO updateChapter(@PathVariable("chapterId") long chapterId, @RequestBody ChapterCreationRequest updateRequest) {
         log.info("Updating chapter {}", updateRequest);
 
         Chapter createdChapter = chapterService.update(chapterId, updateRequest);
