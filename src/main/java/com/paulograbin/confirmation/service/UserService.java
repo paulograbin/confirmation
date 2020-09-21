@@ -8,12 +8,16 @@ import com.paulograbin.confirmation.exception.EmailNotAvailableException;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
+import com.paulograbin.confirmation.persistence.ParticipationRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequestAdmin;
 import com.paulograbin.confirmation.usecases.user.UpdateUserResponse;
 import com.paulograbin.confirmation.usecases.user.UpdateUserUseCase;
+import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteRequest;
+import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteResponse;
+import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +45,9 @@ public class UserService implements UserDetailsService {
 
     @Resource
     private UserRepository userRepository;
+
+    @Resource
+    private ParticipationRepository participationRepository;
 
     @Resource
     private RoleService roleService;
@@ -194,6 +201,15 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userFromDatabase);
     }
 
+    public UserHardDeleteResponse hardDelete(UserHardDeleteRequest request, User currentUser) {
+        UserHardDeleteResponse response = new UserHardDeleteResponse();
+        request.setRequestingUser(currentUser.getId());
+
+        new UserHardDeleteUseCase(request, response, userRepository, participationRepository).execute();
+
+        return response;
+    }
+
     public User activate(Long id) {
         User userFromDatabase = fetchById(id);
         log.info("Activating user {}", userFromDatabase.getUsername());
@@ -225,6 +241,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userFromDatabase);
     }
 
+    @Transactional
     public User grantRoles(final long userId, Set<Role> rolesToAdd) {
         final User userFromDatabase = fetchById(userId);
 

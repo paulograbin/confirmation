@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.web;
 
+import com.google.gson.Gson;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
@@ -8,6 +9,8 @@ import com.paulograbin.confirmation.service.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequestAdmin;
+import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteRequest;
+import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteResponse;
 import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
 import com.paulograbin.confirmation.web.dto.ParticipationWithoutUserDTO;
 import com.paulograbin.confirmation.web.dto.UserDTO;
@@ -89,7 +92,7 @@ class UsersController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> listAll(@CurrentUser User currentUser) {
-        log.info("Listing all user");
+        log.info("Listing all users");
 
         Iterable<User> users = userService.fetchAll(currentUser);
         List<User> arrayList = Lists.from(users.iterator());
@@ -165,6 +168,20 @@ class UsersController {
         // todo lock this endpoint
 
         return modelMapper.map(inactivatedUser, UserDTO.class);
+    }
+
+    @DeleteMapping(path = "/{id}/harddelete")
+    @ResponseStatus(HttpStatus.OK)
+    public String hardDeleteUser(@PathVariable Long id, @CurrentUser User currentUser) {
+        log.info("Hard deleting user {}", id);
+
+        UserHardDeleteRequest request = new UserHardDeleteRequest();
+        request.setUserToDeleteId(id);
+        request.setRequestingUser(currentUser.getId());
+
+        UserHardDeleteResponse response = userService.hardDelete(request, currentUser);
+
+        return new Gson().toJson(response);
     }
 
     @PutMapping(path = "/{id}/activate")
