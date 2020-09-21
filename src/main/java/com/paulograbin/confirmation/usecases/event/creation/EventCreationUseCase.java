@@ -53,11 +53,6 @@ public class EventCreationUseCase {
             response.errorMessage = "Descrição do evento precisa ter pelo menos " + DESCRIPTION_MINIMUM_LENGTH + " letras";
         }
 
-        if (isBlank(request.getDescription()) || request.getDescription().length() >= DESCRIPTION_MAX_LENGTH) {
-            response.invalidDescription = true;
-            response.errorMessage = "Descrição deve conter menos de " + DESCRIPTION_MAX_LENGTH + " letras";
-        }
-
         if (request.getAddress().isEmpty()) {
             response.invalidAddress = true;
             response.errorMessage = "Faltou informar o endereço";
@@ -105,7 +100,7 @@ public class EventCreationUseCase {
             }
 
             if (request.getDescription().length() >= DESCRIPTION_MAX_LENGTH) {
-                eventToCreate.setDescription(request.getDescription().substring(0, DESCRIPTION_MAX_LENGTH-1));
+                eventToCreate.setDescription(request.getDescription().substring(0, DESCRIPTION_MAX_LENGTH));
             } else {
                 eventToCreate.setDescription(request.getDescription());
             }
@@ -137,7 +132,7 @@ public class EventCreationUseCase {
             return false;
         }
 
-        if (isBlank(request.getDescription()) || request.getDescription().length() < DESCRIPTION_MINIMUM_LENGTH || request.getDescription().length() > DESCRIPTION_MAX_LENGTH) {
+        if (isBlank(request.getDescription()) || request.getDescription().length() < DESCRIPTION_MINIMUM_LENGTH) {
             return false;
         }
 
