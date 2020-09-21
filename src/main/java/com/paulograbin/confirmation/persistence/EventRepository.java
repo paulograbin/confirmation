@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-public interface EventRepository extends CrudRepository<Event, Long> {
+public interface EventRepository extends EntityRepository<Event, Long> {
 
     List<Event> findAllByCreatorId(long creatorId);
 

@@ -17,8 +17,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-public class Event {
+public class Event extends EntityClass {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +43,8 @@ public class Event {
 
 
     public Event(Chapter chapter, String title, String address, String description, User creator, LocalDate date, LocalTime time) {
+        super(null);
+
         this.chapter = chapter;
         this.title = title;
         this.address = address;
@@ -55,6 +56,10 @@ public class Event {
 
         addUserAsCreator(creator);
         addUserAsParticipant(creator);
+    }
+
+    public Event() {
+        super(null);
     }
 
     private void addUserAsParticipant(User creator) {
