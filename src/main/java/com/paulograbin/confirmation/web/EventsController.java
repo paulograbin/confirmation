@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -118,11 +119,15 @@ class EventsController {
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public String createNewEvent(@RequestBody EventCreationRequest eventToCreate, @CurrentUser User currentUser) {
-        EventCreationResponse event = eventService.createEvent(eventToCreate, currentUser);
+    public ResponseEntity<String> createNewEvent(@RequestBody EventCreationRequest eventToCreate, @CurrentUser User currentUser) {
+        EventCreationResponse response = eventService.createEvent(eventToCreate, currentUser);
 
-        return new Gson().toJson(event);
-//        return modelMapper.map(createdEvent, EventDetailsDTO.class);
+        if (response.successful) {
+            return ResponseEntity.created(URI.create("event/" + response.createdEventId))
+                    .body(new Gson().toJson(response));
+        } else {
+            return ResponseEntity.badRequest().body(new Gson().toJson(response));
+        }
     }
 
     @PutMapping(path = "/{eventId}")
