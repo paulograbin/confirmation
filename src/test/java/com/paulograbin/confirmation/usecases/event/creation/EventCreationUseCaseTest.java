@@ -38,15 +38,15 @@ class EventCreationUseCaseTest {
     }
 
     private EventCreationRequest makeValidRequest() {
-        EventCreationRequest.EventCreationRequestBuilder builder = EventCreationRequest.builder();
-        builder.withTitle("Title");
-        builder.withDescription("aaaaaa");
-        builder.withAddress("Title");
-        builder.withDate(DateHelper.makeFutureDate());
-        builder.withTime(LocalTime.now());
-        builder.withCreator(makeCreator());
+        EventCreationRequest request = new EventCreationRequest();
+        request.setTitle("Title");
+        request.setDescription("aaaaaa");
+        request.setAddress("Title");
+        request.setDate(DateHelper.makeFutureDate());
+        request.setTime(LocalTime.now());
+        request.setCreator(makeCreator());
 
-        return builder.build();
+        return request;
     }
 
     @Test
