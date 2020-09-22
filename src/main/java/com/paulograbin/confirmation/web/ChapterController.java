@@ -84,7 +84,7 @@ public class ChapterController {
                 .filter(User::isActive)
                 .map(u -> modelMapper.map(u, UserSimpleDTO.class))
                 .collect(Collectors.toList()));
-        chapterDTO.getMembers().sort(Comparator.comparing(UserSimpleDTO::getId));
+        chapterDTO.getMembers().sort(Comparator.comparing(UserSimpleDTO::getFirstName));
 
         return chapterDTO;
     }
