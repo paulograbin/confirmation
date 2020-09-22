@@ -33,6 +33,17 @@ class DateUtilsTest {
     }
 
     @Test
+    void newPattern() {
+        String inputDateString = "28/May/1997";
+
+        LocalDate dateFromString = DateUtils.getDateFromString(inputDateString);
+
+        assertThat(dateFromString.getDayOfMonth()).isEqualTo(28);
+        assertThat(dateFromString.getMonthValue()).isEqualTo(5);
+        assertThat(dateFromString.getYear()).isEqualTo(1997);
+    }
+
+    @Test
     void name2() {
         String inputDateString = "30/08/2020";
 

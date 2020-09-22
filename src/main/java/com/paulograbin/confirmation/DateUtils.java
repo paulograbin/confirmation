@@ -12,6 +12,7 @@ public class DateUtils {
     private static final DateTimeFormatter americanPatternAgain = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter standardPattern = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+     private static final DateTimeFormatter formatter222 = DateTimeFormatter.ofPattern("dd/MMM/yyyy");
     private static final DateTimeFormatter formatter22 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public static LocalDate getDateFromString(String dateString) {
@@ -22,6 +23,7 @@ public class DateUtils {
         dateTimeFormatterBuilder.appendOptional(standardPattern);
         dateTimeFormatterBuilder.appendOptional(formatter2);
         dateTimeFormatterBuilder.appendOptional(formatter22);
+        dateTimeFormatterBuilder.appendOptional(formatter222);
 
         DateTimeFormatter formatter = dateTimeFormatterBuilder.toFormatter();
 
