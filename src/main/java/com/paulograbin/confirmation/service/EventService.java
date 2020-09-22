@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.service;
 
+import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Participation;
@@ -88,7 +89,7 @@ public class EventService {
         log.info("Creating event {} for user {}", eventToCreate.getTitle(), eventCreator.getUsername());
 
         eventToCreate.setId(null);
-        eventToCreate.setCreationDate(LocalDateTime.now());
+        eventToCreate.setCreationDate(DateUtils.getCurrentDate());
         eventToCreate.setCreator(eventCreator);
         eventToCreate.setPublished(true);
         // TODO fix this
@@ -149,7 +150,9 @@ public class EventService {
     }
 
     public List<Event> fetchAllUpcomingEventsCreatedByUser(long userId) {
-        final LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
+        final LocalDate yesterday = DateUtils.getCurrentDate()
+                .toLocalDate()
+                .minus(1, ChronoUnit.DAYS);
 
         return eventRepository.findAllByCreatorId(userId).stream()
                 .filter(e -> e.getDate().isAfter(yesterday))
@@ -210,7 +213,9 @@ public class EventService {
     }
 
     public List<Event> fetchUpComingEventsFromChapter(long chapterId) {
-        LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
+        LocalDate yesterday = DateUtils.getCurrentDate()
+                .toLocalDate()
+                .minus(1, ChronoUnit.DAYS);
 
         return eventRepository.findAllByChapterIdAndDateGreaterThanEqual(chapterId, yesterday);
     }

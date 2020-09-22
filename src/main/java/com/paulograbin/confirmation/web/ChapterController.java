@@ -93,33 +93,6 @@ public class ChapterController {
         return chapterDTO;
     }
 
-    @GetMapping(path = "/meucapitulo-hora")
-    @ResponseStatus(HttpStatus.OK)
-    public LocalDate mychapterDate() {
-        LocalDate now = LocalDate.now();
-        log.info("Now is {}", now.toString());
-
-        return now;
-    }
-
-    @GetMapping(path = "/meucapitulo-time")
-    @ResponseStatus(HttpStatus.OK)
-    public LocalTime mychapterTime() {
-        LocalTime now = DateUtils.getCurrentDate().toLocalTime();
-        log.info("Now is {}", now.toString());
-
-        return now;
-    }
-
-    @GetMapping(path = "/meucapitulo-datetime")
-    @ResponseStatus(HttpStatus.OK)
-    public LocalDateTime mychapterDateTime() {
-        LocalDateTime now = LocalDateTime.now();
-        log.info("Now is {}", now.toString());
-
-        return now;
-    }
-
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ChapterDTO listChapter(@PathVariable long id) {

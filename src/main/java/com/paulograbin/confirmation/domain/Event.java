@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.domain;
 
+import com.paulograbin.confirmation.DateUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -51,7 +52,7 @@ public class Event extends EntityClass {
         this.description = description;
         this.date = date;
         this.time = time;
-        this.creationDate = LocalDateTime.now();
+        this.creationDate = DateUtils.getCurrentDate();
         this.published = false;
 
         addUserAsCreator(creator);

@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.service;
 
+import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.User;
@@ -55,7 +56,9 @@ public class ParticipationService {
     public List<Participation> getAllUpcomingParticipationsFromUser(final long userId) {
         log.info("Fetching every up coming participation from user {}", userId);
 
-        final LocalDate yesterday = LocalDate.now().minus(1, ChronoUnit.DAYS);
+        final LocalDate yesterday = DateUtils.getCurrentDate()
+                .toLocalDate()
+                .minus(1, ChronoUnit.DAYS);
 
         return getAllParticipationsFromUser(userId).stream()
                 .filter(p -> p.getEvent().getDate().isAfter(yesterday))
@@ -88,14 +91,14 @@ public class ParticipationService {
 
     public Participation confirmParticipation(Participation participation) {
         participation.confirmParticipant();
-        participation.setConfirmationDate(LocalDateTime.now());
+        participation.setConfirmationDate(DateUtils.getCurrentDate());
 
         return participationRepository.save(participation);
     }
 
     public Participation declineParticipation(Participation participation) {
         participation.declineParticipant();
-        participation.setConfirmationDate(LocalDateTime.now());
+        participation.setConfirmationDate(DateUtils.getCurrentDate());
 
         return participationRepository.save(participation);
     }

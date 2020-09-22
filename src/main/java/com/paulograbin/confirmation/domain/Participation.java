@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.domain;
 
+import com.paulograbin.confirmation.DateUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,7 +50,7 @@ public class Participation {
     public Participation(User user, Event event) {
         this.user = user;
         this.event = event;
-        this.invitationDate = LocalDateTime.now();
+        this.invitationDate = DateUtils.getCurrentDate();
         this.status = ParticipationStatus.CONVIDADO;
     }
 

@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.service;
 
+import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Role;
@@ -99,7 +100,7 @@ public class UserService implements UserDetailsService {
 
         userToCreate.setId(null);
         userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
-        userToCreate.setCreationDate(LocalDateTime.now());
+        userToCreate.setCreationDate(DateUtils.getCurrentDate());
 
         assignUserRole(userToCreate);
 
@@ -156,7 +157,7 @@ public class UserService implements UserDetailsService {
         userFromDatabase.setFirstName(updateRequest.getFirstName());
         userFromDatabase.setLastName(updateRequest.getLastName());
         userFromDatabase.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
-        userFromDatabase.setModificationDate(LocalDateTime.now());
+        userFromDatabase.setModificationDate(DateUtils.getCurrentDate());
 
         emailService.sendPasswordChangedMail(userFromDatabase);
 
@@ -176,7 +177,7 @@ public class UserService implements UserDetailsService {
         userFromDatabase.setFirstName(updateRequest.getFirstName());
         userFromDatabase.setLastName(updateRequest.getLastName());
         userFromDatabase.setMaster(updateRequest.getMaster());
-        userFromDatabase.setModificationDate(LocalDateTime.now());
+        userFromDatabase.setModificationDate(DateUtils.getCurrentDate());
 
         if (!updateRequest.getActive()) {
             inactivate(userFromDatabase.getId());
@@ -195,8 +196,8 @@ public class UserService implements UserDetailsService {
         log.info("Inactivating user {}", userFromDatabase.getUsername());
 
         userFromDatabase.setActive(false);
-        userFromDatabase.setInactivatedIn(LocalDateTime.now());
-        userFromDatabase.setModificationDate(LocalDateTime.now());
+        userFromDatabase.setInactivatedIn(DateUtils.getCurrentDate());
+        userFromDatabase.setModificationDate(DateUtils.getCurrentDate());
 
         return userRepository.save(userFromDatabase);
     }
@@ -216,7 +217,7 @@ public class UserService implements UserDetailsService {
 
         userFromDatabase.setActive(true);
         userFromDatabase.setInactivatedIn(null);
-        userFromDatabase.setModificationDate(LocalDateTime.now());
+        userFromDatabase.setModificationDate(DateUtils.getCurrentDate());
 
         return userRepository.save(userFromDatabase);
     }
@@ -294,7 +295,7 @@ public class UserService implements UserDetailsService {
 
     public void updateLoginDate(UserDetails userDetails) {
         User user = (User) userDetails;
-        user.setLastLogin(LocalDateTime.now());
+        user.setLastLogin(DateUtils.getCurrentDate());
 
         userRepository.save(user);
     }

@@ -66,7 +66,7 @@ public class EventCreationUseCase {
         try {
             LocalDate parsedDate = DateUtils.getDateFromString(request.getDate());
 
-            if (parsedDate.isBefore(LocalDate.now())) {
+            if (parsedDate.isBefore(DateUtils.getCurrentDate().toLocalDate())) {
                 response.invalidDate = true;
                 response.errorMessage = "Cerimônias não podem ser criadas com data no passado";
             }
@@ -147,7 +147,7 @@ public class EventCreationUseCase {
         try {
             LocalDate requestParsedDate = DateUtils.getDateFromString(request.getDate());
 
-            if (requestParsedDate.isBefore(LocalDate.now())) {
+            if (requestParsedDate.isBefore(DateUtils.getCurrentDate().toLocalDate())) {
                 return false;
             }
         } catch (DateTimeParseException e) {
