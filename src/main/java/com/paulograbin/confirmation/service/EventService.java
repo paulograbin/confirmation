@@ -54,12 +54,18 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-
     public Event fetchById(long eventId) {
         log.info("Fetching event by id {}", eventId);
 
-        return eventRepository.findById(eventId)
+        Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id " + eventId + " not found!"));
+
+        event.setParticipants(event.getParticipants()
+                .stream()
+                .filter(u -> u.getUser().isActive())
+                .collect(Collectors.toSet()));
+
+        return event;
     }
 
     public EventCreationResponse createEvent(EventCreationRequest request, User currentUser) {
