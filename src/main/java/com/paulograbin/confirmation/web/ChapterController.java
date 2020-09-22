@@ -31,6 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,6 +90,33 @@ public class ChapterController {
         chapterDTO.getMembers().sort(Comparator.comparing(UserSimpleDTO::getFirstName));
 
         return chapterDTO;
+    }
+
+    @GetMapping(path = "/meucapitulo-hora")
+    @ResponseStatus(HttpStatus.OK)
+    public LocalDate mychapterDate() {
+        LocalDate now = LocalDate.now();
+        log.info("Now is {}", now.toString());
+
+        return now;
+    }
+
+    @GetMapping(path = "/meucapitulo-time")
+    @ResponseStatus(HttpStatus.OK)
+    public LocalTime mychapterTime() {
+        LocalTime now = LocalTime.now();
+        log.info("Now is {}", now.toString());
+
+        return now;
+    }
+
+    @GetMapping(path = "/meucapitulo-datetime")
+    @ResponseStatus(HttpStatus.OK)
+    public LocalDateTime mychapterDateTime() {
+        LocalDateTime now = LocalDateTime.now();
+        log.info("Now is {}", now.toString());
+
+        return now;
     }
 
     @GetMapping(path = "/{id}")
