@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.web;
 
+import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
@@ -104,7 +105,7 @@ public class ChapterController {
     @GetMapping(path = "/meucapitulo-time")
     @ResponseStatus(HttpStatus.OK)
     public LocalTime mychapterTime() {
-        LocalTime now = LocalTime.now();
+        LocalTime now = DateUtils.getCurrentDate().toLocalTime();
         log.info("Now is {}", now.toString());
 
         return now;
