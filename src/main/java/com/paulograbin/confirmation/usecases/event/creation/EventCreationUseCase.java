@@ -64,15 +64,15 @@ public class EventCreationUseCase {
         }
 
         try {
-            DateUtils.getDateFromString(request.getDate());
+            LocalDate parsedDate = DateUtils.getDateFromString(request.getDate());
+
+            if (parsedDate.isBefore(LocalDate.now())) {
+                response.invalidDate = true;
+                response.errorMessage = "Cerimônias não podem ser criadas com data no passado";
+            }
         } catch (DateTimeParseException e) {
             response.invalidDate = true;
             response.errorMessage = "Data inválida";
-        }
-
-        if (DateUtils.getDateFromString(request.getDate()).isBefore(LocalDate.now())) {
-            response.invalidDate = true;
-            response.errorMessage = "Cerimônias não podem ser criadas com data no passado";
         }
 
         if (request.getTime() == null) {
@@ -144,7 +144,13 @@ public class EventCreationUseCase {
             return false;
         }
 
-        if (DateUtils.getDateFromString(request.getDate()).isBefore(LocalDate.now())) {
+        try {
+            LocalDate requestParsedDate = DateUtils.getDateFromString(request.getDate());
+
+            if (requestParsedDate.isBefore(LocalDate.now())) {
+                return false;
+            }
+        } catch (DateTimeParseException e) {
             return false;
         }
 
