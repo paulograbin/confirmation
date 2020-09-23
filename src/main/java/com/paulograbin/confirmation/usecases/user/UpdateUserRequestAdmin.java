@@ -10,6 +10,7 @@ public class UpdateUserRequestAdmin {
     private String email;
     private String firstName;
     private String lastName;
+    private long chapter;
     private Boolean master;
     private Boolean active;
     private String password;

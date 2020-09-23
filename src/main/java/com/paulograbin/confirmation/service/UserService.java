@@ -179,6 +179,14 @@ public class UserService implements UserDetailsService {
         userFromDatabase.setMaster(updateRequest.getMaster());
         userFromDatabase.setModificationDate(DateUtils.getCurrentDate());
 
+        if (userFromDatabase.getChapter().getId() != updateRequest.getChapter()) {
+            Chapter chapterToAssignToUser = chapterService.fetchById(updateRequest.getChapter());
+
+            userFromDatabase.setChapter(chapterToAssignToUser);
+
+            // todo: when changing user, but fetch events from the new chapter to which user has not been invited to
+        }
+
         if (!updateRequest.getActive()) {
             inactivate(userFromDatabase.getId());
         } else {
