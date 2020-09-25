@@ -139,7 +139,7 @@ public class UserService implements UserDetailsService {
 
 
         if (isBlank(user.getPassword())) {
-            throw new IllegalArgumentException("Senha do usuário não pode ser nulao");
+            throw new IllegalArgumentException("Senha do usuário não pode ser nulo");
         }
     }
 
@@ -175,6 +175,9 @@ public class UserService implements UserDetailsService {
         if (!id.equals(updateRequest.getId())) {
             throw new InvalidRequestException("Provided id and request don't match");
         }
+
+        validateAvailableEmail(updateRequest.getEmail());
+        validateAvailableUsername(updateRequest.getUsername());
 
         userFromDatabase.setEmail(updateRequest.getEmail());
         userFromDatabase.setUsername(updateRequest.getUsername());
