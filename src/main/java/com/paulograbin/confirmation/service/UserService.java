@@ -154,6 +154,10 @@ public class UserService implements UserDetailsService {
             throw new InvalidRequestException("Provided id and request don't match");
         }
 
+        if (updateRequest.getPassword().length() < 6 || updateRequest.getPassword().length() > 128) {
+            throw new InvalidRequestException("Password doesn't match required size");
+        }
+
         userFromDatabase.setFirstName(updateRequest.getFirstName());
         userFromDatabase.setLastName(updateRequest.getLastName());
         userFromDatabase.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
