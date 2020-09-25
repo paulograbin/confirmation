@@ -1,8 +1,15 @@
 package com.paulograbin.confirmation.security.jwt;
 
+import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.resource.JwtTokenResponse;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Component
@@ -33,7 +42,7 @@ public class JwtTokenUtil implements Serializable {
         User principal = (User) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expirationDate = calculateExpirationDate(now);
+        Date expirationDate = calculateExpirationDate();
 
         String jwtToken = Jwts.builder()
                 .setSubject(Long.toString(principal.getId()))
@@ -74,12 +83,17 @@ public class JwtTokenUtil implements Serializable {
         return false;
     }
 
-    private Date calculateExpirationDate(Date createdDate) {
-//        return new Date(createdDate.getTime() + expiration * 1000);
+    private Date calculateExpirationDate() {
+        log.info("Calculating expiration date for JWT token...");
 
-        Calendar instance = Calendar.getInstance();
-        instance.add(Calendar.DAY_OF_MONTH, 30);
+        LocalDateTime currentDate = DateUtils.getCurrentDate();
+        log.info("Current date is {}", currentDate);
+        ZonedDateTime expirationDate = currentDate.atZone(ZoneId.of("America/Sao_Paulo")).plusDays(30);
+        log.info("Calculated expiration date is {}", expirationDate);
 
-        return instance.getTime();
+        Date convertedValue = Date.from(expirationDate.toInstant());
+        log.info("Converted to date value  is {}", convertedValue);
+
+        return convertedValue;
     }
 }
