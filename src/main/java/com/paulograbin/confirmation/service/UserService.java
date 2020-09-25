@@ -175,11 +175,16 @@ public class UserService implements UserDetailsService {
             throw new InvalidRequestException("Provided id and request don't match");
         }
 
-        validateAvailableEmail(updateRequest.getEmail());
-        validateAvailableUsername(updateRequest.getUsername());
+        if (!userFromDatabase.getEmail().equalsIgnoreCase(updateRequest.getEmail())) {
+            validateAvailableEmail(updateRequest.getEmail());
+            userFromDatabase.setEmail(updateRequest.getEmail());
+        }
 
-        userFromDatabase.setEmail(updateRequest.getEmail());
-        userFromDatabase.setUsername(updateRequest.getUsername());
+        if (!userFromDatabase.getUsername().equalsIgnoreCase(updateRequest.getUsername())) {
+            validateAvailableUsername(updateRequest.getUsername());
+            userFromDatabase.setUsername(updateRequest.getUsername());
+        }
+
         userFromDatabase.setFirstName(updateRequest.getFirstName());
         userFromDatabase.setLastName(updateRequest.getLastName());
         userFromDatabase.setMaster(updateRequest.getMaster());
