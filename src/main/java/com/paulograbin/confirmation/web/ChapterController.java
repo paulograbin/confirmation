@@ -74,7 +74,7 @@ public class ChapterController {
     @GetMapping(path = "/meucapitulo")
     @Cacheable(value = "chapterMembers", key = "#currentUser.chapter.id")
     @ResponseStatus(HttpStatus.OK)
-    public ChapterSimpleDTO mychapter(@CurrentUser User currentUser) {
+    public ResponseEntity<ChapterSimpleDTO> mychapter(@CurrentUser User currentUser) {
         log.info("Fetching chapter for user {}", currentUser.getId());
 
         Chapter chapter = chapterService.fetchById(currentUser.getChapter().getId());
@@ -87,7 +87,10 @@ public class ChapterController {
                 .collect(Collectors.toList()));
         chapterDTO.getMembers().sort(Comparator.comparing(UserSimpleDTO::getFirstName));
 
-        return chapterDTO;
+        CacheControl cc = CacheControl.maxAge(Duration.ofMinutes(30)).cachePrivate();
+        return ResponseEntity.ok()
+                .cacheControl(cc)
+                .body(chapterDTO);
     }
 
     @GetMapping(path = "/{id}")
