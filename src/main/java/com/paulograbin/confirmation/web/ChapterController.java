@@ -1,6 +1,5 @@
 package com.paulograbin.confirmation.web;
 
-import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
@@ -32,9 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,6 +72,7 @@ public class ChapterController {
     }
 
     @GetMapping(path = "/meucapitulo")
+    @Cacheable(value = "chapterMembers", key = "#currentUser.chapter.id")
     @ResponseStatus(HttpStatus.OK)
     public ChapterSimpleDTO mychapter(@CurrentUser User currentUser) {
         log.info("Fetching chapter for user {}", currentUser.getId());
