@@ -51,7 +51,7 @@ public class SendGridEmailService implements EmailService {
         Email from = new Email("plgrabin@gmail.com");
 
         Email to = new Email(userFromDatabase.getEmail());
-        Email cc = new Email("plgrabin@gmail.com");
+        Email cc = new Email("pl.grabin@gmail.com");
 
         final var personalization = new Personalization();
         personalization.addTo(to);
