@@ -48,13 +48,16 @@ public class ReadPseudoUserUseCase {
         }
 
         Optional<UserRequest> byId = repository.findById(requestId);
-
         if (byId.isEmpty()) {
             return false;
         }
 
         UserRequest request = byId.get();
         if (getCurrentDate().isAfter(request.getExpirationDate())) {
+            return false;
+        }
+
+        if (request.getConvertionDate() != null) {
             return false;
         }
 
@@ -76,6 +79,11 @@ public class ReadPseudoUserUseCase {
             UserRequest request = byId.get();
 
             if (getCurrentDate().isAfter(request.getExpirationDate())) {
+                response.errorMessage = "Essa requisição já não é mais válida";
+                response.expired = true;
+            }
+
+            if (request.getConvertionDate() != null) {
                 response.errorMessage = "Essa requisição já não é mais válida";
                 response.expired = true;
             }
