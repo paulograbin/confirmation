@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
+import java.util.UUID;
 
+import static com.paulograbin.confirmation.DateUtils.getCurrentDate;
 import static com.paulograbin.confirmation.DateUtils.parseDateToString;
 
 public class ReadPseudoUserUseCase {
@@ -16,6 +18,7 @@ public class ReadPseudoUserUseCase {
     private final ReadPseudoUserResponse response;
     private final ReadPseudoUserRequest request;
     private final UserRequestRepository repository;
+    private UUID requestId;
 
     public ReadPseudoUserUseCase(ReadPseudoUserRequest readPseudoUserRequest, UserRequestRepository repository) {
         this.response = new ReadPseudoUserResponse();
@@ -38,9 +41,20 @@ public class ReadPseudoUserUseCase {
     }
 
     private boolean isValid() {
-        Optional<UserRequest> byId = repository.findById(request.requestId);
+        try {
+            this.requestId = UUID.fromString(request.requestId);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+
+        Optional<UserRequest> byId = repository.findById(requestId);
 
         if (byId.isEmpty()) {
+            return false;
+        }
+
+        UserRequest request = byId.get();
+        if (getCurrentDate().isAfter(request.getExpirationDate())) {
             return false;
         }
 
@@ -48,21 +62,37 @@ public class ReadPseudoUserUseCase {
     }
 
     private void setErrors() {
-        Optional<UserRequest> byId = repository.findById(request.requestId);
+        try {
+            this.requestId = UUID.fromString(request.requestId);
 
-        if (byId.isEmpty()) {
+            Optional<UserRequest> byId = repository.findById(UUID.fromString(request.requestId));
+
+            if (byId.isEmpty()) {
+                response.errorMessage = "Requisição não encontrada";
+                response.requestNotFound = true;
+                return;
+            }
+
+            UserRequest request = byId.get();
+
+            if (getCurrentDate().isAfter(request.getExpirationDate())) {
+                response.errorMessage = "Essa requisição já não é mais válida";
+                response.expired = true;
+            }
+        } catch (IllegalArgumentException e) {
+            response.errorMessage = "Requisição não encontrada";
             response.requestNotFound = true;
         }
     }
 
     private void fetchRequest() {
-        Optional<UserRequest> byId = repository.findById(request.requestId);
+        Optional<UserRequest> byId = repository.findById(UUID.fromString(request.requestId));
 
         UserRequest requestFromDatabase = byId.get();
 
         response.successful = true;
 
-        response.requestId = requestFromDatabase.getId();
+        response.requestId = requestFromDatabase.getId().toString();
         response.firstName = requestFromDatabase.getFirstName();
         response.lastName = requestFromDatabase.getLastName();
         response.email = requestFromDatabase.getEmail();

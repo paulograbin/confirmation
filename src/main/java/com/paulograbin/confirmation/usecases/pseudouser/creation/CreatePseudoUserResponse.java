@@ -9,7 +9,7 @@ import java.util.UUID;
 public class CreatePseudoUserResponse {
 
     public String errorMessage;
-    public UUID requestNumber;
+    public String requestNumber;
     public boolean successful;
     public boolean notAllowed;
     public boolean emailNotAvailable;

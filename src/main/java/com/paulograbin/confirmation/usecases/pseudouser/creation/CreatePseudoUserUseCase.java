@@ -68,7 +68,7 @@ public class CreatePseudoUserUseCase {
         userRequestRepository.save(userToCreate);
 
         response.successful = true;
-        response.requestNumber = userToCreate.getId();
+        response.requestNumber = userToCreate.getId().toString();
     }
 
     private boolean isValid() {

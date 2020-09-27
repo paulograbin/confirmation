@@ -10,7 +10,7 @@ public class ReadPseudoUserResponse {
 
     public boolean requestNotFound;
     public boolean successful;
-    public UUID requestId;
+    public String requestId;
     public String firstName;
     public String lastName;
     public String email;
@@ -26,4 +26,6 @@ public class ReadPseudoUserResponse {
 
     public Long userId;
     public String username;
+    public boolean expired;
+    public String errorMessage;
 }

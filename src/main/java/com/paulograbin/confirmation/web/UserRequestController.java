@@ -57,7 +57,7 @@ class UserRequestController {
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ReadPseudoUserResponse> listAll(@PathVariable UUID id) {
+    public ResponseEntity<ReadPseudoUserResponse> listAll(@PathVariable String id) {
         log.info("Listing user request {}", id);
 
         ReadPseudoUserRequest readPseudoUserRequest = new ReadPseudoUserRequest();

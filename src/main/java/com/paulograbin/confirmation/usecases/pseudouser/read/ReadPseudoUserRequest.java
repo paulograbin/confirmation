@@ -8,6 +8,6 @@ import java.util.UUID;
 @Data
 public class ReadPseudoUserRequest {
 
-    public UUID requestId;
+    public String requestId;
 
 }
