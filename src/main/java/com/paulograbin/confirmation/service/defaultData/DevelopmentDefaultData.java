@@ -85,7 +85,7 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
         CreatePseudoUserRequest request = new CreatePseudoUserRequest();
         request.setFirstName("Requesting User 1");
         request.setLastName("Will be created");
-        request.setEmail("augusto@augusto.com" + random);
+        request.setEmail(random + "augusto@augusto.com");
         request.setChapterId(592L);
         request.setRequestingUser(userService.fetchByUsername("plgrabin").getId());
 
