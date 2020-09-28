@@ -6,11 +6,16 @@ import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.persistence.ChapterRepository;
+import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.persistence.UserRequestRepository;
 import com.paulograbin.confirmation.service.ChapterService;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
+import com.paulograbin.confirmation.usecases.pseudouser.creation.CreatePseudoUserRequest;
+import com.paulograbin.confirmation.usecases.pseudouser.creation.CreatePseudoUserUseCase;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 
 
 @Service
@@ -44,10 +50,19 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
     private UserService userService;
 
     @Resource
+    private UserRepository userRepository;
+
+    @Resource
+    private ChapterRepository chapterRepository;
+
+    @Resource
     private RoleService roleService;
 
     @Resource
     private EventService eventService;
+
+    @Resource
+    private UserRequestRepository userRequestRepository;
 
 
     @Override
@@ -60,6 +75,21 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
 
         setDefaultEvents();
         setDefaultUsers();
+
+        setUserRequests();
+    }
+
+    private void setUserRequests() {
+        int random = new Random().nextInt();
+
+        CreatePseudoUserRequest request = new CreatePseudoUserRequest();
+        request.setFirstName("Requesting User 1");
+        request.setLastName("Will be created");
+        request.setEmail(random + "augusto@augusto.com");
+        request.setChapterId(592L);
+        request.setRequestingUser(userService.fetchByUsername("plgrabin").getId());
+
+        new CreatePseudoUserUseCase(request, userRepository, userRequestRepository, chapterRepository).execute();
     }
 
     private void setDefaultEvents() {
