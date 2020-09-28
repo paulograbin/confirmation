@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.service.mail;
 
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.domain.UserRequest;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -43,6 +44,10 @@ public class SendGridEmailService implements EmailService {
         } catch (IOException ex) {
             System.out.println("Deu pau");
         }
+    }
+
+    @Override
+    public void sendUserRequestCreatedMail(UserRequest userRequest) {
     }
 
     @Override
