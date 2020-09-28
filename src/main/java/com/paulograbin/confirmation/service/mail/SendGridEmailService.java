@@ -48,6 +48,25 @@ public class SendGridEmailService implements EmailService {
 
     @Override
     public void sendUserRequestCreatedMail(UserRequest userRequest) {
+        String subject = "Usuário criado";
+        Email from = new Email("plgrabin@gmail.com");
+
+        Email to = new Email(userRequest.getEmail());
+        Email cc = new Email("pl.grabin@gmail.com");
+
+        final var personalization = new Personalization();
+        personalization.addDynamicTemplateData("name", userRequest.getFirstName());
+        personalization.addDynamicTemplateData("requestNumber", userRequest.getId());
+        personalization.addTo(to);
+        personalization.addTo(cc);
+
+        Mail mail = new Mail();
+        mail.setTemplateId("d-41eaeb82fef74c99b2d0c715c5f0bfb0");
+        mail.setFrom(from);
+        mail.setSubject(subject);
+        mail.addPersonalization(personalization);
+
+        sendMail(mail);
     }
 
     @Override
