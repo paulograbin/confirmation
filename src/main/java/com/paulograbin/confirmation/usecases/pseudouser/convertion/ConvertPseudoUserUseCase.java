@@ -119,6 +119,8 @@ public class ConvertPseudoUserUseCase {
 
         if (userRepository.existsByUsername(request.username)) {
             response.usernameNotAvailable = true;
+            response.errorMessage = "Usuário não disponível";
+            return;
         }
 
         User user = new User();
