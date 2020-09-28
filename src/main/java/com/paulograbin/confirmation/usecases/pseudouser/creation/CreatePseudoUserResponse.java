@@ -2,8 +2,6 @@ package com.paulograbin.confirmation.usecases.pseudouser.creation;
 
 import lombok.Data;
 
-import java.util.UUID;
-
 
 @Data
 public class CreatePseudoUserResponse {
