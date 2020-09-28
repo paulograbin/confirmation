@@ -1,10 +1,12 @@
 package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.domain.UserRequest;
 import com.paulograbin.confirmation.persistence.ChapterRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.persistence.UserRequestRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
+import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.pseudouser.convertion.ConvertPseudoUserRequest;
 import com.paulograbin.confirmation.usecases.pseudouser.convertion.ConvertPseudoUserResponse;
 import com.paulograbin.confirmation.usecases.pseudouser.convertion.ConvertPseudoUserUseCase;
@@ -32,6 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.websocket.server.PathParam;
 import java.net.URI;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @CrossOrigin("*")
@@ -49,6 +53,9 @@ class UserRequestController {
 
     @Resource
     private ChapterRepository chapterRepository;
+
+    @Resource
+    private EmailService emailService;
 
     @Resource
     private PasswordEncoder passwordEncoder;
@@ -96,6 +103,14 @@ class UserRequestController {
         request.setRequestingUser(currentUser.getId());
 
         CreatePseudoUserResponse response = new CreatePseudoUserUseCase(request, userRepository, repository, chapterRepository).execute();
+
+        if (response.successful) {
+            Optional<UserRequest> byId = repository.findById(UUID.fromString(response.getRequestNumber()));
+            UserRequest newlyCreatedRequest = byId.get();
+
+            emailService.sendUserRequestCreatedMail(newlyCreatedRequest);
+        }
+
 
         if (response.successful) {
             return ResponseEntity.created(URI.create("userrequest/" + response.requestNumber)).body(response);

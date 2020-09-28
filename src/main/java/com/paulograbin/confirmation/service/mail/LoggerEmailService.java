@@ -20,6 +20,6 @@ public class LoggerEmailService implements EmailService {
 
     @Override
     public void sendUserRequestCreatedMail(UserRequest userRequest) {
-        logger.info("Sending mail to let the person know a new user has been requested for him/her");
+        logger.info("Sending mail to let the person know a new user has been requested for him/her with id {}", userRequest.getId());
     }
 }
