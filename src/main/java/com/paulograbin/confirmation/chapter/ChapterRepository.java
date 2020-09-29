@@ -1,6 +1,6 @@
-package com.paulograbin.confirmation.persistence;
+package com.paulograbin.confirmation.chapter;
 
-import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.chapter.Chapter;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

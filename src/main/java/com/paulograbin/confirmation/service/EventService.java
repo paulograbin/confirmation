@@ -1,7 +1,8 @@
 package com.paulograbin.confirmation.service;
 
 import com.paulograbin.confirmation.DateUtils;
-import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.User;
@@ -20,8 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +28,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 
 @Service

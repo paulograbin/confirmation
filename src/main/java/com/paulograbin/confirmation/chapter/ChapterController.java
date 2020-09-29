@@ -1,9 +1,7 @@
-package com.paulograbin.confirmation.web;
+package com.paulograbin.confirmation.chapter;
 
-import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
-import com.paulograbin.confirmation.service.ChapterService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import com.paulograbin.confirmation.web.dto.ChapterDTO;
 import com.paulograbin.confirmation.web.dto.ChapterSimpleDTO;

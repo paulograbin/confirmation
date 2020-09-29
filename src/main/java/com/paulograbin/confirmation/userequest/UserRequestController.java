@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation.userequest;
 
 import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.persistence.ChapterRepository;
+import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.mail.EmailService;

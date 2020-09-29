@@ -1,9 +1,10 @@
 package com.paulograbin.confirmation.service;
 
-import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.persistence.ChapterRepository;
+import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

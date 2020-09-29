@@ -1,9 +1,7 @@
-package com.paulograbin.confirmation.service;
+package com.paulograbin.confirmation.chapter;
 
-import com.paulograbin.confirmation.domain.Chapter;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
-import com.paulograbin.confirmation.persistence.ChapterRepository;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

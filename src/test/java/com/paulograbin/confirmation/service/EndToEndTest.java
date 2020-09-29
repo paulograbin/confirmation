@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.service;
 
-import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.User;
@@ -14,8 +15,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

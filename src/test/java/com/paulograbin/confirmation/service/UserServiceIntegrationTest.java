@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.service;
 
-import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;

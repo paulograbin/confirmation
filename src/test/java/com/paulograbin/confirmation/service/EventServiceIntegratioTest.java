@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.service;
 
-import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.EventRepository;

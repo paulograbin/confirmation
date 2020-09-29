@@ -1,8 +1,9 @@
 package com.paulograbin.confirmation.service;
 
-import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.exception.NotFoundException;
-import com.paulograbin.confirmation.persistence.ChapterRepository;
+import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

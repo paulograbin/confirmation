@@ -1,25 +1,20 @@
 package com.paulograbin.confirmation;
 
-import com.paulograbin.confirmation.domain.Chapter;
-import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.service.ChapterService;
-import com.paulograbin.confirmation.service.EventService;
+import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.service.UserService;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.module.jsr310.Jsr310Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 

@@ -1,15 +1,15 @@
 package com.paulograbin.confirmation.service.defaultData;
 
 import com.paulograbin.confirmation.DemoApplication;
-import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.persistence.ChapterRepository;
+import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
-import com.paulograbin.confirmation.service.ChapterService;
+import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;

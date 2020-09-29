@@ -1,5 +1,7 @@
-package com.paulograbin.confirmation.domain;
+package com.paulograbin.confirmation.chapter;
 
+import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
