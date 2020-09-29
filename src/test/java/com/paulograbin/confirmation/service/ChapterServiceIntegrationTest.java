@@ -46,7 +46,7 @@ class ChapterServiceIntegrationTest {
 
     @Test
     public void duringCreation_userReceivesId() {
-        ChapterCreationRequest request = new ChapterCreationRequest(100L, "Chapter Test");
+        ChapterCreationRequest request = new ChapterCreationRequest(101L, "Chapter Test");
 
         chapter = chapterService.createChapter(request);
 

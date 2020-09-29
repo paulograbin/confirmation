@@ -272,6 +272,7 @@ class UserServiceTest {
 
         UpdateUserRequest updateRequest = new UpdateUserRequest();
         updateRequest.setId(333L);
+        updateRequest.setPassword("aaaaaa");
 
         userService.updateUser(333L, updateRequest);
 
