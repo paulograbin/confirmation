@@ -4,6 +4,7 @@ import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.persistence.EventRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class InMemoryEventRepository extends InMemoryRepository<Event> implements EventRepository {
@@ -22,4 +23,15 @@ public class InMemoryEventRepository extends InMemoryRepository<Event> implement
     public List<Event> findAllByChapterId(long chapterId) {
         return null;
     }
+
+    @Override
+    public long countAllByPublishedTrue() {
+        return 0;
+    }
+
+    @Override
+    public long countAllByDateAfter(LocalDate currentDate) {
+        return 0;
+    }
+
 }

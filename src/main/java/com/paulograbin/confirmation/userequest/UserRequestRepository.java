@@ -8,4 +8,6 @@ public interface UserRequestRepository extends CrudRepository<UserRequest, UUID>
 
     boolean existsByEmail(String email);
 
+    long countAllByUserNotNull();
+
 }
