@@ -1,9 +1,9 @@
-package com.paulograbin.confirmation.usecases.pseudouser.convertion;
+package com.paulograbin.confirmation.userequest.usecases.convertion;
 
 import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.domain.UserRequest;
+import com.paulograbin.confirmation.userequest.UserRequest;
 import com.paulograbin.confirmation.persistence.UserRepository;
-import com.paulograbin.confirmation.persistence.UserRequestRepository;
+import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;

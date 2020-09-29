@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation.usecases.pseudouser.creation;
+package com.paulograbin.confirmation.userequest.usecases.creation;
 
 import lombok.Data;
 

@@ -1,6 +1,5 @@
-package com.paulograbin.confirmation.persistence;
+package com.paulograbin.confirmation.userequest;
 
-import com.paulograbin.confirmation.domain.UserRequest;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;

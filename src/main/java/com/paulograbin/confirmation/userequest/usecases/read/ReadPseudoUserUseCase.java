@@ -1,7 +1,7 @@
-package com.paulograbin.confirmation.usecases.pseudouser.read;
+package com.paulograbin.confirmation.userequest.usecases.read;
 
-import com.paulograbin.confirmation.domain.UserRequest;
-import com.paulograbin.confirmation.persistence.UserRequestRepository;
+import com.paulograbin.confirmation.userequest.UserRequest;
+import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

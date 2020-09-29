@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation.service.mail;
 
 import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.domain.UserRequest;
+import com.paulograbin.confirmation.userequest.UserRequest;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;

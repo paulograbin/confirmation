@@ -1,5 +1,7 @@
-package com.paulograbin.confirmation.domain;
+package com.paulograbin.confirmation.userequest;
 
+import com.paulograbin.confirmation.domain.Chapter;
+import com.paulograbin.confirmation.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;

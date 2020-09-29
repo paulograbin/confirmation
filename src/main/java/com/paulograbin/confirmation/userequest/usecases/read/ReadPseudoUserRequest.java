@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation.usecases.pseudouser.read;
+package com.paulograbin.confirmation.userequest.usecases.read;
 
 import lombok.Data;
 
