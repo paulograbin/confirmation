@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation.userequest;
 
-import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.mail.EmailService;
@@ -14,6 +14,9 @@ import com.paulograbin.confirmation.userequest.usecases.creation.CreatePseudoUse
 import com.paulograbin.confirmation.userequest.usecases.read.ReadPseudoUserRequest;
 import com.paulograbin.confirmation.userequest.usecases.read.ReadPseudoUserResponse;
 import com.paulograbin.confirmation.userequest.usecases.read.ReadPseudoUserUseCase;
+import com.paulograbin.confirmation.web.dto.UserRequestDTO;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,8 +35,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.websocket.server.PathParam;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @CrossOrigin("*")
@@ -57,6 +62,20 @@ class UserRequestController {
 
     @Resource
     private PasswordEncoder passwordEncoder;
+
+    @Resource
+    private ModelMapper modelMapper;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserRequestDTO> readAll() {
+        Iterable<UserRequest> all = repository.findAll();
+
+        List<UserRequest> from = Lists.from(all.iterator());
+        return from.stream()
+                .map(r -> modelMapper.map(r, UserRequestDTO.class))
+                .collect(Collectors.toList());
+    }
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
