@@ -11,6 +11,7 @@ import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.time.Duration;
 
 
 @CrossOrigin("*")
@@ -52,6 +54,10 @@ public class MetricsController {
 
         ReadMetricsResponse response = new ReadMetricsUseCase(readMetricsRequest, userRepository, eventRepository, chapterRepository, userRequestRepository).execute();
 
-        return ResponseEntity.ok(response);
+        CacheControl cc = CacheControl.maxAge(Duration.ofMinutes(10)).cachePrivate();
+
+        return ResponseEntity.ok()
+                .cacheControl(cc)
+                .body(response);
     }
 }
