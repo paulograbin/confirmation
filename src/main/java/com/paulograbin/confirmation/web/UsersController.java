@@ -91,15 +91,20 @@ class UsersController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> listAll(@CurrentUser User currentUser) {
+    public ResponseEntity<List<UserDTO>> listAll(@CurrentUser User currentUser) {
         log.info("Listing all users");
 
         Iterable<User> users = userService.fetchAll(currentUser);
         List<User> arrayList = Lists.from(users.iterator());
 
-        return arrayList.stream()
+        List<UserDTO> collect = arrayList.stream()
                 .map(u -> modelMapper.map(u, UserDTO.class))
                 .collect(Collectors.toList());
+
+        CacheControl cc = CacheControl.maxAge(Duration.ofMinutes(10)).cachePrivate();
+        return ResponseEntity.ok()
+                .cacheControl(cc)
+                .body(collect);
     }
 
 //    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
