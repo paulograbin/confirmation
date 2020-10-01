@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,15 +58,20 @@ class EventsController {
 
 
     @GetMapping
-    public List<EventDTO> listAllEvents() {
+    public ResponseEntity<List<EventDTO>> listAllEvents() {
         log.info("Listing all events");
 
         Iterable<Event> eventIterator = eventService.fetchAllEvents();
         List<Event> arrayList = Lists.from(eventIterator.iterator());
 
-        return arrayList.stream()
+        List<EventDTO> collect = arrayList.stream()
                 .map(u -> modelMapper.map(u, EventDTO.class))
                 .collect(Collectors.toList());
+
+        CacheControl cc = CacheControl.maxAge(Duration.ofMinutes(10)).cachePrivate();
+        return ResponseEntity.ok()
+                .cacheControl(cc)
+                .body(collect);
     }
 
     @GetMapping(path = "/{id}")
