@@ -37,7 +37,7 @@ public class UserRequest {
 
     private LocalDateTime creationDate;
     private LocalDateTime expirationDate;
-    private LocalDateTime convertionDate;
+    private LocalDateTime conversionDate;
 
     @OneToOne
     private User user;

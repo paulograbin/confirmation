@@ -64,7 +64,7 @@ public class ConvertPseudoUserUseCase {
             return false;
         }
 
-        if (request.getConvertionDate() != null) {
+        if (request.getConversionDate() != null) {
             return false;
         }
 
@@ -89,7 +89,7 @@ public class ConvertPseudoUserUseCase {
                 response.expired = true;
             }
 
-            if (request.getConvertionDate() != null) {
+            if (request.getConversionDate() != null) {
                 response.errorMessage = "Essa requisição já não é mais válida";
                 response.expired = true;
             }
@@ -135,7 +135,7 @@ public class ConvertPseudoUserUseCase {
 
         userRepository.save(user);
 
-        userRequest.setConvertionDate(getCurrentDate());
+        userRequest.setConversionDate(getCurrentDate());
         userRequest.setUser(user);
         repository.save(userRequest);
 

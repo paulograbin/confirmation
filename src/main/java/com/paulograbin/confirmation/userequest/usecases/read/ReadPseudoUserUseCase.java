@@ -57,7 +57,7 @@ public class ReadPseudoUserUseCase {
             return false;
         }
 
-        if (request.getConvertionDate() != null) {
+        if (request.getConversionDate() != null) {
             return false;
         }
 
@@ -83,7 +83,7 @@ public class ReadPseudoUserUseCase {
                 response.expired = true;
             }
 
-            if (request.getConvertionDate() != null) {
+            if (request.getConversionDate() != null) {
                 response.errorMessage = "Essa requisição já não é mais válida";
                 response.expired = true;
             }
@@ -120,8 +120,8 @@ public class ReadPseudoUserUseCase {
         response.creationDate = parseDateToString(requestFromDatabase.getCreationDate());
         response.expirationDate = parseDateToString(requestFromDatabase.getExpirationDate());
 
-        if (requestFromDatabase.getConvertionDate() != null) {
-            response.conversionDate = parseDateToString(requestFromDatabase.getConvertionDate());
+        if (requestFromDatabase.getConversionDate() != null) {
+            response.conversionDate = parseDateToString(requestFromDatabase.getConversionDate());
         } else {
             response.conversionDate = "";
         }
