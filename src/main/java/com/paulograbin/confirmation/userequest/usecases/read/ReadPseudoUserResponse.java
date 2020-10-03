@@ -8,6 +8,7 @@ public class ReadPseudoUserResponse {
 
     public boolean requestNotFound;
     public boolean successful;
+    public String id;
     public String requestId;
     public String firstName;
     public String lastName;

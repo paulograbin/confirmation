@@ -100,6 +100,7 @@ public class ReadPseudoUserUseCase {
 
         response.successful = true;
 
+        response.id = requestFromDatabase.getId2().toString();
         response.requestId = requestFromDatabase.getId().toString();
         response.firstName = requestFromDatabase.getFirstName();
         response.lastName = requestFromDatabase.getLastName();
