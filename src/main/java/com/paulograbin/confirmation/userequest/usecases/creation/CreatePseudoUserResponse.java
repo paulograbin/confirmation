@@ -7,13 +7,15 @@ import lombok.Data;
 public class CreatePseudoUserResponse {
 
     public String errorMessage;
-    public String requestNumber;
+    public boolean invalidFirstName;
+    public boolean invalidLastName;
+    public boolean invalidEmail;
+
+    public String id;
+    public String code;
     public boolean successful;
     public boolean notAllowed;
     public boolean emailNotAvailable;
     public boolean invalidRequestingUser;
 
-    public boolean invalidFirstName;
-    public boolean invalidLastName;
-    public boolean invalidEmail;
 }
