@@ -4,10 +4,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet author="Paulo Gräbin" id="rename_columns_on_user_request">
-        <sql>
-            alter table user_request rename column id to code;
-            alter table user_request rename column id2 to id;
-        </sql>
+    <changeSet id="Paulo Gräbin" author="rename_columns_on_user_request">
+        <renameColumn tableName="user_request" oldColumnName="id" newColumnName="code"/>
+        <renameColumn tableName="user_request" oldColumnName="id2" newColumnName="id"/>
     </changeSet>
 </databaseChangeLog>
