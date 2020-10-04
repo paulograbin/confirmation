@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class UserRequestDTO {
 
     private String id;
-    private String id2;
+    private String code;
     private String firstName;
     private String lastName;
     private String email;
