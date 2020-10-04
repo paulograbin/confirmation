@@ -25,14 +25,12 @@ import java.util.UUID;
 })
 public class UserRequest {
 
-    @Id
-    @GeneratedValue
     @Type(type = "uuid-char")
     private UUID id;
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserRequestSequence")
-//    @SequenceGenerator(name = "UserRequestSequence", sequenceName = "USER_REQUEST_SEQUENCE", allocationSize = 1)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserRequestSequence")
+    @SequenceGenerator(name = "UserRequestSequence", sequenceName = "USER_REQUEST_SEQUENCE", allocationSize = 1)
     private Long id2;
 
     private String firstName;

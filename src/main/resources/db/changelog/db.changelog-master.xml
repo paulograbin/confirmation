@@ -5,4 +5,5 @@
 
     <include file="event_description_increase_changelog.xml" relativeToChangelogFile="true"/>
     <include file="new_column_user_request.xml" relativeToChangelogFile="true"/>
+    <include file="make_new_column_primary_key.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

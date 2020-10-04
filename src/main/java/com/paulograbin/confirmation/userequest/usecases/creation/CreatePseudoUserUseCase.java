@@ -11,6 +11,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.UUID;
+
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class CreatePseudoUserUseCase {
@@ -52,6 +54,7 @@ public class CreatePseudoUserUseCase {
 
     private void createUserRequest() {
         UserRequest userToCreate = new UserRequest();
+        userToCreate.setId(UUID.randomUUID());
         userToCreate.setEmail(request.email);
         userToCreate.setFirstName(request.firstName);
         userToCreate.setLastName(request.lastName);
