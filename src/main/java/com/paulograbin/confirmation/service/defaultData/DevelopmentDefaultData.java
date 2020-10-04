@@ -8,6 +8,7 @@ import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.userequest.UserRequest;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.service.EventService;
@@ -64,6 +65,9 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
     @Resource
     private UserRequestRepository userRequestRepository;
 
+    @Resource
+    UserRequestRepository repository;
+
 
     @Override
     public void run(String... args) {
@@ -76,8 +80,31 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
         setDefaultEvents();
         setDefaultUsers();
 
-        setUserRequests();
+//        setUserRequests();
+//        updateUserRequestToIncludeId();
     }
+
+//    private void updateUserRequestToIncludeId() {
+//        log.info("Setting for those user requests that don't have");
+//
+//        Iterable<UserRequest> all = repository.findAll();
+//
+//        long id = 1;
+//
+//        for (UserRequest userRequest : all) {
+//            log.info("Working on user request {}", userRequest.getEmail());
+//
+//            if (userRequest.getId2() == null) {
+//                userRequest.setId2(id);
+//                id++;
+//
+//                log.info("Assigning new id to {}", userRequest.getEmail());
+//                repository.save(userRequest);
+//            }
+//        }
+//
+//        log.info("Done working on user requests");
+//    }
 
     private void setUserRequests() {
         int random = new Random().nextInt();

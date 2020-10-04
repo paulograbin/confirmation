@@ -47,7 +47,7 @@ public class ReadPseudoUserUseCase {
             return false;
         }
 
-        Optional<UserRequest> byId = repository.findById(requestId);
+        Optional<UserRequest> byId = repository.findByCode(requestId);
         if (byId.isEmpty()) {
             return false;
         }
@@ -68,7 +68,7 @@ public class ReadPseudoUserUseCase {
         try {
             this.requestId = UUID.fromString(request.requestId);
 
-            Optional<UserRequest> byId = repository.findById(UUID.fromString(request.requestId));
+            Optional<UserRequest> byId = repository.findByCode(UUID.fromString(request.requestId));
 
             if (byId.isEmpty()) {
                 response.errorMessage = "Requisição não encontrada";
@@ -94,14 +94,14 @@ public class ReadPseudoUserUseCase {
     }
 
     private void fetchRequest() {
-        Optional<UserRequest> byId = repository.findById(UUID.fromString(request.requestId));
+        Optional<UserRequest> byId = repository.findByCode(UUID.fromString(request.requestId));
 
         UserRequest requestFromDatabase = byId.get();
 
         response.successful = true;
 
-        response.id = requestFromDatabase.getId2().toString();
-        response.requestId = requestFromDatabase.getId().toString();
+        response.id = requestFromDatabase.getId().toString();
+        response.requestId = requestFromDatabase.getCode().toString();
         response.firstName = requestFromDatabase.getFirstName();
         response.lastName = requestFromDatabase.getLastName();
         response.email = requestFromDatabase.getEmail();

@@ -54,7 +54,7 @@ public class CreatePseudoUserUseCase {
 
     private void createUserRequest() {
         UserRequest userToCreate = new UserRequest();
-        userToCreate.setId(UUID.randomUUID());
+        userToCreate.setCode(UUID.randomUUID());
         userToCreate.setEmail(request.email);
         userToCreate.setFirstName(request.firstName);
         userToCreate.setLastName(request.lastName);

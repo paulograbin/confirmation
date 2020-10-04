@@ -54,7 +54,7 @@ public class ConvertPseudoUserUseCase {
             return false;
         }
 
-        Optional<UserRequest> byId = repository.findById(requestId);
+        Optional<UserRequest> byId = repository.findByCode(requestId);
         if (byId.isEmpty()) {
             return false;
         }
@@ -75,7 +75,7 @@ public class ConvertPseudoUserUseCase {
         try {
             this.requestId = UUID.fromString(request.requestNumber);
 
-            Optional<UserRequest> byId = repository.findById(requestId);
+            Optional<UserRequest> byId = repository.findByCode(requestId);
             if (byId.isEmpty()) {
                 response.errorMessage = "Requisição não encontrada";
                 response.requestNotFound = true;
@@ -100,7 +100,7 @@ public class ConvertPseudoUserUseCase {
     }
 
     private void convertRequestToNewUser() {
-        Optional<UserRequest> byId = repository.findById(requestId);
+        Optional<UserRequest> byId = repository.findByCode(requestId);
 
         if (byId.isEmpty()) {
             response.requestNotFound = true;

@@ -28,22 +28,22 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
 //        updateUserRequestToIncludeId();
     }
 
-    private void updateUserRequestToIncludeId() {
-        log.info("Setting for those user requests that don't have");
-
-        Iterable<UserRequest> all = repository.findAll();
-
-        long id = 1;
-
-        for (UserRequest userRequest : all) {
-            log.info("Working on user request {}", userRequest.getEmail());
-
-            if (userRequest.getId2() == null) {
-                userRequest.setId2(id);
-                id++;
-
-                repository.save(userRequest);
-            }
-        }
-    }
+//    private void updateUserRequestToIncludeId() {
+//        log.info("Setting for those user requests that don't have");
+//
+//        Iterable<UserRequest> all = repository.findAll();
+//
+//        long id = 1;
+//
+//        for (UserRequest userRequest : all) {
+//            log.info("Working on user request {}", userRequest.getEmail());
+//
+//            if (userRequest.getId2() == null) {
+//                userRequest.setId2(id);
+//                id++;
+//
+//                repository.save(userRequest);
+//            }
+//        }
+//    }
 }
