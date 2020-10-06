@@ -4,7 +4,6 @@ import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.persistence.EventRepository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class InMemoryEventRepository extends InMemoryRepository<Event> implements EventRepository {

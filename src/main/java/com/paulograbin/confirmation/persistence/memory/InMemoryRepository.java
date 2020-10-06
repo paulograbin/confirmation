@@ -1,16 +1,15 @@
 package com.paulograbin.confirmation.persistence.memory;
 
-import com.paulograbin.confirmation.domain.EntityClass;
+import com.paulograbin.confirmation.domain.AbstracEntity;
 import com.paulograbin.confirmation.persistence.EntityRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class InMemoryRepository<T extends EntityClass> implements EntityRepository<T, Long> {
+public class InMemoryRepository<T extends AbstracEntity> implements EntityRepository<T, Long> {
 
-    private long lastId = 0;
+    private long lastId = 1;
     private final Map<Long, T> map = new HashMap<>();
 
 
@@ -29,6 +28,10 @@ public class InMemoryRepository<T extends EntityClass> implements EntityReposito
 
     @Override
     public Optional<T> findById(Long aLong) {
+        if (map.containsKey(aLong)) {
+            return Optional.of(map.get(aLong));
+        }
+
         return Optional.empty();
     }
 
