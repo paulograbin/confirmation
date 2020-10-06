@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.userequest;
 
 import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.domain.AbstracEntity;
 import com.paulograbin.confirmation.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,15 +24,15 @@ import java.util.UUID;
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"email"})
 })
-public class UserRequest {
-
-    @Type(type = "uuid-char")
-    private UUID code;
+public class UserRequest extends AbstracEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserRequestSequence")
     @SequenceGenerator(name = "UserRequestSequence", sequenceName = "USER_REQUEST_SEQUENCE", allocationSize = 1)
     private Long id;
+
+    @Type(type = "uuid-char")
+    private UUID code;
 
     private String firstName;
     private String lastName;
@@ -50,4 +51,8 @@ public class UserRequest {
     @OneToOne
     private User createdBy;
 
+    
+    public UserRequest() {
+        super(null);
+    }
 }

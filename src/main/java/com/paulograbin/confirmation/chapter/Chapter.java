@@ -1,9 +1,9 @@
 package com.paulograbin.confirmation.chapter;
 
+import com.paulograbin.confirmation.domain.AbstracEntity;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.User;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -16,11 +16,10 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"id"})
 })
-public class Chapter {
+public class Chapter extends AbstracEntity {
 
     @Id
     private Long id;
@@ -33,7 +32,13 @@ public class Chapter {
     private List<Event> events = new ArrayList<>();
 
 
+    public Chapter() {
+        super(null);
+    }
+
     public Chapter(Long id, String name) {
+        super(id);
+
         this.id = id;
         this.name = name;
     }

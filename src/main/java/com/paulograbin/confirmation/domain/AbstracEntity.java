@@ -1,10 +1,10 @@
 package com.paulograbin.confirmation.domain;
 
-public class EntityClass {
+public abstract class AbstracEntity {
 
     protected Long id;
 
-    public EntityClass(Long id) {
+    public AbstracEntity(Long id) {
         this.id = id;
     }
 

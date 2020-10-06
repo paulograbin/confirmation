@@ -16,7 +16,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-public class Event extends EntityClass {
+public class Event extends AbstracEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

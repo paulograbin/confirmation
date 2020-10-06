@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
         @UniqueConstraint(columnNames = {"username"}),
         @UniqueConstraint(columnNames = {"email"})
 })
-public class User implements UserDetails {
+public class User extends AbstracEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +51,8 @@ public class User implements UserDetails {
 
 
     public User() {
+        super(null);
+
         this.active = true;
         this.master = false;
         this.setModificationDate(null);
