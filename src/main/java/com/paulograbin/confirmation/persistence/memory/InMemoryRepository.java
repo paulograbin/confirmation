@@ -2,6 +2,8 @@ package com.paulograbin.confirmation.persistence.memory;
 
 import com.paulograbin.confirmation.domain.AbstracEntity;
 import com.paulograbin.confirmation.persistence.EntityRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,21 +11,27 @@ import java.util.Optional;
 
 public class InMemoryRepository<T extends AbstracEntity> implements EntityRepository<T, Long> {
 
+    private static final Logger logger = LoggerFactory.getLogger(InMemoryRepository.class);
+
     private long lastId = 1;
-    private final Map<Long, T> map = new HashMap<>();
+    protected final Map<Long, T> map = new HashMap<>();
 
 
     @Override
     public <S extends T> S save(S entity) {
+        if (entity.getId() != null) {
+            map.put(entity.getId(), entity);
+            return entity;
+        }
+
         entity.setId(lastId++);
         map.put(entity.getId(), entity);
-
         return entity;
     }
 
     @Override
     public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -37,17 +45,18 @@ public class InMemoryRepository<T extends AbstracEntity> implements EntityReposi
 
     @Override
     public boolean existsById(Long aLong) {
-        return false;
+        logger.info("Checking if exist entity with id {}", aLong);
+        return map.containsKey(aLong);
     }
 
     @Override
     public Iterable<T> findAll() {
-        return null;
+        return map.values();
     }
 
     @Override
     public Iterable<T> findAllById(Iterable<Long> longs) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -57,21 +66,21 @@ public class InMemoryRepository<T extends AbstracEntity> implements EntityReposi
 
     @Override
     public void deleteById(Long aLong) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(T entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteAll(Iterable<? extends T> entities) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteAll() {
-
+        throw new UnsupportedOperationException();
     }
 }

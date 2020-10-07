@@ -10,7 +10,9 @@ public class InMemoryUserRequestRepository extends InMemoryRepository<UserReques
 
     @Override
     public boolean existsByEmail(String email) {
-        return false;
+        return map.values()
+                .stream()
+                .anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
     }
 
     @Override
