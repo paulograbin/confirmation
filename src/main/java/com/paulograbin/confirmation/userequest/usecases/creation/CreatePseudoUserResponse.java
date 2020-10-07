@@ -17,5 +17,6 @@ public class CreatePseudoUserResponse {
     public boolean notAllowed;
     public boolean emailNotAvailable;
     public boolean invalidRequestingUser;
+    public boolean invalidChapter;
 
 }

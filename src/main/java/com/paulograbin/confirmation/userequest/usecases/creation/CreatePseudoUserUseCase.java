@@ -130,6 +130,11 @@ public class CreatePseudoUserUseCase {
             }
         }
 
+        if (!chapterRepository.existsById(request.getChapterId())) {
+            response.invalidChapter = true;
+            response.errorMessage = "Invalid chapter";
+        }
+
         User user = userRepository.findById(request.requestingUser).orElse(new User());
         if (user.getId() == null) {
             response.invalidRequestingUser = true;
