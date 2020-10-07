@@ -91,7 +91,7 @@ public class CreatePseudoUserUseCase {
             return false;
         }
 
-        if (!requestingUser.isAdmin()) {
+        if (!requestingUser.isAdmin() && !requestingUser.isMaster()) {
             return false;
         }
 
@@ -140,7 +140,7 @@ public class CreatePseudoUserUseCase {
             response.invalidRequestingUser = true;
         }
 
-        if (!user.isAdmin() || !user.isMaster()) {
+        if (!user.isAdmin() && !user.isMaster()) {
             response.errorMessage = "This action can only be performed by an admin or an MC";
             response.notAllowed = true;
         }
