@@ -22,11 +22,11 @@ public class CreatePseudoUserUseCase {
     public static final int NAME_MAX_LENGTH = 250;
     public static final int NAME_MINIMUM_LENGTH = 3;
 
-    private CreatePseudoUserRequest request;
-    private CreatePseudoUserResponse response;
-    private UserRepository userRepository;
-    private ChapterRepository chapterRepository;
-    private UserRequestRepository userRequestRepository;
+    private final CreatePseudoUserRequest request;
+    private final CreatePseudoUserResponse response;
+    private final UserRepository userRepository;
+    private final ChapterRepository chapterRepository;
+    private final UserRequestRepository userRequestRepository;
 
 
     public CreatePseudoUserUseCase(CreatePseudoUserRequest request, UserRepository repository, UserRequestRepository userRequestRepository, ChapterRepository chapterRepository) {
