@@ -24,7 +24,6 @@ public class DemoApplication {
 
     // TODO Figure out a way to obtain the token in the controller test calls
     // TODO Validations on post requests
-    // TODO Test everything
     // TODO Exception when user is invited more than once to a event
     // TODO almoço
 
