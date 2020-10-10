@@ -85,7 +85,7 @@ public class ChapterController {
                 .collect(Collectors.toList()));
         chapterDTO.getMembers().sort(Comparator.comparing(UserSimpleDTO::getFirstName));
 
-        CacheControl cc = CacheControl.maxAge(Duration.ofMinutes(30)).cachePrivate();
+        CacheControl cc = CacheControl.maxAge(Duration.ofDays(1)).cachePrivate();
         return ResponseEntity.ok()
                 .cacheControl(cc)
                 .body(chapterDTO);
