@@ -72,7 +72,7 @@ class ChapterTest {
     @Test
     void toStringWithI() {
         Chapter chapter = makeChapterForTest();
-        chapter.setId(555l);
+        chapter.setId(555L);
 
         String chapterToString = chapter.toString();
         System.out.println(chapterToString);
