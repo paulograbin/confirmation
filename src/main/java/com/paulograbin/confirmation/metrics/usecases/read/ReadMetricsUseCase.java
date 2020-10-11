@@ -31,12 +31,10 @@ public class ReadMetricsUseCase {
         this.userRequestRepository = userRequestRepository;
 
         this.response = new ReadMetricsResponse();
-
     }
 
     public ReadMetricsResponse execute() {
         logger.info("Executing usecase with request {}", request);
-
 
         if (isValid()) {
             gatherMetrics();
@@ -44,6 +42,7 @@ public class ReadMetricsUseCase {
             setErrors();
         }
 
+        logger.info("Read metrics response {}", response);
         return response;
     }
 
