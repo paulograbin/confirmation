@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.usecases.event.creation;
 
 import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.ParticipationStatus;
 import com.paulograbin.confirmation.domain.User;
@@ -24,6 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EventCreationUseCaseTest {
 
     private static final Long MASTER_ID = 1L;
+
+    private static final String VALID_TITLE = "aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222";
+    private static final String INVALID_TITLE = "aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222999999999";
 
     private EventRepository repository;
     private ParticipationRepository participationRepository;
@@ -75,6 +79,25 @@ class EventCreationUseCaseTest {
         assertThat(participation.getStatus()).isEqualTo(ParticipationStatus.CONFIRMADO);
     }
 
+    @Test
+    void validRequestWithTitleAboveLength() {
+        givenAMasterUser();
+        makeValidRequest();
+        request.setTitle(INVALID_TITLE);
+        whenExecutingTestCase();
+
+        assertThat(response.successful).isTrue();
+        assertThat(response.createdEventId).isNotNull();
+
+        Event event = repository.findById(response.createdEventId).get();
+        assertThat(event.getTitle()).isEqualToIgnoringCase(VALID_TITLE);
+
+        Optional<Participation> byEventIdAndUserId = participationRepository.findByEventIdAndUserId(response.createdEventId, request.getCreatorId());
+        Participation participation = byEventIdAndUserId.get();
+
+        assertThat(participation.getStatus()).isEqualTo(ParticipationStatus.CONFIRMADO);
+    }
+
     private void whenExecutingTestCase() {
         this.response = new EventCreationUseCase(request, repository, participationRepository, userRepository).execute();
     }
@@ -102,5 +125,66 @@ class EventCreationUseCaseTest {
         assertThat(response.successful).isFalse();
         assertThat(response.invalidDate).isTrue();
         assertThat(response.createdEventId).isNull();
+    }
+
+
+    @Test
+    void invalidTitle() {
+        givenAMasterUser();
+        makeValidRequest();
+        request.setTitle("a");
+
+        whenExecutingTestCase();
+
+        assertThat(response.successful).isFalse();
+        assertThat(response.invalidTitle).isTrue();
+    }
+
+    @Test
+    void invalidDescription() {
+        givenAMasterUser();
+        makeValidRequest();
+        request.setDescription("a");
+
+        whenExecutingTestCase();
+
+        assertThat(response.successful).isFalse();
+        assertThat(response.invalidDescription).isTrue();
+    }
+
+    @Test
+    void invalidAddress() {
+        givenAMasterUser();
+        makeValidRequest();
+        request.setAddress("");
+
+        whenExecutingTestCase();
+
+        assertThat(response.successful).isFalse();
+        assertThat(response.invalidAddress).isTrue();
+    }
+
+    @Test
+    void invalidDate() {
+        givenAMasterUser();
+        makeValidRequest();
+        request.setDate("");
+
+        whenExecutingTestCase();
+
+        assertThat(response.successful).isFalse();
+        assertThat(response.invalidDate).isTrue();
+    }
+
+    @Test
+    void invalidTime() {
+        givenAMasterUser();
+        makeValidRequest();
+        request.setTime(null);
+
+        whenExecutingTestCase();
+
+        assertThat(response.successful).isFalse();
+        assertThat(response.invalidTime).isTrue();
     }
 }

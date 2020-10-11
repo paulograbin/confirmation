@@ -1,6 +1,5 @@
 package com.paulograbin.confirmation.usecases.event.creation;
 
-import com.paulograbin.confirmation.domain.User;
 import lombok.Data;
 
 import java.time.LocalTime;
