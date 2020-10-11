@@ -15,6 +15,6 @@ public class EventCreationRequest {
     private String date;
     private LocalTime time;
     private boolean published;
-    private User creator;
+    private long creatorId;
 
 }

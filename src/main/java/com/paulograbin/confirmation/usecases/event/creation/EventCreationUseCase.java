@@ -2,12 +2,18 @@ package com.paulograbin.confirmation.usecases.event.creation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.Participation;
+import com.paulograbin.confirmation.domain.ParticipationStatus;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.persistence.ParticipationRepository;
+import com.paulograbin.confirmation.persistence.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -24,22 +30,42 @@ public class EventCreationUseCase {
     private final EventCreationRequest request;
     private final EventCreationResponse response;
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
+    private final ParticipationRepository participationRepository;
 
-    public EventCreationUseCase(EventCreationRequest request, EventCreationResponse eventCreationResponse, EventRepository eventRepository) {
+    public EventCreationUseCase(EventCreationRequest request, EventRepository eventRepository, ParticipationRepository participationRepository, UserRepository userRepository) {
         this.request = request;
-        this.response = eventCreationResponse;
         this.eventRepository = eventRepository;
+        this.participationRepository = participationRepository;
+        this.userRepository = userRepository;
+
+        this.response = new EventCreationResponse();
     }
 
-    public void execute() {
+    public EventCreationResponse execute() {
         logger.info("Executing event creation with the following request");
         logger.info(request.toString());
 
         if (isValid()) {
             createEvent();
+            confirmMasterPresence();
         } else {
             returnErrors();
         }
+
+        return response;
+    }
+
+    private void confirmMasterPresence() {
+        Event event = eventRepository.findById(response.createdEventId).get();
+        User user = userRepository.findById(request.getCreatorId()).get();
+
+        Participation masterParticipation = new Participation();
+        masterParticipation.setUser(user);
+        masterParticipation.setEvent(event);
+        masterParticipation.setStatus(ParticipationStatus.CONFIRMADO);
+
+        participationRepository.save(masterParticipation);
     }
 
     private void returnErrors() {
@@ -80,7 +106,13 @@ public class EventCreationUseCase {
             response.errorMessage = "Faltou informar o horário do evento";
         }
 
-        if (request.getCreator().getChapter() == null) {
+        Optional<User> byId = userRepository.findById(request.getCreatorId());
+        if (byId.isEmpty()) {
+            response.invalidCreator = true;
+            response.errorMessage = "Criador do evento é um usuário inválido";
+        }
+
+        if (byId.get().getChapter() == null) {
             response.invalidChapter = true;
             response.errorMessage = "Criador do evento precisa pertencer a algum capitulo";
         }
@@ -105,15 +137,17 @@ public class EventCreationUseCase {
                 eventToCreate.setDescription(request.getDescription());
             }
 
+            User eventCreator = userRepository.findById(request.getCreatorId()).get();
+
             eventToCreate.setAddress(request.getAddress());
-            eventToCreate.setChapter(request.getCreator().getChapter());
+            eventToCreate.setChapter(eventCreator.getChapter());
             eventToCreate.setPublished(request.isPublished());
             eventToCreate.setTime(request.getTime());
             eventToCreate.setCreationDate(DateUtils.getCurrentDate());
 
             LocalDate eventDate = DateUtils.getDateFromString(request.getDate());
             eventToCreate.setDate(eventDate);
-            eventToCreate.setCreator(request.getCreator());
+            eventToCreate.setCreator(eventCreator);
 
             Event createdEvent = eventRepository.save(eventToCreate);
 
@@ -158,7 +192,13 @@ public class EventCreationUseCase {
             return false;
         }
 
-        if (request.getCreator().getChapter() == null) {
+        Optional<User> byId = userRepository.findById(request.getCreatorId());
+        if (byId.isEmpty()) {
+            return false;
+        }
+
+        User user = byId.get();
+        if (user.getChapter() == null) {
             return false;
         }
 

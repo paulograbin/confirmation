@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "event_id"})
 })
-public class Participation {
+public class Participation extends AbstracEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +33,7 @@ public class Participation {
     private Event event;
 
     @Getter
+    @Setter
     private ParticipationStatus status;
 
     @Getter
@@ -44,10 +45,14 @@ public class Participation {
     private LocalDateTime confirmationDate;
 
     public Participation() {
+        super(null);
+
         this.status = ParticipationStatus.CONVIDADO;
     }
 
     public Participation(User user, Event event) {
+        super(null);
+
         this.user = user;
         this.event = event;
         this.invitationDate = DateUtils.getCurrentDate();

@@ -10,6 +10,8 @@ import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.NotYourEventException;
 import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
 import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.persistence.ParticipationRepository;
+import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.usecases.event.creation.EventCreationRequest;
 import com.paulograbin.confirmation.usecases.event.creation.EventCreationResponse;
@@ -47,6 +49,12 @@ public class EventService {
     @Resource
     ParticipationService participationService;
 
+    @Resource
+    ParticipationRepository participationRepository;
+
+    @Resource
+    UserRepository userRepository;
+
     public Iterable<Event> fetchAllEvents() {
         log.info("Fetching all events");
 
@@ -68,10 +76,9 @@ public class EventService {
     }
 
     public EventCreationResponse createEvent(EventCreationRequest request, User currentUser) {
-        EventCreationResponse eventCreationResponse = new EventCreationResponse();
-        request.setCreator(currentUser);
+        request.setCreatorId(currentUser.getId());
 
-        new EventCreationUseCase(request, eventCreationResponse, eventRepository).execute();
+        EventCreationResponse eventCreationResponse = new EventCreationUseCase(request, eventRepository, participationRepository, userRepository).execute();
 
         if (eventCreationResponse.successful) {
             Event createdEvent = fetchById(eventCreationResponse.createdEventId);
