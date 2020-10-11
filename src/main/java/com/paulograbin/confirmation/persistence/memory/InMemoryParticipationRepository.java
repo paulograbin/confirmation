@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation.persistence.memory;
 
-import com.paulograbin.confirmation.domain.Participation;
-import com.paulograbin.confirmation.persistence.ParticipationRepository;
+import com.paulograbin.confirmation.participation.Participation;
+import com.paulograbin.confirmation.participation.ParticipationRepository;
 
 import java.util.List;
 import java.util.Optional;

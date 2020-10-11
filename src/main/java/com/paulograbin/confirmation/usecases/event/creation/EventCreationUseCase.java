@@ -2,11 +2,11 @@ package com.paulograbin.confirmation.usecases.event.creation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.Event;
-import com.paulograbin.confirmation.domain.Participation;
-import com.paulograbin.confirmation.domain.ParticipationStatus;
+import com.paulograbin.confirmation.participation.Participation;
+import com.paulograbin.confirmation.participation.ParticipationStatus;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.EventRepository;
-import com.paulograbin.confirmation.persistence.ParticipationRepository;
+import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

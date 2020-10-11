@@ -1,5 +1,7 @@
 package com.paulograbin.confirmation.domain;
 
+import com.paulograbin.confirmation.participation.Participation;
+import com.paulograbin.confirmation.participation.ParticipationStatus;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -5,7 +5,7 @@ import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
-import com.paulograbin.confirmation.service.ParticipationService;
+import com.paulograbin.confirmation.participation.ParticipationService;
 import com.paulograbin.confirmation.usecases.event.creation.EventCreationRequest;
 import com.paulograbin.confirmation.usecases.event.creation.EventCreationResponse;
 import com.paulograbin.confirmation.web.dto.EventDTO;

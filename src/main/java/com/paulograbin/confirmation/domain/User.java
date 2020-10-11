@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.domain;
 
 import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.participation.Participation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation.domain;
+package com.paulograbin.confirmation.participation;
 
 public enum ParticipationStatus {
 

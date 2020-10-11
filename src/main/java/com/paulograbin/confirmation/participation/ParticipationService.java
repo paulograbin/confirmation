@@ -1,11 +1,11 @@
-package com.paulograbin.confirmation.service;
+package com.paulograbin.confirmation.participation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.Event;
-import com.paulograbin.confirmation.domain.Participation;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
-import com.paulograbin.confirmation.persistence.ParticipationRepository;
+import com.paulograbin.confirmation.service.EventService;
+import com.paulograbin.confirmation.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
