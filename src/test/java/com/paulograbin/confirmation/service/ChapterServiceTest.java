@@ -56,9 +56,7 @@ class ChapterServiceTest {
     @Test()
     void givenNonExistingId__whenFetchingById__mustThrowException() {
         assertThatExceptionOfType(NotFoundException.class)
-                .isThrownBy(() -> {
-                    chapterService.fetchById(44);
-                });
+                .isThrownBy(() -> chapterService.fetchById(44));
     }
 
     @Test()
@@ -96,8 +94,6 @@ class ChapterServiceTest {
         ChapterCreationRequest request = new ChapterCreationRequest(44L, "Name");
 
         assertThatExceptionOfType(RuntimeException.class)
-                .isThrownBy(() -> {
-                    chapterService.createChapter(request);
-                });
+                .isThrownBy(() -> chapterService.createChapter(request));
     }
 }
