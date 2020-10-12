@@ -2,13 +2,11 @@ package com.paulograbin.confirmation.persistence.memory;
 
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.UserRepository;
-import com.paulograbin.confirmation.userequest.UserRequest;
-import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class InMemoryUserRepository extends InMemoryRepository<User> implements UserRepository {
 
@@ -19,7 +17,9 @@ public class InMemoryUserRepository extends InMemoryRepository<User> implements 
 
     @Override
     public boolean existsByEmail(String email) {
-        throw new UnsupportedOperationException();
+        return this.map.values()
+                .stream()
+                .anyMatch(u -> u.getEmail().equalsIgnoreCase(email));
     }
 
     @Override
@@ -34,7 +34,10 @@ public class InMemoryUserRepository extends InMemoryRepository<User> implements 
 
     @Override
     public List<User> findAllByChapterId(Long chapterId) {
-        throw new UnsupportedOperationException();
+        return this.map.values()
+                .stream()
+                .filter(u -> u.getChapter().getId().equals(chapterId))
+                .collect(Collectors.toList());
     }
 
     @Override
