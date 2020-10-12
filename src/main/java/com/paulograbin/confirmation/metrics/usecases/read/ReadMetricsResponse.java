@@ -16,4 +16,7 @@ public class ReadMetricsResponse {
     public boolean successful;
     public boolean invalidUser;
     public boolean notAllowed;
+
+    public long totalInvitations;
+    public long totalConfirmedParticipations;
 }

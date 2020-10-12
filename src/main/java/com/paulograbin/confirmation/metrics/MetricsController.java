@@ -5,6 +5,7 @@ import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.metrics.usecases.read.ReadMetricsRequest;
 import com.paulograbin.confirmation.metrics.usecases.read.ReadMetricsResponse;
 import com.paulograbin.confirmation.metrics.usecases.read.ReadMetricsUseCase;
+import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
@@ -44,6 +45,9 @@ public class MetricsController {
     @Resource
     UserRequestRepository userRequestRepository;
 
+    @Resource
+    ParticipationRepository participationRepository;
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ReadMetricsResponse> listAll(@CurrentUser User currentUser) {
@@ -52,7 +56,7 @@ public class MetricsController {
         ReadMetricsRequest readMetricsRequest = new ReadMetricsRequest();
         readMetricsRequest.requestingUser = currentUser.getId();
 
-        ReadMetricsResponse response = new ReadMetricsUseCase(readMetricsRequest, userRepository, eventRepository, chapterRepository, userRequestRepository).execute();
+        ReadMetricsResponse response = new ReadMetricsUseCase(readMetricsRequest, userRepository, eventRepository, chapterRepository, userRequestRepository, participationRepository).execute();
 
         CacheControl cc = CacheControl.maxAge(Duration.ofMinutes(10)).cachePrivate();
 

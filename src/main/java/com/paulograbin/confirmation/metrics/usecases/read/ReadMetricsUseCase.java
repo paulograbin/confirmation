@@ -3,6 +3,7 @@ package com.paulograbin.confirmation.metrics.usecases.read;
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
@@ -17,18 +18,21 @@ public class ReadMetricsUseCase {
 
     private final ReadMetricsRequest request;
     private final ReadMetricsResponse response;
+
+    private final ParticipationRepository participationRepository;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final ChapterRepository chapterRepository;
     private final UserRequestRepository userRequestRepository;
 
-    public ReadMetricsUseCase(ReadMetricsRequest readMetricsRequest, UserRepository userRepository, EventRepository eventRepository, ChapterRepository chapterRepository, UserRequestRepository userRequestRepository) {
+    public ReadMetricsUseCase(ReadMetricsRequest readMetricsRequest, UserRepository userRepository, EventRepository eventRepository, ChapterRepository chapterRepository, UserRequestRepository userRequestRepository, ParticipationRepository participationRepository) {
         this.request = readMetricsRequest;
 
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
         this.chapterRepository = chapterRepository;
         this.userRequestRepository = userRequestRepository;
+        this.participationRepository = participationRepository;
 
         this.response = new ReadMetricsResponse();
     }
@@ -64,8 +68,14 @@ public class ReadMetricsUseCase {
         gatherEventMetrics();
         gatherChapterMetrics();
         gatherUserRequestMetrics();
+        gatherConfirmationMetrics();
 
         response.successful = true;
+    }
+
+    private void gatherConfirmationMetrics() {
+        response.totalInvitations = participationRepository.count();
+        response.totalConfirmedParticipations = participationRepository.countByStatusConfirmado();
     }
 
     private void gatherUserRequestMetrics() {

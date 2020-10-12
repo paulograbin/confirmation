@@ -2,6 +2,7 @@ package com.paulograbin.confirmation.persistence.memory;
 
 import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
+import com.paulograbin.confirmation.participation.ParticipationStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,5 +21,13 @@ public class InMemoryParticipationRepository extends InMemoryRepository<Particip
     @Override
     public List<Participation> findByUserId(long userId) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public long countByStatusConfirmado() {
+        return map.values()
+                .stream()
+                .filter(p -> p.getStatus() == ParticipationStatus.CONFIRMADO)
+                .count();
     }
 }
