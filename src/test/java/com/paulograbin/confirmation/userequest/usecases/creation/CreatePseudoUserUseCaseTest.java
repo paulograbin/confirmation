@@ -182,10 +182,11 @@ class CreatePseudoUserUseCaseTest {
         givenExistingChapter();
         makeValidRequest();
 
-        User admin = new User();
-        admin.setMaster(false);
-        admin.setRoles(Collections.emptySet());
-        userRepository.save(admin);
+        User regularUser = new User();
+        regularUser.setMaster(false);
+        regularUser.setEmail("regularuser@confirmation.com");
+        regularUser.setRoles(Collections.emptySet());
+        userRepository.save(regularUser);
 
         whenExecutingUseCase();
 
@@ -243,11 +244,12 @@ class CreatePseudoUserUseCaseTest {
     }
 
     private void givenAnMasterUser() {
-        User admin = new User();
-        admin.setId(MASTER_ID);
-        admin.setMaster(true);
+        User master = new User();
+        master.setId(MASTER_ID);
+        master.setEmail("master@confirmation");
+        master.setMaster(true);
 
-        userRepository.save(admin);
+        userRepository.save(master);
     }
 
     private void givenAnAdminUserExists() {

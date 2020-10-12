@@ -42,11 +42,17 @@ public class InMemoryUserRepository extends InMemoryRepository<User> implements 
 
     @Override
     public long countAllByActiveTrue() {
-        throw new UnsupportedOperationException();
+        return this.map.values()
+                .stream()
+                .filter(User::isAdmin)
+                .count();
     }
 
     @Override
     public long countAllByLastLoginNotNull() {
-        throw new UnsupportedOperationException();
+        return this.map.values()
+                .stream()
+                .filter(u -> u.getLastLogin() != null)
+                .count();
     }
 }

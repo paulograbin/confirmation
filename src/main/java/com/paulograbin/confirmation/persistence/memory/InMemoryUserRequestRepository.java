@@ -22,6 +22,9 @@ public class InMemoryUserRequestRepository extends InMemoryRepository<UserReques
 
     @Override
     public long countAllByUserNotNull() {
-        throw new UnsupportedOperationException();
+        return map.values()
+                .stream()
+                .filter(u -> u.getUser() != null)
+                .count();
     }
 }

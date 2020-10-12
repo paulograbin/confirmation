@@ -25,12 +25,18 @@ public class InMemoryEventRepository extends InMemoryRepository<Event> implement
 
     @Override
     public long countAllByPublishedTrue() {
-        throw new UnsupportedOperationException();
+        return this.map.values()
+                .stream()
+                .filter(Event::isPublished)
+                .count();
     }
 
     @Override
     public long countAllByDateAfter(LocalDate currentDate) {
-        throw new UnsupportedOperationException();
+        return this.map.values()
+                .stream()
+                .filter(e -> e.getDate().isAfter(currentDate))
+                .count();
     }
 
 }
