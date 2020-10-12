@@ -14,6 +14,7 @@ import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
+import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.event.creation.EventCreationRequest;
 import com.paulograbin.confirmation.usecases.event.creation.EventCreationResponse;
 import com.paulograbin.confirmation.usecases.event.creation.EventCreationUseCase;
@@ -56,6 +57,9 @@ public class EventService {
     @Resource
     UserRepository userRepository;
 
+    @Resource
+    EmailService emailService;
+
     public Iterable<Event> fetchAllEvents() {
         log.info("Fetching all events");
 
@@ -79,13 +83,13 @@ public class EventService {
     public EventCreationResponse createEvent(EventCreationRequest request, User currentUser) {
         request.setCreatorId(currentUser.getId());
 
-        EventCreationResponse eventCreationResponse = new EventCreationUseCase(request, eventRepository, participationRepository, userRepository).execute();
+        EventCreationResponse eventCreationResponse = new EventCreationUseCase(request, eventRepository, participationRepository, userRepository, emailService).execute();
 
-        if (eventCreationResponse.successful) {
-            Event createdEvent = fetchById(eventCreationResponse.createdEventId);
-
-            inviteRemainingUsersFromChapterToEvent(createdEvent);
-        }
+//        if (eventCreationResponse.successful) {
+//            Event createdEvent = fetchById(eventCreationResponse.createdEventId);
+//
+//            inviteRemainingUsersFromChapterToEvent(createdEvent);
+//        }
 
         return eventCreationResponse;
     }

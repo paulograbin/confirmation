@@ -8,12 +8,17 @@ import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.service.mail.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -33,11 +38,18 @@ public class EventCreationUseCase {
     private final UserRepository userRepository;
     private final ParticipationRepository participationRepository;
 
-    public EventCreationUseCase(EventCreationRequest request, EventRepository eventRepository, ParticipationRepository participationRepository, UserRepository userRepository) {
+    private final EmailService emailService;
+
+    private Map<String, String> invitedUsers = new HashMap<>();
+    private String chapterName = "";
+    private String masterName = "";
+
+    public EventCreationUseCase(EventCreationRequest request, EventRepository eventRepository, ParticipationRepository participationRepository, UserRepository userRepository, EmailService emailService) {
         this.request = request;
         this.eventRepository = eventRepository;
         this.participationRepository = participationRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
 
         this.response = new EventCreationResponse();
     }
@@ -49,11 +61,49 @@ public class EventCreationUseCase {
         if (isValid()) {
             createEvent();
             confirmMasterPresence();
+            inviteRemainingUsersFromChapter();
+            sendMailToInvitedUsers();
         } else {
             returnErrors();
         }
 
         return response;
+    }
+
+    private void sendMailToInvitedUsers() {
+        emailService.sendEventCreatedMail(invitedUsers, chapterName, masterName);
+    }
+
+    private void inviteRemainingUsersFromChapter() {
+        long creatorId = request.getCreatorId();
+        User eventCreator = userRepository.findById(creatorId).get();
+
+        Event createdEvent = eventRepository.findById(response.getCreatedEventId()).get();
+
+
+        List<User> users = userRepository.findAllByChapterId(eventCreator.getChapter().getId());
+        users = users.stream()
+                .filter(p -> !p.getId().equals(eventCreator.getId()))
+                .collect(Collectors.toList());
+
+        for (User userToInvite : users) {
+            // todo test with parallel streams to check for better performance
+            List<Participation> participations = userToInvite.getParticipations()
+                    .stream()
+                    .filter(p -> p.getEvent().getId().equals(response.createdEventId))
+                    .collect(Collectors.toList());
+
+            if (participations.isEmpty()) {
+                logger.info("Inviting user {}-{} to event {}-{}", userToInvite.getId(), userToInvite.getUsername(), createdEvent.getId(), createdEvent.getTitle());
+
+                Participation p = new Participation(userToInvite, createdEvent);
+                p.inviteParticipant();
+
+                participationRepository.save(p);
+
+                invitedUsers.put(userToInvite.getEmail(), userToInvite.getFirstName());
+            }
+        }
     }
 
     private void confirmMasterPresence() {
@@ -138,10 +188,12 @@ public class EventCreationUseCase {
             }
 
             User eventCreator = userRepository.findById(request.getCreatorId()).get();
+            masterName = eventCreator.getFirstName();
+            chapterName = eventCreator.getChapter().getName();
 
             eventToCreate.setAddress(request.getAddress());
             eventToCreate.setChapter(eventCreator.getChapter());
-            eventToCreate.setPublished(request.isPublished());
+            eventToCreate.setPublished(true);
             eventToCreate.setTime(request.getTime());
             eventToCreate.setCreationDate(DateUtils.getCurrentDate());
 
