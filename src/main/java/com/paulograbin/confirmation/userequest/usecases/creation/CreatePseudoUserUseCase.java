@@ -118,6 +118,7 @@ public class CreatePseudoUserUseCase {
         }
 
         if (isBlank(request.lastName) || request.lastName.length() < NAME_MINIMUM_LENGTH || request.lastName.length() > NAME_MAX_LENGTH) {
+            response.errorMessage = "Sobrenome inválido";
             response.invalidLastName = true;
         }
 

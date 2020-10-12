@@ -254,6 +254,7 @@ class CreatePseudoUserUseCaseTest {
         User admin = new User();
         admin.setId(ADMIN_ID);
         admin.getRoles().add(new Role(RoleName.ROLE_ADMIN));
+        admin.setEmail("admin@confirmation.com");
 
         userRepository.save(admin);
     }
