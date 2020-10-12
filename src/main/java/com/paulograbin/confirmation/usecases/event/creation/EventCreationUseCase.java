@@ -104,6 +104,8 @@ public class EventCreationUseCase {
                 invitedUsers.put(userToInvite.getEmail(), userToInvite.getFirstName());
             }
         }
+
+        invitedUsers.put(eventCreator.getEmail(), eventCreator.getFirstName());
     }
 
     private void confirmMasterPresence() {
