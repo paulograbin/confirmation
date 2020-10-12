@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.usecases.event.creation;
 
 import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationStatus;
@@ -9,6 +10,7 @@ import com.paulograbin.confirmation.helper.DateHelper;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.persistence.memory.InMemoryChapterRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryEventRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryParticipationRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryUserRepository;
@@ -31,6 +33,8 @@ class EventCreationUseCaseTest {
     private static final String VALID_TITLE = "aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222";
     private static final String INVALID_TITLE = "aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222aaaaaaaaaabbbbbbbbbbcccccccccc11111111112222222222999999999";
 
+
+    private ChapterRepository chapterRepository;
     private EventRepository repository;
     private ParticipationRepository participationRepository;
     private UserRepository userRepository;
@@ -46,6 +50,7 @@ class EventCreationUseCaseTest {
         participationRepository = new InMemoryParticipationRepository();
         userRepository = new InMemoryUserRepository();
         emailService = new LoggerEmailService();
+        chapterRepository = new InMemoryChapterRepository();
 
         request = makeValidRequest();
         response = new EventCreationResponse();
@@ -104,15 +109,21 @@ class EventCreationUseCaseTest {
     }
 
     private void whenExecutingTestCase() {
-        this.response = new EventCreationUseCase(request, repository, participationRepository, userRepository, emailService).execute();
+        this.response = new EventCreationUseCase(request, repository, participationRepository, userRepository, emailService, chapterRepository).execute();
     }
 
     private void givenAMasterUser() {
         User master = new User();
         master.setId(MASTER_ID);
+        master.setFirstName("MasterFirstName");
         master.setMaster(true);
 
-        master.setChapter(new Chapter());
+        Chapter chapter = new Chapter();
+        chapter.setId(100L);
+        chapter.setName("Testing Chapter");
+        chapterRepository.save(chapter);
+
+        master.setChapter(chapter);
 
         userRepository.save(master);
     }

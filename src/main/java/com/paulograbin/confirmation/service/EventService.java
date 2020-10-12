@@ -2,6 +2,7 @@ package com.paulograbin.confirmation.service;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.participation.Participation;
@@ -49,6 +50,9 @@ public class EventService {
     ChapterService chapterService;
 
     @Resource
+    ChapterRepository chapterRepository;
+
+    @Resource
     ParticipationService participationService;
 
     @Resource
@@ -83,7 +87,7 @@ public class EventService {
     public EventCreationResponse createEvent(EventCreationRequest request, User currentUser) {
         request.setCreatorId(currentUser.getId());
 
-        EventCreationResponse eventCreationResponse = new EventCreationUseCase(request, eventRepository, participationRepository, userRepository, emailService).execute();
+        EventCreationResponse eventCreationResponse = new EventCreationUseCase(request, eventRepository, participationRepository, userRepository, emailService, chapterRepository).execute();
 
 //        if (eventCreationResponse.successful) {
 //            Event createdEvent = fetchById(eventCreationResponse.createdEventId);

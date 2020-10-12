@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.usecases.event.creation;
 
 import com.paulograbin.confirmation.DateUtils;
+import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationStatus;
@@ -37,6 +38,7 @@ public class EventCreationUseCase {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final ParticipationRepository participationRepository;
+    private final ChapterRepository chapterRepository;
 
     private final EmailService emailService;
 
@@ -44,12 +46,13 @@ public class EventCreationUseCase {
     private String chapterName = "";
     private String masterName = "";
 
-    public EventCreationUseCase(EventCreationRequest request, EventRepository eventRepository, ParticipationRepository participationRepository, UserRepository userRepository, EmailService emailService) {
+    public EventCreationUseCase(EventCreationRequest request, EventRepository eventRepository, ParticipationRepository participationRepository, UserRepository userRepository, EmailService emailService, ChapterRepository chapterRepository) {
         this.request = request;
         this.eventRepository = eventRepository;
         this.participationRepository = participationRepository;
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.chapterRepository = chapterRepository;
 
         this.response = new EventCreationResponse();
     }
@@ -71,6 +74,10 @@ public class EventCreationUseCase {
     }
 
     private void sendMailToInvitedUsers() {
+        logger.info("Sending event created mail to: {}", invitedUsers);
+        logger.info("Chapter name: {}", chapterName);
+        logger.info("Master: {}", masterName);
+
         emailService.sendEventCreatedMail(invitedUsers, chapterName, masterName);
     }
 
