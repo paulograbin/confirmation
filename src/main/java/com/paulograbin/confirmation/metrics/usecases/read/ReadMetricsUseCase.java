@@ -4,6 +4,7 @@ import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
+import com.paulograbin.confirmation.participation.ParticipationStatus;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
@@ -74,8 +75,8 @@ public class ReadMetricsUseCase {
     }
 
     private void gatherConfirmationMetrics() {
-        response.totalInvitations = participationRepository.count();
-        response.totalConfirmedParticipations = participationRepository.countByStatusConfirmado();
+        response.totalParticipations = participationRepository.count();
+        response.confirmedParticipations = participationRepository.countByStatus(ParticipationStatus.CONFIRMADO);
     }
 
     private void gatherUserRequestMetrics() {

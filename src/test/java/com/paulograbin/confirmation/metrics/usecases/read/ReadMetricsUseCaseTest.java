@@ -17,7 +17,6 @@ import com.paulograbin.confirmation.persistence.memory.InMemoryParticipationRepo
 import com.paulograbin.confirmation.persistence.memory.InMemoryUserRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryUserRequestRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
-import org.h2.util.New;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,8 +81,8 @@ class ReadMetricsUseCaseTest {
         whenExecutingUsecase();
 
         assertThat(response.successful).isTrue();
-        assertThat(response.totalInvitations).isEqualTo(2);
-        assertThat(response.totalConfirmedParticipations).isEqualTo(1);
+        assertThat(response.totalParticipations).isEqualTo(2);
+        assertThat(response.confirmedParticipations).isEqualTo(1);
     }
 
     private void givenThreeConfirmations() {

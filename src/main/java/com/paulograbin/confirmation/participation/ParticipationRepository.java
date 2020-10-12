@@ -14,5 +14,5 @@ public interface ParticipationRepository extends CrudRepository<Participation, L
 
     List<Participation> findByUserId(long userId);
 
-    long countByStatusConfirmado();
+    long countByStatus(ParticipationStatus status);
 }

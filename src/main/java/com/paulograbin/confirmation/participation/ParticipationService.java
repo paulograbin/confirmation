@@ -28,9 +28,6 @@ public class ParticipationService {
     ParticipationRepository participationRepository;
 
     @Resource
-    UserService userService;
-
-    @Resource
     EventService eventService;
 
     @Resource

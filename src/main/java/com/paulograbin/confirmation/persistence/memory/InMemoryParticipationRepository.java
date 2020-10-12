@@ -24,10 +24,18 @@ public class InMemoryParticipationRepository extends InMemoryRepository<Particip
     }
 
     @Override
-    public long countByStatusConfirmado() {
+    public long countByStatus(ParticipationStatus status) {
         return map.values()
                 .stream()
-                .filter(p -> p.getStatus() == ParticipationStatus.CONFIRMADO)
+                .filter(p -> p.getStatus() == status)
                 .count();
     }
+
+//    @Override
+//    public long countByStatusConfirmado() {
+//        return map.values()
+//                .stream()
+//                .filter(p -> p.getStatus() == ParticipationStatus.CONFIRMADO)
+//                .count();
+//    }
 }
