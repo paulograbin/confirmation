@@ -41,9 +41,10 @@ public class SendGridEmailService implements EmailService {
             request.setBody(mail.build());
             Response response = sg.api(request);
 
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
+            logger.info("Mail send to {}", mail.toString());
+            logger.info("Personalization {}", mail.getPersonalization());
+            logger.info("Status code: {}", response.getStatusCode());
+            logger.info("Headers: {}", response.getHeaders());
         } catch (IOException ex) {
             System.out.println("Deu pau");
         }
