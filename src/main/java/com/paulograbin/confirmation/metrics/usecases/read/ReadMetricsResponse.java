@@ -13,4 +13,7 @@ public class ReadMetricsResponse {
     public long totalChapters;
     public long totalUserRequests;
     public long convertedUserRequest;
+    public boolean successful;
+    public boolean invalidUser;
+    public boolean notAllowed;
 }

@@ -47,7 +47,16 @@ public class ReadMetricsUseCase {
     }
 
     private void setErrors() {
+        Optional<User> byId = userRepository.findById(request.requestingUser);
+        if (byId.isEmpty()) {
+            response.invalidUser = true;
+            return;
+        }
 
+        User user = byId.get();
+        if (!user.isAdmin()) {
+            response.notAllowed = true;
+        }
     }
 
     private void gatherMetrics() {
@@ -55,6 +64,8 @@ public class ReadMetricsUseCase {
         gatherEventMetrics();
         gatherChapterMetrics();
         gatherUserRequestMetrics();
+
+        response.successful = true;
     }
 
     private void gatherUserRequestMetrics() {
