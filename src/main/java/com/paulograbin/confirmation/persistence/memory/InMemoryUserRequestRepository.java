@@ -17,11 +17,11 @@ public class InMemoryUserRequestRepository extends InMemoryRepository<UserReques
 
     @Override
     public Optional<UserRequest> findByCode(UUID code) {
-        return Optional.empty();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long countAllByUserNotNull() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 }

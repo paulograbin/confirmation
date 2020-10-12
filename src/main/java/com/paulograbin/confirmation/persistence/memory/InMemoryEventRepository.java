@@ -10,27 +10,27 @@ public class InMemoryEventRepository extends InMemoryRepository<Event> implement
 
     @Override
     public List<Event> findAllByCreatorId(long creatorId) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<Event> findAllByChapterIdAndDateGreaterThanEqual(long chapterId, LocalDate moment) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<Event> findAllByChapterId(long chapterId) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long countAllByPublishedTrue() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long countAllByDateAfter(LocalDate currentDate) {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
 }

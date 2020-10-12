@@ -14,36 +14,36 @@ public class InMemoryUserRepository extends InMemoryRepository<User> implements 
 
     @Override
     public boolean existsByUsername(String username) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public UserDetails findByUsername(String username) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Optional<User> findByUsernameOrEmail(String username, String email) {
-        return Optional.empty();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<User> findAllByChapterId(Long chapterId) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long countAllByActiveTrue() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public long countAllByLastLoginNotNull() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 }
