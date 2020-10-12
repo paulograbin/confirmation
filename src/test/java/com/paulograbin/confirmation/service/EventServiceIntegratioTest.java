@@ -49,7 +49,6 @@ class EventServiceIntegratioTest {
         for (Event event1 : eventRepository.findAll()) {
             logger.info("Found chapter {}", event1.toString());
         }
-
     }
 
     @Test
