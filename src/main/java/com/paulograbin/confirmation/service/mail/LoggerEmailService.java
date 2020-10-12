@@ -7,11 +7,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @Profile("!production")
 public class LoggerEmailService implements EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerEmailService.class);
+
+    @Override
+    public void sendEventCreatedMail(Map<String, String> emailsAndNames, String chapterName, String masterName) {
+
+    }
 
     @Override
     public void sendPasswordChangedMail(User userFromDatabase) {

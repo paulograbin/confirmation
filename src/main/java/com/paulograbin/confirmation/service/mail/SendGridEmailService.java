@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -67,6 +70,41 @@ public class SendGridEmailService implements EmailService {
         mail.addPersonalization(personalization);
 
         sendMail(mail);
+    }
+
+    @Override
+    public void sendEventCreatedMail(Map<String, String> emailsAndNames, String chapterName, String masterName) {
+        if (chapterName.isEmpty() || masterName.isEmpty()) {
+            logger.info("Chapter name or master name are invalid, won't generate");
+            return;
+        }
+
+        List<Mail> mailsToSend = new ArrayList<>();
+
+        String subject = "Nova cerimônia criada";
+        Email from = new Email("plgrabin@gmail.com");
+
+        emailsAndNames.entrySet().forEach(e -> {
+            Email to = new Email(e.getKey());
+            Email cc = new Email("pl.grabin@gmail.com");
+
+            final var personalization = new Personalization();
+            personalization.addDynamicTemplateData("nome", e.getValue());
+            personalization.addDynamicTemplateData("nome_mc", masterName);
+            personalization.addDynamicTemplateData("nome_capitulo", chapterName);
+            personalization.addTo(to);
+            personalization.addTo(cc);
+
+            Mail mail = new Mail();
+            mail.setTemplateId("d-c9297475c42b4c41b944228d64957bf4");
+            mail.setFrom(from);
+            mail.setSubject(subject);
+            mail.addPersonalization(personalization);
+
+            mailsToSend.add(mail);
+        });
+
+        mailsToSend.stream().forEach(this::sendMail);
     }
 
     @Override
