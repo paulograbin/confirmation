@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class ParticipationWithoutEventDTO {
 
     long id;
-    private UserDTO user;
+    private UserSimpleDTO user;
     private String status;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
