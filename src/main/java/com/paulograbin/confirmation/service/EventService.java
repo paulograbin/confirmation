@@ -209,13 +209,18 @@ public class EventService {
                 .orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
 
         if (isCurrentUserCreatorOfThisEvent(currentUser, event) || currentUser.isAdmin()) {
-
+            log.info("Proceeding with event deletion....");
 
             participationService.deleteAllParticipationsFromEvent(event.getId());
+
+
+            log.info("Deleting event....");
             eventRepository.deleteById(event.getId());
         } else {
             throw new NotYourEventException("This event was not created by you!");
         }
+
+        log.info("Event deleted!");
     }
 
     private boolean isCreatorTheOnlyInvitedUser(List<Participation> allParticipationsFromEvent) {

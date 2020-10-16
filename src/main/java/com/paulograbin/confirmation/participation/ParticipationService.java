@@ -39,15 +39,13 @@ public class ParticipationService {
         return participationRepository.findAll();
     }
 
-
     public Set<Participation> getAllParticipationsFromEvent(final long eventId) {
-        log.info(String.format("Fetching every from event %d", eventId));
+        log.info(String.format("Fetching every participation from event %d", eventId));
 
         Event eventFromDatabase = eventService.fetchById(eventId);
 
         return eventFromDatabase.getParticipants();
     }
-
 
     public List<Participation> getAllUpcomingParticipationsFromUser(final long userId) {
         log.info("Fetching every up coming participation from user {}", userId);
@@ -100,6 +98,8 @@ public class ParticipationService {
     }
 
     public void deleteAllParticipationsFromEvent(Long eventId) {
+        log.info("Removing participations...");
+
         Set<Participation> allParticipationsFromEvent = getAllParticipationsFromEvent(eventId);
 
         participationRepository.deleteAll(allParticipationsFromEvent);
