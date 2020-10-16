@@ -73,19 +73,8 @@ public class EventService {
     public Event fetchById(long eventId) {
         log.info("Fetching event by id {}", eventId);
 
-        Event event = eventRepository.findById(eventId)
+        return eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id " + eventId + " not found!"));
-        log.info("Found event {}", event);
-        log.info("Event has {} participatns before filtering", event.getParticipants());
-
-        event.setParticipants(event.getParticipants()
-                .stream()
-                .filter(u -> u.getUser().isActive())
-                .collect(Collectors.toSet()));
-
-        log.info("Event has {} participatns after filtering", event.getParticipants());
-
-        return event;
     }
 
     public EventCreationResponse createEvent(EventCreationRequest request, User currentUser) {

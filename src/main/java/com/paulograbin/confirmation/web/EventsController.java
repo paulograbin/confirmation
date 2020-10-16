@@ -80,6 +80,13 @@ class EventsController {
 
         Event event = eventService.fetchById(eventId);
 
+        log.info("Found event {}", event);
+
+        event.setParticipants(event.getParticipants()
+                .stream()
+                .filter(u -> u.getUser().isActive())
+                .collect(Collectors.toSet()));
+
         return modelMapper.map(event, EventDetailsDTO.class);
     }
 
