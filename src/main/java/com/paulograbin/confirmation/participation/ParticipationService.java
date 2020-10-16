@@ -101,8 +101,14 @@ public class ParticipationService {
         log.info("Removing participations...");
 
         Set<Participation> allParticipationsFromEvent = getAllParticipationsFromEvent(eventId);
+        log.info("Found {} participations for event {}", allParticipationsFromEvent.size(), eventId);
 
-        participationRepository.deleteAll(allParticipationsFromEvent);
+        allParticipationsFromEvent.stream()
+                .peek(Participation::toString)
+                .forEach(p -> participationRepository.delete(p));
+
+        Set<Participation> afterDeletion = getAllParticipationsFromEvent(eventId);
+        log.info("After deletion there are {} participations for event {}", afterDeletion.size(), eventId);
     }
 
     public long fetchCount() {
