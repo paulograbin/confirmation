@@ -62,6 +62,8 @@ public class EventCreationUseCase {
         logger.info(request.toString());
 
         if (isValid()) {
+            //todo check if is event already exists
+            //todo disable create event button once request is triggered and until response comes back
             createEvent();
             confirmMasterPresence();
             inviteRemainingUsersFromChapter();
