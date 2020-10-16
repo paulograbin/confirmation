@@ -75,11 +75,15 @@ public class EventService {
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id " + eventId + " not found!"));
+        log.info("Found event {}", event);
+        log.info("Event has {} participatns before filtering", event.getParticipants());
 
         event.setParticipants(event.getParticipants()
                 .stream()
                 .filter(u -> u.getUser().isActive())
                 .collect(Collectors.toSet()));
+
+        log.info("Event has {} participatns after filtering", event.getParticipants());
 
         return event;
     }
