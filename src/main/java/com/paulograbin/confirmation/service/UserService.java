@@ -205,8 +205,8 @@ public class UserService implements UserDetailsService {
             activate(userFromDatabase.getId());
         }
 
-        userFromDatabase.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
-        emailService.sendPasswordChangedMail(userFromDatabase);
+//        userFromDatabase.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+//        emailService.sendPasswordChangedMail(userFromDatabase);
 
         return userRepository.save(userFromDatabase);
     }
