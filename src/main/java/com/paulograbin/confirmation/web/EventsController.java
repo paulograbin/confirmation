@@ -3,7 +3,12 @@ package com.paulograbin.confirmation.web;
 import com.google.gson.Gson;
 import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.event.usecases.readevent.ReadEventRequest;
+import com.paulograbin.confirmation.event.usecases.readevent.ReadEventResponse;
+import com.paulograbin.confirmation.event.usecases.readevent.ReadEventUseCase;
 import com.paulograbin.confirmation.participation.ParticipationService;
+import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.usecases.event.creation.EventCreationRequest;
@@ -51,6 +56,12 @@ class EventsController {
     private EventService eventService;
 
     @Resource
+    private EventRepository eventRepository;
+
+    @Resource
+    private UserRepository userRepository;
+
+    @Resource
     private ParticipationService participationService;
 
     @Resource
@@ -75,19 +86,16 @@ class EventsController {
     }
 
     @GetMapping(path = "/{id}")
-    public EventDetailsDTO fetchEventDetails(@PathVariable("id") long eventId) {
-        log.info("All details of event {}", eventId);
+    public ResponseEntity<ReadEventResponse> fetchEventDetails(@PathVariable("id") long eventId, @CurrentUser User currentUser) {
+        log.info("All details of event {} for user {}-{}", eventId, currentUser.getId(), currentUser.getUsername());
 
-        Event event = eventService.fetchById(eventId);
+        var request = new ReadEventRequest();
+        request.setEventId(eventId);
+        request.setUserId(currentUser.getId());
 
-        log.info("Found event {}", event);
+        var response = new ReadEventUseCase(request, eventRepository, userRepository).execute();
 
-        event.setParticipants(event.getParticipants()
-                .stream()
-                .filter(u -> u.getUser().isActive())
-                .collect(Collectors.toSet()));
-
-        return modelMapper.map(event, EventDetailsDTO.class);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping(path = "/chapter")
