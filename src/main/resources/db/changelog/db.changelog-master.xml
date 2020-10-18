@@ -3,8 +3,8 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <include file="event_description_increase_changelog.xml" relativeToChangelogFile="true"/>
-    <include file="new_column_user_request.xml" relativeToChangelogFile="true"/>
-    <include file="make_new_column_primary_key.xml" relativeToChangelogFile="true"/>
-    <include file="rename_columns_on_user_request.xml" relativeToChangelogFile="true"/>
+<!--    <include file="event_description_increase_changelog.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="new_column_user_request.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="make_new_column_primary_key.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="rename_columns_on_user_request.xml" relativeToChangelogFile="true"/>-->
 </databaseChangeLog>
