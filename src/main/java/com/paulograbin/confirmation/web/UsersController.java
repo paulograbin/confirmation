@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,6 +62,7 @@ class UsersController {
 
         User userFromDatabase = userService.fetchById(currentUserId);
         UserDTO userDTO = modelMapper.map(userFromDatabase, UserDTO.class);
+        userDTO.setParticipations(Collections.emptyList());
 
         CacheControl cc = CacheControl.maxAge(Duration.ofHours(1)).cachePrivate();
 
