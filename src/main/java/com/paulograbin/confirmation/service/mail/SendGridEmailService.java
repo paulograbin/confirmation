@@ -60,7 +60,7 @@ public class SendGridEmailService implements EmailService {
 
         final var personalization = new Personalization();
         personalization.addDynamicTemplateData("name", userRequest.getFirstName());
-        personalization.addDynamicTemplateData("requestNumber", userRequest.getId());
+        personalization.addDynamicTemplateData("requestNumber", userRequest.getCode());
         personalization.addTo(to);
         personalization.addTo(cc);
 
