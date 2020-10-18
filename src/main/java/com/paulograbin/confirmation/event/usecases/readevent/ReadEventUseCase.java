@@ -4,12 +4,12 @@ import com.paulograbin.confirmation.domain.Event;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
-import com.paulograbin.confirmation.web.dto.ChapterDTO;
 import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 
 public class ReadEventUseCase {
@@ -47,6 +47,12 @@ public class ReadEventUseCase {
     }
 
     private void gatherEventData() {
+        if (request.getEventId() == 0) {
+            response.creating = true;
+            response.successful = true;
+            return;
+        }
+
         Event event = eventRepository.findById(request.getEventId()).get();
         User user = userRepository.findById(request.getUserId()).get();
 
@@ -58,11 +64,17 @@ public class ReadEventUseCase {
                 .collect(Collectors.toSet()));
 
         response.successful = true;
+        response.canChange = user.isMaster();
+        response.isInThePast = event.getDate().isBefore(LocalDate.now());
 
         response.eventDetails = modelMapper.map(event, EventDetailsDTO.class);
     }
 
     private boolean isValid() {
+        if (request.getEventId() == 0) {
+            return true;
+        }
+
         if (!userRepository.existsById(request.userId)) {
             return false;
         }
@@ -86,7 +98,7 @@ public class ReadEventUseCase {
     }
 
     private boolean isUserAllowedToSeeEvent(User user, Event event) {
-        return event.getChapter().getId().equals(user.getChapter().getId());
+        return event.getChapter().getId().equals(user.getChapter().getId()) || user.isAdmin();
     }
 
     private void setErrors() {

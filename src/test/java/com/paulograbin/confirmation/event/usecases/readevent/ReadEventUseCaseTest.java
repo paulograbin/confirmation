@@ -3,6 +3,8 @@ package com.paulograbin.confirmation.event.usecases.readevent;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.domain.Role;
+import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
@@ -96,6 +98,23 @@ class ReadEventUseCaseTest {
 
         assertThat(response.successful).isFalse();
         assertThat(response.notAllowed).isTrue();
+    }
+
+    @Test
+    void adminIsAlwaysAllowed() {
+        var chapterA = givenAChapter();
+        var chapterB = givenAnotherChapter();
+
+        Event event = givenAnEvent(chapterA);
+        User user = givenExistingUser(chapterB);
+        user.getRoles().add(new Role(RoleName.ROLE_ADMIN));
+
+        request.eventId = event.getId();
+        request.userId = user.getId();
+
+        whenExecutingTestCase();
+
+        assertThat(response.successful).isTrue();
     }
 
     private Chapter givenAnotherChapter() {
