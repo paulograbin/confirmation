@@ -153,7 +153,7 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
         User mc2 = new User("asimov", "Isaac", "Asimov", "isaac@asimov.com", "aaa");
         createUserIfDoesntExist(mc2, chapter_gvs, false);
 
-        Chapter chapter200 = chapterService.fetchById(592L);
+        Chapter chapter200 = chapterService.fetchById(200L);
         User master_2 = new User("master2", "Mestre 2", "Sobrenome @", "mestre@100.com", "aaa");
         createUserIfDoesntExist(master_2, chapter200, true);
 

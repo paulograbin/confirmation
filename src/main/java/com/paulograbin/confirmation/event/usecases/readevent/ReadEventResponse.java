@@ -15,4 +15,7 @@ public class ReadEventResponse {
     public String errorMessage;
     public boolean invalidUser;
     public boolean invalidEvent;
+    public boolean canChange;
+    public boolean isInThePast;
+    public boolean creating;
 }
