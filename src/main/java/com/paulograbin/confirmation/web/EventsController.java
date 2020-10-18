@@ -93,7 +93,7 @@ class EventsController {
         request.setEventId(eventId);
         request.setUserId(currentUser.getId());
 
-        var response = new ReadEventUseCase(request, eventRepository, modelMapper, userRepository).execute();
+        var response = new ReadEventUseCase(request, eventRepository, userRepository).execute();
 
         return ResponseEntity.ok().body(response);
     }

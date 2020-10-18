@@ -7,8 +7,9 @@ import lombok.Data;
 @Data
 public class ReadEventResponse {
 
+    public EventDetailsDTO eventDetails = new EventDetailsDTO();
+
     public boolean successful;
-    public EventDetailsDTO eventDetails;
 
     public boolean notAllowed;
     public String errorMessage;

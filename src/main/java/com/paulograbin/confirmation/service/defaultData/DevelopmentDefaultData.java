@@ -106,18 +106,6 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
 //        log.info("Done working on user requests");
 //    }
 
-    private void setUserRequests() {
-        int random = new Random().nextInt();
-
-        CreatePseudoUserRequest request = new CreatePseudoUserRequest();
-        request.setFirstName("Requesting User 1");
-        request.setLastName("Will be created");
-        request.setEmail(random + "augusto@augusto.com");
-        request.setChapterId(592L);
-        request.setRequestingUser(userService.fetchByUsername("plgrabin").getId());
-
-        new CreatePseudoUserUseCase(request, userRepository, userRequestRepository, chapterRepository).execute();
-    }
 
     private void setDefaultEvents() {
         log.info("Checking events...");
