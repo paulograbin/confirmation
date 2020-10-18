@@ -3,16 +3,14 @@ package com.paulograbin.confirmation.web;
 import com.google.gson.Gson;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
+import com.paulograbin.confirmation.participation.ParticipationService;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
-import com.paulograbin.confirmation.participation.ParticipationService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequestAdmin;
 import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteRequest;
 import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteResponse;
-import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
-import com.paulograbin.confirmation.web.dto.ParticipationWithoutUserDTO;
 import com.paulograbin.confirmation.web.dto.UserDTO;
 import com.paulograbin.confirmation.web.dto.UserDetailsDTO;
 import org.modelmapper.ModelMapper;
@@ -50,12 +48,6 @@ class UsersController {
     private static final Logger log = LoggerFactory.getLogger(UsersController.class);
 
     @Resource
-    private ParticipationService participationService;
-
-    @Resource
-    private EventService eventService;
-
-    @Resource
     private UserService userService;
 
     @Resource
@@ -63,25 +55,18 @@ class UsersController {
 
 
     @GetMapping(value = "/me")
-    public UserDTO getCurrentUser(@CurrentUser User currentUser) {
+    public ResponseEntity<UserDTO> getCurrentUser(@CurrentUser User currentUser) {
         Long currentUserId = currentUser.getId();
         log.info("Fetching /me for user {}", currentUserId);
 
         User userFromDatabase = userService.fetchById(currentUserId);
-
-        List<ParticipationWithoutUserDTO> participations = participationService.getAllUpcomingParticipationsFromUser(currentUserId).stream()
-                .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
-                .collect(Collectors.toList());
-
-        List<EventDetailsDTO> createdEvents = eventService.fetchAllUpcomingEventsCreatedByUser(currentUserId).stream()
-                .map(e -> modelMapper.map(e, EventDetailsDTO.class))
-                .collect(Collectors.toList());
-
         UserDTO userDTO = modelMapper.map(userFromDatabase, UserDTO.class);
-        userDTO.setParticipations(participations);
-        userDTO.setCreatedEvents(createdEvents);
 
-        return userDTO;
+        CacheControl cc = CacheControl.maxAge(Duration.ofHours(1)).cachePrivate();
+
+        return ResponseEntity.ok()
+                .cacheControl(cc)
+                .body(userDTO);
     }
 
     @GetMapping(value = "/panel")
