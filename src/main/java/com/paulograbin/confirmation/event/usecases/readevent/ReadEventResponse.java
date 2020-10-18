@@ -12,4 +12,6 @@ public class ReadEventResponse {
 
     public boolean notAllowed;
     public String errorMessage;
+    public boolean invalidUser;
+    public boolean invalidEvent;
 }

@@ -7,6 +7,7 @@ import com.paulograbin.confirmation.event.usecases.readevent.ReadEventRequest;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventResponse;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventUseCase;
 import com.paulograbin.confirmation.participation.ParticipationService;
+import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.EventService;
@@ -55,6 +56,9 @@ class EventsController {
     private EventService eventService;
 
     @Resource
+    private EventRepository eventRepository;
+
+    @Resource
     private UserRepository userRepository;
 
     @Resource
@@ -89,7 +93,7 @@ class EventsController {
         request.setEventId(eventId);
         request.setUserId(currentUser.getId());
 
-        var response = new ReadEventUseCase(request, eventService, modelMapper, userRepository).execute();
+        var response = new ReadEventUseCase(request, eventRepository, modelMapper, userRepository).execute();
 
         return ResponseEntity.ok().body(response);
     }
