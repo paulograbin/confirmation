@@ -138,6 +138,15 @@ class EventsController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping(path = "/invitations", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ParticipationWithoutUserDTO> fetchUpcomingEventsUserIsInvited(@CurrentUser User currentUser) {
+        log.info("Looking for events to which user {} is invited to", currentUser.getId());
+
+        return participationService.getAllUpcomingParticipationsFromUser(currentUser.getId()).stream()
+                .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
