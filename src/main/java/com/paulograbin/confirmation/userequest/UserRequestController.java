@@ -97,7 +97,7 @@ class UserRequestController {
     @PostMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ConvertPseudoUserResponse> convertRequestToUser(@PathParam("id") String id, @RequestBody ConvertPseudoUserRequest request) {
-        log.info("Received pseudo user convertion request");
+        log.info("Received pseudo user conversion request");
 
         ConvertPseudoUserResponse response = new ConvertPseudoUserUseCase(request, passwordEncoder, repository, userRepository).execute();
 
