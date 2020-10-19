@@ -3,9 +3,7 @@ package com.paulograbin.confirmation.web;
 import com.google.gson.Gson;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
-import com.paulograbin.confirmation.participation.ParticipationService;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
-import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequestAdmin;
@@ -22,7 +20,6 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +38,6 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 class UsersController {
