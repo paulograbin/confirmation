@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/chapter")
 public class ChapterController {
