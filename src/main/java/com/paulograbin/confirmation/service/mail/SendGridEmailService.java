@@ -29,6 +29,12 @@ public class SendGridEmailService implements EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(SendGridEmailService.class);
 
+    public static final String FROM_EMAIL_ADDRESS = "plgrabin@gmail.com";
+    public static final String CC_EMAIL_ADDRESS = "pl.grabin@gmail.com";
+
+    public static final String REQUEST_CREATED_EMAIL_TEMPLATE = "d-41eaeb82fef74c99b2d0c715c5f0bfb0";
+    public static final String EVENT_CREATED_EMAIL_TEMPLATE = "d-c9297475c42b4c41b944228d64957bf4";
+
     @Resource
     private SendGridProperties properties;
 
@@ -53,10 +59,10 @@ public class SendGridEmailService implements EmailService {
     @Override
     public void sendUserRequestCreatedMail(UserRequest userRequest) {
         String subject = "Usuário criado";
-        Email from = new Email("plgrabin@gmail.com");
+        Email from = new Email(FROM_EMAIL_ADDRESS);
 
         Email to = new Email(userRequest.getEmail());
-        Email cc = new Email("pl.grabin@gmail.com");
+        Email cc = new Email(CC_EMAIL_ADDRESS);
 
         final var personalization = new Personalization();
         personalization.addDynamicTemplateData("name", userRequest.getFirstName());
@@ -65,7 +71,7 @@ public class SendGridEmailService implements EmailService {
         personalization.addTo(cc);
 
         Mail mail = new Mail();
-        mail.setTemplateId("d-41eaeb82fef74c99b2d0c715c5f0bfb0");
+        mail.setTemplateId(REQUEST_CREATED_EMAIL_TEMPLATE);
         mail.setFrom(from);
         mail.setSubject(subject);
         mail.addPersonalization(personalization);
@@ -83,11 +89,11 @@ public class SendGridEmailService implements EmailService {
         List<Mail> mailsToSend = new ArrayList<>();
 
         String subject = "Nova cerimônia criada";
-        Email from = new Email("plgrabin@gmail.com");
+        Email from = new Email(FROM_EMAIL_ADDRESS);
 
         emailsAndNames.entrySet().forEach(e -> {
             Email to = new Email(e.getKey());
-            Email cc = new Email("pl.grabin@gmail.com");
+            Email cc = new Email(CC_EMAIL_ADDRESS);
 
             final var personalization = new Personalization();
             personalization.addDynamicTemplateData("nome", e.getValue());
@@ -97,7 +103,7 @@ public class SendGridEmailService implements EmailService {
             personalization.addTo(cc);
 
             Mail mail = new Mail();
-            mail.setTemplateId("d-c9297475c42b4c41b944228d64957bf4");
+            mail.setTemplateId(EVENT_CREATED_EMAIL_TEMPLATE);
             mail.setFrom(from);
             mail.setSubject(subject);
             mail.addPersonalization(personalization);
@@ -111,10 +117,10 @@ public class SendGridEmailService implements EmailService {
     @Override
     public void sendPasswordChangedMail(User userFromDatabase) {
         String subject = "Senha modificada";
-        Email from = new Email("plgrabin@gmail.com");
+        Email from = new Email(FROM_EMAIL_ADDRESS);
 
         Email to = new Email(userFromDatabase.getEmail());
-        Email cc = new Email("pl.grabin@gmail.com");
+        Email cc = new Email(CC_EMAIL_ADDRESS);
 
         final var personalization = new Personalization();
         personalization.addTo(to);
