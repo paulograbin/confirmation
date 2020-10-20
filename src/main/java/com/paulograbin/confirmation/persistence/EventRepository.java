@@ -19,4 +19,6 @@ public interface EventRepository extends EntityRepository<Event, Long> {
     long countAllByPublishedTrue();
 
     long countAllByDateAfter(LocalDate currentDate);
+
+    List<Event> findAllByChapterIdAndDate(long chapterId, LocalDate requestParsedDate);
 }

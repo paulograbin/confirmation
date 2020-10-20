@@ -18,5 +18,6 @@ public class EventCreationResponse {
     public boolean invalidChapter;
     public boolean invalidDate;
     public boolean invalidCreator;
+    public boolean duplicated;
 }
 

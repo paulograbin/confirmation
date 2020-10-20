@@ -3,11 +3,11 @@ package com.paulograbin.confirmation.usecases.event.creation;
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.Event;
-import com.paulograbin.confirmation.participation.Participation;
-import com.paulograbin.confirmation.participation.ParticipationStatus;
 import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
+import com.paulograbin.confirmation.participation.ParticipationStatus;
+import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class EventCreationUseCase {
 
     private final EmailService emailService;
 
-    private Map<String, String> invitedUsers = new HashMap<>();
+    private final Map<String, String> invitedUsers = new HashMap<>();
     private String chapterName = "";
     private String masterName = "";
 
@@ -62,7 +62,6 @@ public class EventCreationUseCase {
         logger.info(request.toString());
 
         if (isValid()) {
-            //todo check if is event already exists
             //todo disable create event button once request is triggered and until response comes back
             createEvent();
             confirmMasterPresence();
@@ -150,8 +149,9 @@ public class EventCreationUseCase {
             response.errorMessage = "Faltou informar a data do evento";
         }
 
+        LocalDate parsedDate;
         try {
-            LocalDate parsedDate = DateUtils.getDateFromString(request.getDate());
+            parsedDate = DateUtils.getDateFromString(request.getDate());
 
             if (parsedDate.isBefore(DateUtils.getCurrentDate().toLocalDate())) {
                 response.invalidDate = true;
@@ -160,6 +160,8 @@ public class EventCreationUseCase {
         } catch (DateTimeParseException e) {
             response.invalidDate = true;
             response.errorMessage = "Data inválida";
+
+            return;
         }
 
         if (request.getTime() == null) {
@@ -173,9 +175,22 @@ public class EventCreationUseCase {
             response.errorMessage = "Criador do evento é um usuário inválido";
         }
 
-        if (byId.get().getChapter() == null) {
+        User eventCreator = byId.get();
+
+        if (eventCreator.getChapter() == null) {
             response.invalidChapter = true;
             response.errorMessage = "Criador do evento precisa pertencer a algum capitulo";
+            return;
+        }
+
+        List<Event> allByChapterIdAndDate = eventRepository.findAllByChapterIdAndDate(eventCreator.getChapter().getId(), parsedDate);
+        boolean hasEventWithSameDateNameAndTime = allByChapterIdAndDate
+                .stream()
+                .anyMatch(e -> e.getTitle().equalsIgnoreCase(request.getTitle()) && e.getTime().equals(request.getTime()));
+
+        if (hasEventWithSameDateNameAndTime) {
+            response.duplicated = true;
+            response.errorMessage = "Já existe outro evento com esse mesmo nome, data e horário.";
         }
 
         logger.info("Event creation failed");
@@ -241,8 +256,9 @@ public class EventCreationUseCase {
             return false;
         }
 
+        LocalDate requestParsedDate;
         try {
-            LocalDate requestParsedDate = DateUtils.getDateFromString(request.getDate());
+            requestParsedDate = DateUtils.getDateFromString(request.getDate());
 
             if (requestParsedDate.isBefore(DateUtils.getCurrentDate().toLocalDate())) {
                 return false;
@@ -260,8 +276,16 @@ public class EventCreationUseCase {
             return false;
         }
 
-        User user = byId.get();
-        if (user.getChapter() == null) {
+        User eventCreator = byId.get();
+        if (eventCreator.getChapter() == null) {
+            return false;
+        }
+
+        List<Event> allByChapterIdAndDate = eventRepository.findAllByChapterIdAndDate(eventCreator.getChapter().getId(), requestParsedDate);
+        boolean hasEventWithSameDateNameAndTime = allByChapterIdAndDate
+                .stream()
+                .anyMatch(e -> e.getTitle().equalsIgnoreCase(request.getTitle()) && e.getTime().equals(request.getTime()));
+        if (hasEventWithSameDateNameAndTime) {
             return false;
         }
 

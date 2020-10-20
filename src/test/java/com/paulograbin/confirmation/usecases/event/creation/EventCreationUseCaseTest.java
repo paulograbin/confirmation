@@ -90,6 +90,18 @@ class EventCreationUseCaseTest {
     }
 
     @Test
+    void duplicatedEvent() {
+        givenAMasterUser();
+        makeValidRequest();
+        whenExecutingTestCase();
+        whenExecutingTestCase();
+
+        assertThat(response.successful).isFalse();
+        assertThat(response.duplicated).isTrue();
+        assertThat(response.createdEventId).isNull();
+    }
+
+    @Test
     void validRequestWithTitleAboveLength() {
         givenAMasterUser();
         makeValidRequest();

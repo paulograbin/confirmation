@@ -5,6 +5,7 @@ import com.paulograbin.confirmation.persistence.EventRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InMemoryEventRepository extends InMemoryRepository<Event> implements EventRepository {
 
@@ -37,6 +38,15 @@ public class InMemoryEventRepository extends InMemoryRepository<Event> implement
                 .stream()
                 .filter(e -> e.getDate().isAfter(currentDate))
                 .count();
+    }
+
+    @Override
+    public List<Event> findAllByChapterIdAndDate(long chapterId, LocalDate requestParsedDate) {
+        return this.map.values()
+                .stream()
+                .filter(e -> e.getChapter().getId().equals(chapterId))
+                .filter(e -> e.getDate().equals(requestParsedDate))
+                .collect(Collectors.toList());
     }
 
 }
