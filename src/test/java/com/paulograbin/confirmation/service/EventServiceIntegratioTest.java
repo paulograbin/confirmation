@@ -4,6 +4,7 @@ import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import org.junit.jupiter.api.BeforeEach;

@@ -6,6 +6,7 @@ import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.exception.EmailNotAvailableException;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;

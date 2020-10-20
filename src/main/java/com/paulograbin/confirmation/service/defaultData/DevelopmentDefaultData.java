@@ -10,7 +10,7 @@ import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import com.paulograbin.confirmation.chapter.ChapterService;
-import com.paulograbin.confirmation.service.EventService;
+import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;

@@ -4,7 +4,7 @@ import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
-import com.paulograbin.confirmation.service.EventService;
+import com.paulograbin.confirmation.event.EventService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

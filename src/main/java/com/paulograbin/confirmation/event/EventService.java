@@ -1,10 +1,9 @@
-package com.paulograbin.confirmation.service;
+package com.paulograbin.confirmation.event;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.chapter.ChapterService;
-import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
@@ -15,6 +14,7 @@ import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
+import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.event.usecases.creation.EventCreationRequest;
 import com.paulograbin.confirmation.event.usecases.creation.EventCreationResponse;

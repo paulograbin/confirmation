@@ -1,7 +1,6 @@
-package com.paulograbin.confirmation.web;
+package com.paulograbin.confirmation.event;
 
 import com.google.gson.Gson;
-import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventRequest;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventResponse;
@@ -10,7 +9,6 @@ import com.paulograbin.confirmation.participation.ParticipationService;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
-import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.event.usecases.creation.EventCreationRequest;
 import com.paulograbin.confirmation.event.usecases.creation.EventCreationResponse;
 import com.paulograbin.confirmation.web.dto.EventDTO;
