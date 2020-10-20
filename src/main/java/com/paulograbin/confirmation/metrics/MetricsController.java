@@ -6,7 +6,7 @@ import com.paulograbin.confirmation.metrics.usecases.read.ReadMetricsRequest;
 import com.paulograbin.confirmation.metrics.usecases.read.ReadMetricsResponse;
 import com.paulograbin.confirmation.metrics.usecases.read.ReadMetricsUseCase;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
-import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;

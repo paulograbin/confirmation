@@ -1,6 +1,7 @@
-package com.paulograbin.confirmation.persistence;
+package com.paulograbin.confirmation.event.repository;
 
 import com.paulograbin.confirmation.event.Event;
+import com.paulograbin.confirmation.persistence.EntityRepository;
 
 import java.time.LocalDate;
 import java.util.List;

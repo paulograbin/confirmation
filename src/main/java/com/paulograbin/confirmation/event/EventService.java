@@ -10,7 +10,7 @@ import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.NotYourEventException;
 import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
 import com.paulograbin.confirmation.participation.ParticipationService;
-import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;

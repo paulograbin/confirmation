@@ -6,7 +6,7 @@ import com.paulograbin.confirmation.event.usecases.readevent.ReadEventRequest;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventResponse;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventUseCase;
 import com.paulograbin.confirmation.participation.ParticipationService;
-import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.event.usecases.creation.EventCreationRequest;

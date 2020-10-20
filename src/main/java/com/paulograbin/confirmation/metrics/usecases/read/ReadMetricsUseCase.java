@@ -5,7 +5,7 @@ import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.participation.ParticipationStatus;
-import com.paulograbin.confirmation.persistence.EventRepository;
+import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import org.slf4j.Logger;
