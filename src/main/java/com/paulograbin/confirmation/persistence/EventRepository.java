@@ -1,10 +1,8 @@
 package com.paulograbin.confirmation.persistence;
 
-import com.paulograbin.confirmation.domain.Event;
-import org.springframework.data.repository.CrudRepository;
+import com.paulograbin.confirmation.event.Event;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 

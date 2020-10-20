@@ -2,7 +2,7 @@ package com.paulograbin.confirmation.metrics.usecases.read;
 
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
-import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;

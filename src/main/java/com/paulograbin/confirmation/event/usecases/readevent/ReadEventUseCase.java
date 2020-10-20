@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.event.usecases.readevent;
 
-import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;

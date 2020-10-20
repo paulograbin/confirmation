@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.persistence.memory;
 
-import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.persistence.EventRepository;
 
 import java.time.LocalDate;

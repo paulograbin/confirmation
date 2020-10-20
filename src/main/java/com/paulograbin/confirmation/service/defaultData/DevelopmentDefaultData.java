@@ -2,21 +2,18 @@ package com.paulograbin.confirmation.service.defaultData;
 
 import com.paulograbin.confirmation.DemoApplication;
 import com.paulograbin.confirmation.chapter.Chapter;
-import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
-import com.paulograbin.confirmation.userequest.UserRequest;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.service.EventService;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
-import com.paulograbin.confirmation.userequest.usecases.creation.CreatePseudoUserRequest;
-import com.paulograbin.confirmation.userequest.usecases.creation.CreatePseudoUserUseCase;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +27,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Random;
 
 
 @Service

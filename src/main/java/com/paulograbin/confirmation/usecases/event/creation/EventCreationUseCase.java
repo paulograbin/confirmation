@@ -2,7 +2,7 @@ package com.paulograbin.confirmation.usecases.event.creation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
-import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationRepository;

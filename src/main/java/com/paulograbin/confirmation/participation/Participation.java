@@ -2,7 +2,7 @@ package com.paulograbin.confirmation.participation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.domain.AbstracEntity;
-import com.paulograbin.confirmation.domain.Event;
+import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.User;
 import lombok.Getter;
 import lombok.Setter;
