@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation.usecases.event.creation;
+package com.paulograbin.confirmation.event.usecases.creation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.ChapterRepository;

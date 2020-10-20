@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation.usecases.event.creation;
+package com.paulograbin.confirmation.event.usecases.creation;
 
 
 import lombok.Data;
