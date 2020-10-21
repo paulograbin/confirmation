@@ -37,6 +37,7 @@ import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.time.Duration;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,6 +103,7 @@ class EventsController {
 
         return eventService.fetchUpComingEventsFromChapter(currentUser.getChapter().getId())
                 .stream()
+                .sorted(Comparator.comparing(Event::getDate))
                 .map(e -> modelMapper.map(e, EventDetailsDTO.class))
                 .collect(Collectors.toList());
     }
@@ -142,6 +144,7 @@ class EventsController {
 
         return participationService.getAllUpcomingParticipationsFromUser(currentUser.getId()).stream()
                 .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
+                .sorted(Comparator.comparing(p -> p.getEvent().getDate()))
                 .collect(Collectors.toList());
     }
 
