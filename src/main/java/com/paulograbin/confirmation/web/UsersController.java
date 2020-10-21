@@ -54,6 +54,7 @@ class UsersController {
 
 
     @GetMapping(value = "/me")
+    @Cacheable(value = "me", key = "#currentUser.id")
     public ResponseEntity<UserDTO> getCurrentUser(@CurrentUser User currentUser) {
         Long currentUserId = currentUser.getId();
         log.info("Fetching /me for user {}", currentUserId);
