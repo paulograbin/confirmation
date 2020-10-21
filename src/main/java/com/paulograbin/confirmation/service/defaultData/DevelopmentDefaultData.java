@@ -155,17 +155,6 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
 
         User not_master_2 = new User("notmaster2", "Not Mestre 2", "Not Sobrenome @", "not_mestre@100.com", "aaa");
         createUserIfDoesntExist(not_master_2, chapter200, false);
-
-        createUserIfDoesntExist(new User("arthurdeazambuja@gmail.com", "Arthur de Azambuja", "", "arthurdeazambuja@gmail.com", "arthurdeazambuja@gmail.com"), chapter_gvs, false);
-        createUserIfDoesntExist(new User("augustolemosborges123@gmail.com", "Augusto Lemos Borges", "", "augustolemosborges123@gmail.com", "augustolemosborges123@gmail.com"), chapter_gvs, false);
-        createUserIfDoesntExist(new User("brunocachoeira50@gmail.com", "Bruno Bueno da Silva Walterman Cachoeira", "", "brunocachoeira50@gmail.com", "brunocachoeira50@gmail.com"), chapter_gvs, false);
-        createUserIfDoesntExist(new User("carpesbruno29@gmail.com", "Bruno Carpes Cardoso", "", "carpesbruno29@gmail.com", "carpesbruno29@gmail.com"), chapter_gvs, true);
-        createUserIfDoesntExist(new User("brunopachecojost@hotmail.com", "Bruno Henrique Pachaco Jost", "", "brunopachecojost@hotmail.com", "brunopachecojost@hotmail.com"), chapter_gvs, false);
-        createUserIfDoesntExist(new User("brunoleonardof.rocha@gmail.com", "Bruno Leonardo Fernandes da Rocha", "", "brunoleonardof.rocha@gmail.com", "brunoleonardof.rocha@gmail.com"), chapter_gvs, false);
-        createUserIfDoesntExist(new User("bruno.rostoliveira@gmail.com", "Bruno Rost de Oliveira da Silva", "", "bruno.rostoliveira@gmail.com", "bruno.rostoliveira@gmail.com"), chapter_gvs, false);
-        createUserIfDoesntExist(new User("serafinibruno67@gmail.com", "Bruno Serafini da Silva", "", "serafinibruno67@gmail.com", "serafinibruno67@gmail.com"), chapter_gvs, false);
-        createUserIfDoesntExist(new User("bruwillrich@gmail.com", "Bruno Willrich", "", "bruwillrich@gmail.com", "bruwillrich@gmail.com"), chapter_gvs, false);
-        createUserIfDoesntExist(new User("cassioclds@gmail.com", "Cássio Alexandre Dornelles Bolsoni", "", "cassioclds@gmail.com", "cassioclds@gmail.com"), chapter_gvs, false);
     }
 
     private void createUserIfDoesntExist(User newUser, Chapter gvs, boolean setAsMaster) {
