@@ -103,7 +103,7 @@ public class ParticipationService {
         log.info("Found {} participations for event {}", allParticipationsFromEvent.size(), eventId);
 
         allParticipationsFromEvent.stream()
-                .peek(Participation::toString)
+                .peek(System.out::println)
                 .forEach(p -> participationRepository.delete(p));
 
         Set<Participation> afterDeletion = getAllParticipationsFromEvent(eventId);
