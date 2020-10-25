@@ -2,12 +2,12 @@ package com.paulograbin.confirmation.event.usecases.creation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
-import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.event.Event;
+import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.participation.ParticipationStatus;
-import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import org.slf4j.Logger;
@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,9 +41,9 @@ public class EventCreationUseCase {
 
     private final EmailService emailService;
 
-    private final Map<String, String> invitedUsers = new HashMap<>();
     private String chapterName = "";
     private String masterName = "";
+    private User eventCreator;
 
     public EventCreationUseCase(EventCreationRequest request, EventRepository eventRepository, ParticipationRepository participationRepository, UserRepository userRepository, EmailService emailService, ChapterRepository chapterRepository) {
         this.request = request;
@@ -62,58 +61,28 @@ public class EventCreationUseCase {
         logger.info(request.toString());
 
         if (isValid()) {
-            //todo disable create event button once request is triggered and until response comes back
             createEvent();
             confirmMasterPresence();
-            inviteRemainingUsersFromChapter();
             sendMailToInvitedUsers();
         } else {
             returnErrors();
         }
 
+        logger.info("Event created successfully");
+        logger.info(response.toString());
         return response;
     }
 
     private void sendMailToInvitedUsers() {
-        logger.info("Sending event created mail to: {}", invitedUsers);
+        logger.info("Sending event created mail to all active members");
         logger.info("Chapter name: {}", chapterName);
         logger.info("Master: {}", masterName);
 
+        List<User> allActiveMembers = userRepository.findAllByChapterIdAndActiveTrue(eventCreator.getChapter().getId());
+        Map<String, String> invitedUsers = allActiveMembers.stream().collect(Collectors.toMap(User::getEmail, User::getFirstName));
+        logger.info("Sending event created mail to: {}", invitedUsers);
+
         emailService.sendEventCreatedMail(invitedUsers, chapterName, masterName);
-    }
-
-    private void inviteRemainingUsersFromChapter() {
-        long creatorId = request.getCreatorId();
-        User eventCreator = userRepository.findById(creatorId).get();
-
-        Event createdEvent = eventRepository.findById(response.getCreatedEventId()).get();
-
-
-        List<User> users = userRepository.findAllByChapterId(eventCreator.getChapter().getId());
-        users = users.stream()
-                .filter(p -> !p.getId().equals(eventCreator.getId()))
-                .collect(Collectors.toList());
-
-        for (User userToInvite : users) {
-            // todo test with parallel streams to check for better performance
-            List<Participation> participations = userToInvite.getParticipations()
-                    .stream()
-                    .filter(p -> p.getEvent().getId().equals(response.createdEventId))
-                    .collect(Collectors.toList());
-
-            if (participations.isEmpty()) {
-                logger.info("Inviting user {}-{} to event {}-{}", userToInvite.getId(), userToInvite.getUsername(), createdEvent.getId(), createdEvent.getTitle());
-
-                Participation p = new Participation(userToInvite, createdEvent);
-                p.inviteParticipant();
-
-                participationRepository.save(p);
-
-                invitedUsers.put(userToInvite.getEmail(), userToInvite.getFirstName());
-            }
-        }
-
-        invitedUsers.put(eventCreator.getEmail(), eventCreator.getFirstName());
     }
 
     private void confirmMasterPresence() {
@@ -142,11 +111,6 @@ public class EventCreationUseCase {
         if (request.getAddress().isEmpty()) {
             response.invalidAddress = true;
             response.errorMessage = "Faltou informar o endereço";
-        }
-
-        if (request.getDate() == null) {
-            response.invalidTime = true;
-            response.errorMessage = "Faltou informar a data do evento";
         }
 
         LocalDate parsedDate;
@@ -213,7 +177,7 @@ public class EventCreationUseCase {
                 eventToCreate.setDescription(request.getDescription());
             }
 
-            User eventCreator = userRepository.findById(request.getCreatorId()).get();
+            eventCreator = userRepository.findById(request.getCreatorId()).get();
             masterName = eventCreator.getFirstName();
             chapterName = eventCreator.getChapter().getName();
 
@@ -231,9 +195,6 @@ public class EventCreationUseCase {
 
             response.successful = true;
             response.createdEventId = createdEvent.getId();
-
-            logger.info("Event created successfully");
-            logger.info(response.toString());
         } catch (DateTimeParseException e) {
             response.invalidDate = true;
         }

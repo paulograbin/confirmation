@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -86,10 +87,52 @@ class EventCreationUseCaseTest {
         assertThat(response.successful).isTrue();
         assertThat(response.createdEventId).isNotNull();
 
+        assetMasterParticipationIsConfirmed();
+    }
+
+    @Test
+    void allMembersAreInvitedAfterCreation() {
+        givenAMasterUser();
+        givenChapterHasThreeMembers();
+        makeValidRequest();
+        whenExecutingTestCase();
+
+        assertThat(response.successful).isTrue();
+        assertThat(response.createdEventId).isNotNull();
+
+        assetMasterParticipationIsConfirmed();
+    }
+
+    private void assetMasterParticipationIsConfirmed() {
         Optional<Participation> byEventIdAndUserId = participationRepository.findByEventIdAndUserId(response.createdEventId, request.getCreatorId());
         Participation participation = byEventIdAndUserId.get();
-
         assertThat(participation.getStatus()).isEqualTo(ParticipationStatus.CONFIRMADO);
+    }
+
+    private void givenChapterHasThreeMembers() {
+        Chapter chapter = chapterRepository.findById(100L).get();
+
+        User regularUserOne = new User();
+        regularUserOne.setId(301L);
+        regularUserOne.setEmail("regularOne@confirmation.com");
+        regularUserOne.setFirstName("Regular User One");
+        regularUserOne.setChapter(chapter);
+
+        User regularUserTwo = new User();
+        regularUserTwo.setId(302L);
+        regularUserTwo.setEmail("regularTwo@confirmation.com");
+        regularUserTwo.setFirstName("Regular User Two");
+        regularUserTwo.setChapter(chapter);
+
+        User regularUserThree = new User();
+        regularUserThree.setId(303L);
+        regularUserThree.setEmail("regularThree@confirmation.com");
+        regularUserThree.setFirstName("Regular User Tre");
+        regularUserThree.setChapter(chapter);
+
+        userRepository.save(regularUserOne);
+        userRepository.save(regularUserTwo);
+        userRepository.save(regularUserThree);
     }
 
     @Test
@@ -117,10 +160,7 @@ class EventCreationUseCaseTest {
         Event event = repository.findById(response.createdEventId).get();
         assertThat(event.getTitle()).isEqualToIgnoringCase(VALID_TITLE);
 
-        Optional<Participation> byEventIdAndUserId = participationRepository.findByEventIdAndUserId(response.createdEventId, request.getCreatorId());
-        Participation participation = byEventIdAndUserId.get();
-
-        assertThat(participation.getStatus()).isEqualTo(ParticipationStatus.CONFIRMADO);
+        assetMasterParticipationIsConfirmed();
     }
 
     private void whenExecutingTestCase() {
