@@ -24,7 +24,6 @@ public class DemoApplication {
 
     // TODO Figure out a way to obtain the token in the controller test calls
     // TODO Validations on post requests
-    // TODO Exception when user is invited more than once to a event
     // TODO almoço
 
     private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
