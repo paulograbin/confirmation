@@ -2,14 +2,11 @@ package com.paulograbin.confirmation.service.defaultData;
 
 import com.paulograbin.confirmation.DemoApplication;
 import com.paulograbin.confirmation.chapter.Chapter;
-import com.paulograbin.confirmation.event.Event;
+import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.chapter.ChapterRepository;
-import com.paulograbin.confirmation.persistence.UserRepository;
-import com.paulograbin.confirmation.userequest.UserRequestRepository;
-import com.paulograbin.confirmation.chapter.ChapterService;
+import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
@@ -17,6 +14,7 @@ import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,6 +38,9 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
     private static final String ADMIN_USERNAME = "plgrabin";
     private static final String ADMIN_EMAIL = "plgrabin@gmail.com";
 
+    @Value("${default.pass}")
+    private String defaultPass;
+
     @Resource
     private ChapterService chapterService;
 
@@ -47,22 +48,10 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
     private UserService userService;
 
     @Resource
-    private UserRepository userRepository;
-
-    @Resource
-    private ChapterRepository chapterRepository;
-
-    @Resource
     private RoleService roleService;
 
     @Resource
     private EventService eventService;
-
-    @Resource
-    private UserRequestRepository userRequestRepository;
-
-    @Resource
-    UserRequestRepository repository;
 
 
     @Override
@@ -208,7 +197,7 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
         defaultPasswordRequest.setId(defaultAdmin.getId());
         defaultPasswordRequest.setFirstName(defaultAdmin.getFirstName());
         defaultPasswordRequest.setLastName(defaultAdmin.getLastName());
-        defaultPasswordRequest.setPassword("123123");
+        defaultPasswordRequest.setPassword(defaultPass);
         userService.updateUser(defaultAdmin.getId(), defaultPasswordRequest);
 
         userService.assignUserToChapter(defaultAdmin.getId(), 592L);
