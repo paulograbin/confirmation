@@ -1,31 +1,33 @@
 package com.paulograbin.confirmation.usecases.event.creation;
 
+import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
+import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.event.Event;
+import com.paulograbin.confirmation.event.repository.EventRepository;
+import com.paulograbin.confirmation.event.repository.InMemoryEventRepository;
 import com.paulograbin.confirmation.event.usecases.creation.EventCreationRequest;
 import com.paulograbin.confirmation.event.usecases.creation.EventCreationResponse;
 import com.paulograbin.confirmation.event.usecases.creation.EventCreationUseCase;
-import com.paulograbin.confirmation.participation.Participation;
-import com.paulograbin.confirmation.participation.ParticipationStatus;
-import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.helper.DateHelper;
-import com.paulograbin.confirmation.event.repository.EventRepository;
+import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
+import com.paulograbin.confirmation.participation.ParticipationStatus;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryChapterRepository;
-import com.paulograbin.confirmation.event.repository.InMemoryEventRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryParticipationRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryUserRepository;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.service.mail.LoggerEmailService;
+import org.assertj.core.data.TemporalUnitLessThanOffset;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -106,7 +108,9 @@ class EventCreationUseCaseTest {
     private void assetMasterParticipationIsConfirmed() {
         Optional<Participation> byEventIdAndUserId = participationRepository.findByEventIdAndUserId(response.createdEventId, request.getCreatorId());
         Participation participation = byEventIdAndUserId.get();
+
         assertThat(participation.getStatus()).isEqualTo(ParticipationStatus.CONFIRMADO);
+        assertThat(participation.getConfirmationDate()).isCloseTo(DateUtils.getCurrentDate(), new TemporalUnitLessThanOffset(5, ChronoUnit.SECONDS));
     }
 
     private void givenChapterHasThreeMembers() {

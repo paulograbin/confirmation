@@ -82,12 +82,6 @@ public class EventService {
 
         EventCreationResponse eventCreationResponse = new EventCreationUseCase(request, eventRepository, participationRepository, userRepository, emailService, chapterRepository).execute();
 
-//        if (eventCreationResponse.successful) {
-//            Event createdEvent = fetchById(eventCreationResponse.createdEventId);
-//
-//            inviteRemainingUsersFromChapterToEvent(createdEvent);
-//        }
-
         return eventCreationResponse;
     }
 
@@ -108,28 +102,12 @@ public class EventService {
         chapter.getEvents().add(createdEvent);
         chapterService.update(chapter);
 
-        inviteRemainingUsersFromChapterToEvent(createdEvent);
+//        inviteRemainingUsersFromChapterToEvent(createdEvent);
 
         Participation creatorParticipation = participationService.fetchByEventAndUser(eventToCreate.getId(), eventToCreate.getCreator().getId());
         participationService.confirmParticipation(creatorParticipation);
 
         return createdEvent;
-    }
-
-    private void inviteRemainingUsersFromChapterToEvent(Event event) {
-        List<User> users = userService.fetchAllByChapterId(event.getChapter().getId());
-
-        for (User userToInvite : users) {
-            // todo test with parallel streams to check for better performance
-            List<Participation> participations = userToInvite.getParticipations()
-                    .stream()
-                    .filter(p -> p.getEvent().getId().equals(event.getId()))
-                    .collect(Collectors.toList());
-
-            if (participations.isEmpty()) {
-                participationService.createNew(event, userToInvite);
-            }
-        }
     }
 
     public Event updateEvent(long eventId, Event event, @CurrentUser User currentUser) {
@@ -143,7 +121,7 @@ public class EventService {
         eventFromDatabase.setDate(event.getDate());
         eventFromDatabase.setTime(event.getTime());
 
-        inviteRemainingUsersFromChapterToEvent(eventFromDatabase);
+//        inviteRemainingUsersFromChapterToEvent(eventFromDatabase);
 
         return eventRepository.save(eventFromDatabase);
     }

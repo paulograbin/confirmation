@@ -92,6 +92,7 @@ public class EventCreationUseCase {
         Participation masterParticipation = new Participation();
         masterParticipation.setUser(user);
         masterParticipation.setEvent(event);
+        masterParticipation.setConfirmationDate(DateUtils.getCurrentDate());
         masterParticipation.setStatus(ParticipationStatus.CONFIRMADO);
 
         participationRepository.save(masterParticipation);
