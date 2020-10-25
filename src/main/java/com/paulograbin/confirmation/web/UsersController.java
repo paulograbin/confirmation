@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,9 +56,11 @@ class UsersController {
 
     @GetMapping(value = "/me")
     @Cacheable(value = "me", key = "#currentUser.id")
-    public ResponseEntity<UserDTO> getCurrentUser(@CurrentUser User currentUser) {
+    public ResponseEntity<UserDTO> getCurrentUser(@CurrentUser User currentUser, @RequestHeader(value = "User-Agent") String userAgent, @RequestHeader(value = "host") String host) {
         Long currentUserId = currentUser.getId();
         log.info("Fetching /me for user {}", currentUserId);
+        log.info("Useragent {}", userAgent);
+        log.info("Host {}", host);
 
         User userFromDatabase = userService.fetchById(currentUserId);
         UserDTO userDTO = modelMapper.map(userFromDatabase, UserDTO.class);
