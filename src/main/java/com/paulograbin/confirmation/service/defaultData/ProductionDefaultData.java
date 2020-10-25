@@ -57,7 +57,7 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
             defaultAdmin = new User(ADMIN_USERNAME, "Paulo", "Gräbin", ADMIN_EMAIL, "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
 
-            userService.assignUserToChapter(defaultAdmin.getId(), 592L);
+            userService.assignUserToChapter(defaultAdmin.getId(), 3L);
         }
 
         log.info("Setting admin password....");
@@ -69,7 +69,7 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
         defaultPasswordRequest.setPassword(defaultPass);
         userService.updateUser(defaultAdmin.getId(), defaultPasswordRequest);
 
-        userService.assignUserToChapter(defaultAdmin.getId(), 592L);
+        userService.assignUserToChapter(defaultAdmin.getId(), 3L);
 
         log.info("Setting admin authorizations....");
         userService.setAsMaster(defaultAdmin.getId());
