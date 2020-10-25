@@ -1,15 +1,22 @@
 package com.paulograbin.confirmation.event.usecases.readevent;
 
-import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.event.repository.EventRepository;
+import com.paulograbin.confirmation.participation.Participation;
+import com.paulograbin.confirmation.participation.ParticipationStatus;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
+import com.paulograbin.confirmation.web.dto.ParticipationWithoutEventDTO;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ReadEventUseCase {
@@ -57,17 +64,41 @@ public class ReadEventUseCase {
         User user = userRepository.findById(request.getUserId()).get();
 
         logger.info("Found event {}", event);
+        logger.info("Event has {} responses", event.getParticipants().size());
+        List<User> allActiveMembers = userRepository.findAllByChapterIdAndActiveTrue(event.getChapter().getId());
+        Map<Long, Participation> allParticipations = new HashMap<>(allActiveMembers.size());
+        logger.info("Chapter has {} active members", allActiveMembers.size());
 
-        event.setParticipants(event.getParticipants()
+        for (User allMember : allActiveMembers) {
+            Participation p = new Participation();
+            p.setUser(allMember);
+            p.setEvent(event);
+            p.setStatus(ParticipationStatus.CONVIDADO);
+
+            allParticipations.put(allMember.getId(), p);
+        }
+
+        Set<Participation> participants = event.getParticipants()
                 .stream()
-                .filter(u -> u.getUser().isActive())
-                .collect(Collectors.toSet()));
+                .filter(p -> p.getUser().isActive())
+                .collect(Collectors.toSet());
+        for (Participation participant : participants) {
+            Long userId = participant.getUser().getId();
+            Participation participation = allParticipations.get(userId);
+
+            if (participation != null) {
+                participation.setStatus(participant.getStatus());
+            } else {
+                logger.info("Ignoring {} since his active status is {}", participant.getUser().getUsername(), participant.getUser().isActive());
+            }
+        }
 
         response.successful = true;
         response.canChange = user.isMaster();
         response.isInThePast = event.getDate().isBefore(LocalDate.now());
 
         response.eventDetails = modelMapper.map(event, EventDetailsDTO.class);
+        response.eventDetails.setParticipants(allParticipations.values().stream().map(p -> modelMapper.map(p, ParticipationWithoutEventDTO.class)).collect(Collectors.toList()));
     }
 
     private boolean isValid() {

@@ -5,8 +5,10 @@ import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventRequest;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventResponse;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventUseCase;
+import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationService;
 import com.paulograbin.confirmation.event.repository.EventRepository;
+import com.paulograbin.confirmation.participation.ParticipationStatus;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.event.usecases.creation.EventCreationRequest;
@@ -38,7 +40,9 @@ import javax.transaction.Transactional;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -101,6 +105,8 @@ class EventsController {
     public List<EventDetailsDTO> fetchEventsFromChapter(@CurrentUser User currentUser) {
         log.info("Fetching all events from chapter {}", currentUser.getChapter().getId());
 
+        // todo: remove participants from the DTO, not needed where its used
+
         return eventService.fetchUpComingEventsFromChapter(currentUser.getChapter().getId())
                 .stream()
                 .sorted(Comparator.comparing(Event::getDate))
@@ -129,20 +135,54 @@ class EventsController {
         eventService.declineParticipation(userId, eventId);
     }
 
-    @GetMapping(path = "/invitations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ParticipationWithoutUserDTO> fetchUpcomingEventsUserIsInvited(@PathVariable("userId") final long userId) {
-        log.info("Looking for events to which user {} is invited to", userId);
+    @PostMapping(path = "/{eventId}/confirm")
+    public void confirmParticipationNew(@PathVariable("eventId") final long eventId, @CurrentUser User currentUser) {
+        log.info("Confirming user {} to event {}", currentUser.getId(), eventId);
 
-        return participationService.getAllUpcomingParticipationsFromUser(userId).stream()
-                .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
-                .collect(Collectors.toList());
+        eventService.confirmParticipation(currentUser.getId(), eventId);
     }
 
+    @PostMapping(path = "/{eventId}/decline")
+    public void declineParticipationNew(@PathVariable("eventId") final long eventId, @CurrentUser User currentUser) {
+        log.info("Declining user {} to event {}", currentUser.getId(), eventId);
+
+        eventService.declineParticipation(currentUser.getId(), eventId);
+    }
+
+//    @GetMapping(path = "/invitations/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public List<ParticipationWithoutUserDTO> fetchUpcomingEventsUserIsInvited(@PathVariable("userId") final long userId) {
+//        log.info("Looking for events to which user {} is invited to", userId);
+//
+//        return participationService.getAllUpcomingParticipationsFromUser(userId).stream()
+//                .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
+//                .collect(Collectors.toList());
+//    }
+//
     @GetMapping(path = "/invitations", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ParticipationWithoutUserDTO> fetchUpcomingEventsUserIsInvited(@CurrentUser User currentUser) {
         log.info("Looking for events to which user {} is invited to", currentUser.getId());
 
-        return participationService.getAllUpcomingParticipationsFromUser(currentUser.getId()).stream()
+        List<Participation> allUpcomingParticipationsFromUser = participationService.getAllUpcomingParticipationsFromUser(currentUser.getId());
+        List<Event> upcomingEvents = eventService.fetchUpComingEventsFromChapter(currentUser.getChapter().getId());
+        log.info("Found {} upcoming events",  upcomingEvents.size());
+        log.info("User has {} participations",  allUpcomingParticipationsFromUser.size());
+
+        Map<Long, Participation> participationMap = new HashMap<>();
+        for (Event upcomingEvent : upcomingEvents) {
+            Participation p = new Participation();
+            p.setEvent(upcomingEvent);
+            p.setUser(currentUser);
+            p.setStatus(ParticipationStatus.CONVIDADO);
+
+            participationMap.put(upcomingEvent.getId(), p);
+        }
+
+        for (Participation participation : allUpcomingParticipationsFromUser) {
+            Participation participation1 = participationMap.get(participation.getEvent().getId());
+            participation1.setStatus(participation.getStatus());
+        }
+
+        return participationMap.values().stream()
                 .map(p -> modelMapper.map(p, ParticipationWithoutUserDTO.class))
                 .sorted(Comparator.comparing(p -> p.getEvent().getDate()))
                 .collect(Collectors.toList());

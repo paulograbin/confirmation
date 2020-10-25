@@ -186,15 +186,35 @@ public class EventService {
     public Participation confirmParticipation(long userId, long eventId) {
         log.info("Confirming participation for user {} on event {}", userId, eventId);
 
-        Participation participationToConfirm = participationService.fetchByEventAndUser(eventId, userId);
+        Event event = fetchById(eventId);
+        User user = userService.fetchById(userId);
 
-        return participationService.confirmParticipation(participationToConfirm);
+        if (event.getDate().isBefore(DateUtils.getCurrentDate().toLocalDate())) {
+            throw new RuntimeException("Evento já aconteceu.");
+        }
+
+        if (event.getChapter().getId() != user.getChapter().getId()) {
+            throw new RuntimeException("Usuário não pertence a esse capítulo");
+        }
+
+        return participationService.confirmParticipation(eventId, userId);
     }
 
     public Participation declineParticipation(long userId, long eventId) {
-        Participation participationToDecline = participationService.fetchByEventAndUser(eventId, userId);
+        log.info("Declining participation for user {} on event {}", userId, eventId);
 
-        return participationService.declineParticipation(participationToDecline);
+        Event event = fetchById(eventId);
+        User user = userService.fetchById(userId);
+
+        if (event.getDate().isBefore(DateUtils.getCurrentDate().toLocalDate())) {
+            throw new RuntimeException("Evento já aconteceu.");
+        }
+
+        if (event.getChapter().getId() != user.getChapter().getId()) {
+            throw new RuntimeException("Usuário não pertence a esse capítulo");
+        }
+
+        return participationService.declineParticipation(eventId, userId);
     }
 
     public void deleteEvent(long eventId, User currentUser) {

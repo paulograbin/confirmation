@@ -5,6 +5,7 @@ import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.event.EventService;
+import com.paulograbin.confirmation.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,8 @@ public class ParticipationService {
 
     @Resource
     EventService eventService;
+    @Resource
+    UserService userService;
 
     @Resource
     private ModelMapper modelMapper;
@@ -89,11 +93,39 @@ public class ParticipationService {
         return participationRepository.save(participation);
     }
 
-    public Participation declineParticipation(Participation participation) {
-        participation.declineParticipant();
-        participation.setConfirmationDate(DateUtils.getCurrentDate());
+    public Participation confirmParticipation(long eventId, long userId) {
+        Participation participation = getParticipationFromUserOnEvent(eventId, userId);
+        participation.setStatus(ParticipationStatus.CONFIRMADO);
 
         return participationRepository.save(participation);
+    }
+
+    public Participation declineParticipation(long eventId, long userId) {
+        Participation participation = getParticipationFromUserOnEvent(eventId, userId);
+        participation.setStatus(ParticipationStatus.RECUSADO);
+
+        return participationRepository.save(participation);
+    }
+
+    private Participation getParticipationFromUserOnEvent(long eventId, long userId) {
+        Optional<Participation> byEventIdAndUserId = participationRepository.findByEventIdAndUserId(eventId, userId);
+
+        Participation participation;
+
+        if (!byEventIdAndUserId.isEmpty()) {
+            log.info("Changing participation status");
+
+            participation = byEventIdAndUserId.get();
+        } else {
+            log.info("Creating new participation");
+
+            participation = new Participation();
+            participation.setEvent(eventService.fetchById(eventId));
+            participation.setUser(userService.fetchById(userId));
+        }
+
+        participation.setConfirmationDate(DateUtils.getCurrentDate());
+        return participation;
     }
 
     public void deleteAllParticipationsFromEvent(Long eventId) {
