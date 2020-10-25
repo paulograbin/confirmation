@@ -41,6 +41,14 @@ public class InMemoryUserRepository extends InMemoryRepository<User> implements 
     }
 
     @Override
+    public List<User> findAllByChapterIdAndActiveTrue(Long chapterId) {
+        return this.findAllByChapterId(chapterId)
+                .stream()
+                .filter(User::isActive)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public long countAllByActiveTrue() {
         return this.map.values()
                 .stream()

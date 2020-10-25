@@ -21,6 +21,8 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findAllByChapterId(Long chapterId);
 
+    List<User> findAllByChapterIdAndActiveTrue(Long chapterId);
+
     long countAllByActiveTrue();
 
     long countAllByLastLoginNotNull();
