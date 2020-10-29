@@ -29,8 +29,8 @@ public class SendGridEmailService implements EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(SendGridEmailService.class);
 
-    public static final String FROM_EMAIL_ADDRESS = "plgrabin@gmail.com";
-    public static final String CC_EMAIL_ADDRESS = "pl.grabin@gmail.com";
+    public static final String FROM_EMAIL_ADDRESS = "paulograbin@gmail.com";
+    public static final String CC_EMAIL_ADDRESS = "paulo.grabin@gmail.com";
 
     public static final String REQUEST_CREATED_EMAIL_TEMPLATE = "d-41eaeb82fef74c99b2d0c715c5f0bfb0";
     public static final String EVENT_CREATED_EMAIL_TEMPLATE = "d-c9297475c42b4c41b944228d64957bf4";
