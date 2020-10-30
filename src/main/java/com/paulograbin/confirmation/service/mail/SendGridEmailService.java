@@ -12,6 +12,7 @@ import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.sendgrid.SendGridProperties;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,11 @@ public class SendGridEmailService implements EmailService {
     public static final String FROM_EMAIL_ADDRESS = "paulograbin@gmail.com";
     public static final String CC_EMAIL_ADDRESS = "paulo.grabin@gmail.com";
 
-    public static final String REQUEST_CREATED_EMAIL_TEMPLATE = "d-41eaeb82fef74c99b2d0c715c5f0bfb0";
-    public static final String EVENT_CREATED_EMAIL_TEMPLATE = "d-c9297475c42b4c41b944228d64957bf4";
+    @Value("${sendgrid.template.user.created}")
+    public String REQUEST_CREATED_EMAIL_TEMPLATE;
+
+    @Value("${sendgrid.template.event.created}")
+    public String EVENT_CREATED_EMAIL_TEMPLATE;
 
     @Resource
     private SendGridProperties properties;
@@ -65,7 +69,7 @@ public class SendGridEmailService implements EmailService {
         Email cc = new Email(CC_EMAIL_ADDRESS);
 
         final var personalization = new Personalization();
-        personalization.addDynamicTemplateData("name", userRequest.getFirstName());
+        personalization.addDynamicTemplateData("firstName", userRequest.getFirstName());
         personalization.addDynamicTemplateData("requestNumber", userRequest.getCode());
         personalization.addTo(to);
         personalization.addTo(cc);
@@ -80,8 +84,8 @@ public class SendGridEmailService implements EmailService {
     }
 
     @Override
-    public void sendEventCreatedMail(Map<String, String> emailsAndNames, String chapterName, String masterName) {
-        if (chapterName.isEmpty() || masterName.isEmpty()) {
+    public void sendEventCreatedMail(Map<String, String> emailsAndNames, String chapterName) {
+        if (chapterName.isEmpty()) {
             logger.info("Chapter name or master name are invalid, won't generate");
             return;
         }
@@ -97,7 +101,6 @@ public class SendGridEmailService implements EmailService {
 
             final var personalization = new Personalization();
             personalization.addDynamicTemplateData("nome", e.getValue());
-            personalization.addDynamicTemplateData("nome_mc", masterName);
             personalization.addDynamicTemplateData("nome_capitulo", chapterName);
             personalization.addTo(to);
             personalization.addTo(cc);

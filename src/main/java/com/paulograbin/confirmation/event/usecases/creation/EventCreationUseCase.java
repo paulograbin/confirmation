@@ -42,7 +42,6 @@ public class EventCreationUseCase {
     private final EmailService emailService;
 
     private String chapterName = "";
-    private String masterName = "";
     private User eventCreator;
 
     public EventCreationUseCase(EventCreationRequest request, EventRepository eventRepository, ParticipationRepository participationRepository, UserRepository userRepository, EmailService emailService, ChapterRepository chapterRepository) {
@@ -76,13 +75,12 @@ public class EventCreationUseCase {
     private void sendMailToInvitedUsers() {
         logger.info("Sending event created mail to all active members");
         logger.info("Chapter name: {}", chapterName);
-        logger.info("Master: {}", masterName);
 
         List<User> allActiveMembers = userRepository.findAllByChapterIdAndActiveTrue(eventCreator.getChapter().getId());
         Map<String, String> invitedUsers = allActiveMembers.stream().collect(Collectors.toMap(User::getEmail, User::getFirstName));
         logger.info("Sending event created mail to: {}", invitedUsers);
 
-        emailService.sendEventCreatedMail(invitedUsers, chapterName, masterName);
+        emailService.sendEventCreatedMail(invitedUsers, chapterName);
     }
 
     private void confirmMasterPresence() {
@@ -179,7 +177,6 @@ public class EventCreationUseCase {
             }
 
             eventCreator = userRepository.findById(request.getCreatorId()).get();
-            masterName = eventCreator.getFirstName();
             chapterName = eventCreator.getChapter().getName();
 
             eventToCreate.setAddress(request.getAddress());

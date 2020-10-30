@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface EmailService {
 
-    void sendEventCreatedMail(Map<String, String> emailsAndNames, String chapterName, String masterName);
+    void sendEventCreatedMail(Map<String, String> emailsAndNames, String chapterName);
 
     void sendPasswordChangedMail(User userFromDatabase);
 

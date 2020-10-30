@@ -16,7 +16,7 @@ public class LoggerEmailService implements EmailService {
     private static final Logger logger = LoggerFactory.getLogger(LoggerEmailService.class);
 
     @Override
-    public void sendEventCreatedMail(Map<String, String> emailsAndNames, String chapterName, String masterName) {
+    public void sendEventCreatedMail(Map<String, String> emailsAndNames, String chapterName) {
 
     }
 
