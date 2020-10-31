@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.usecases.user;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 public class UpdateUserRequestAdmin {
@@ -13,6 +14,8 @@ public class UpdateUserRequestAdmin {
     private long chapter;
     private Boolean master;
     private Boolean active;
+
+    @ToString.Exclude
     private String password;
 
 }
