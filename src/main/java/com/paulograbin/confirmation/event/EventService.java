@@ -101,8 +101,9 @@ public class EventService {
 
 //        inviteRemainingUsersFromChapterToEvent(createdEvent);
 
-        Participation creatorParticipation = participationService.fetchByEventAndUser(eventToCreate.getId(), eventToCreate.getCreator().getId());
-        participationService.confirmParticipation(creatorParticipation);
+//        Participation creatorParticipation = participationService.fetchByEventAndUser(eventToCreate.getId(), eventToCreate.getCreator().getId());
+        Participation creatorParticipation = new Participation(createdEvent.getCreator(), eventToCreate);
+        participationRepository.save(creatorParticipation);
 
         return createdEvent;
     }
