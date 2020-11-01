@@ -3,7 +3,6 @@ package com.paulograbin.confirmation.service;
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterService;
-import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.event.EventService;
@@ -33,7 +32,6 @@ import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static java.lang.String.format;
@@ -288,24 +286,7 @@ public class UserService implements UserDetailsService {
 
         userFromDatabase.addToChapter(chapterFromDatabase);
 
-        userRepository.save(userFromDatabase);
-
-        List<Event> upcomingEvents = eventService.fetchUpComingEventsFromChapter(chapterId);
-        for (Event upcomingEvent : upcomingEvents) {
-            try {
-                eventService.inviteUserForEvent(userId, upcomingEvent.getId());
-            } catch (RuntimeException e) {
-                log.info("Something went wrong while inviting user {} to event {}: {}", userFromDatabase.getId(),
-                        upcomingEvent.getId(),
-                        e.getMessage());
-            }
-        }
-
-        return userFromDatabase;
-    }
-
-    public List<User> fetchAllByChapterId(Long chapterId) {
-        return userRepository.findAllByChapterId(chapterId);
+        return userRepository.save(userFromDatabase);
     }
 
     public long fetchCount() {
