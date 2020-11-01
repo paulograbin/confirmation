@@ -131,19 +131,19 @@ public class CreatePseudoUserUseCase {
             }
         }
 
-        if (!chapterRepository.existsById(request.getChapterId())) {
-            response.invalidChapter = true;
-            response.errorMessage = "Invalid chapter";
-        }
-
-        User user = userRepository.findById(request.requestingUser).orElse(new User());
-        if (user.getId() == null) {
+        User requestingUser = userRepository.findById(request.requestingUser).orElse(new User());
+        if (requestingUser.getId() == null) {
             response.invalidRequestingUser = true;
         }
 
-        if (!user.isAdmin() && !user.isMaster()) {
+        if (!requestingUser.isAdmin() && !requestingUser.isMaster()) {
             response.errorMessage = "This action can only be performed by an admin or an MC";
             response.notAllowed = true;
+        }
+
+        if (!chapterRepository.existsById(request.getChapterId())) {
+            response.invalidChapter = true;
+            response.errorMessage = "Invalid chapter";
         }
     }
 }
