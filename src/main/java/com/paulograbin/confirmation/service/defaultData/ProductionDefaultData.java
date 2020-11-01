@@ -82,7 +82,7 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
         HashMap<String, NamePair> users = new HashMap<>();
         users.put("paulo.grabin@sap.com", new NamePair("Paulo", "Grabin"));
 
-//        users.put("brunocachoeira50@gmail.com", new NamePair("Bruno", "Bueno da Silva Walterman Cachoeira"));
+        users.put("brunocachoeira50@gmail.com", new NamePair("Bruno", "Bueno da Silva Walterman Cachoeira"));
 //        users.put("cris.fs10@gmail.com", new NamePair("Cristiano", "Fernandes dos Santos"));
 //        users.put("daniel.maciel305@gmail.com", new NamePair("Daniel", "França Maciel"));
 //        users.put("bampiemanuel@gmail.com", new NamePair("Emanuel", "da Silva Bampi"));
