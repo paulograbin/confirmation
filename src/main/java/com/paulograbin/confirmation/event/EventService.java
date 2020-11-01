@@ -4,21 +4,21 @@ import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.chapter.ChapterService;
-import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.event.repository.EventRepository;
+import com.paulograbin.confirmation.event.usecases.creation.EventCreationRequest;
+import com.paulograbin.confirmation.event.usecases.creation.EventCreationResponse;
+import com.paulograbin.confirmation.event.usecases.creation.EventCreationUseCase;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.NotYourEventException;
 import com.paulograbin.confirmation.exception.UserAlreadyInvitedException;
-import com.paulograbin.confirmation.participation.ParticipationService;
-import com.paulograbin.confirmation.event.repository.EventRepository;
+import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
+import com.paulograbin.confirmation.participation.ParticipationService;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.service.mail.EmailService;
-import com.paulograbin.confirmation.event.usecases.creation.EventCreationRequest;
-import com.paulograbin.confirmation.event.usecases.creation.EventCreationResponse;
-import com.paulograbin.confirmation.event.usecases.creation.EventCreationUseCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,9 +28,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -126,28 +123,6 @@ public class EventService {
         return eventRepository.save(eventFromDatabase);
     }
 
-    public Set<Participation> fetchParticipantsByEvent(final long eventId) {
-        Optional<Event> eventOptional = eventRepository.findById(eventId);
-
-        Event event = eventOptional.orElseThrow(() -> new NotFoundException(format("Event %s not found", eventId)));
-
-        return event.getParticipants();
-    }
-
-    public List<Event> fetchAllUpcomingEventsCreatedByUser(long userId) {
-        final LocalDate yesterday = DateUtils.getCurrentDate()
-                .toLocalDate()
-                .minus(1, ChronoUnit.DAYS);
-
-        return eventRepository.findAllByCreatorId(userId).stream()
-                .filter(e -> e.getDate().isAfter(yesterday))
-                .collect(Collectors.toList());
-    }
-
-    public List<Event> fetchAllEventsCreatedByUser(long userId) {
-        return eventRepository.findAllByCreatorId(userId);
-    }
-
     public Participation inviteUserForEvent(final long userId, final long eventId) {
         final User user = userService.fetchById(userId);
         final Event event = fetchById(eventId);
@@ -214,10 +189,6 @@ public class EventService {
         log.info("Event deleted!");
     }
 
-    private boolean isCreatorTheOnlyInvitedUser(List<Participation> allParticipationsFromEvent) {
-        return allParticipationsFromEvent.size() == 1;
-    }
-
     private boolean isCurrentUserCreatorOfThisEvent(User currentUser, Event event) {
         return event.getCreator().getId().equals(currentUser.getId());
     }
@@ -228,10 +199,6 @@ public class EventService {
                 .minus(1, ChronoUnit.DAYS);
 
         return eventRepository.findAllByChapterIdAndDateGreaterThanEqual(chapterId, yesterday);
-    }
-
-    public List<Event> fetchAllEventsFromChapter(long chapterId) {
-        return eventRepository.findAllByChapterId(chapterId);
     }
 
     public Event publishEvent(long eventId, User currentUser) {
