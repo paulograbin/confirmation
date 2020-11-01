@@ -110,6 +110,7 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
             request.email = email;
             request.firstName = namePair.firstName;
             request.lastName = namePair.lastName;
+            request.chapterId = 592;
 
             new CreatePseudoUserUseCase(request, userRepository, userRequestRepository, chapterRepository).execute();
         });
