@@ -106,7 +106,7 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
         users.forEach((email, namePair) -> {
             CreatePseudoUserRequest request = new CreatePseudoUserRequest();
 
-            request.requestingUser = 0;
+            request.requestingUser = 1;
             request.email = email;
             request.firstName = namePair.firstName;
             request.lastName = namePair.lastName;
