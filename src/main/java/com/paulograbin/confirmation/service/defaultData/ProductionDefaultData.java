@@ -7,6 +7,7 @@ import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
+import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import com.paulograbin.confirmation.userequest.usecases.creation.CreatePseudoUserRequest;
@@ -49,6 +50,9 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
 
     @Resource
     private ChapterRepository chapterRepository;
+
+    @Resource
+    private EmailService emailService;
 
     @Resource
     private RoleService roleService;
@@ -112,7 +116,7 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
             request.lastName = namePair.lastName;
             request.chapterId = 592;
 
-            new CreatePseudoUserUseCase(request, userRepository, userRequestRepository, chapterRepository).execute();
+            new CreatePseudoUserUseCase(request, userRepository, userRequestRepository, chapterRepository, emailService).execute();
         });
 
     }

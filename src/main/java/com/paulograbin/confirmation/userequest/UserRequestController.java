@@ -109,14 +109,7 @@ class UserRequestController {
 
         request.setRequestingUser(currentUser.getId());
 
-        CreatePseudoUserResponse response = new CreatePseudoUserUseCase(request, userRepository, repository, chapterRepository).execute();
-
-        if (response.successful) {
-            Optional<UserRequest> byId = repository.findByCode(UUID.fromString(response.getCode()));
-            UserRequest newlyCreatedRequest = byId.get();
-
-            emailService.sendUserRequestCreatedMail(newlyCreatedRequest);
-        }
+        CreatePseudoUserResponse response = new CreatePseudoUserUseCase(request, userRepository, repository, chapterRepository, emailService).execute();
 
         if (response.successful) {
             return ResponseEntity.created(URI.create("userrequest/" + response.code)).body(response);

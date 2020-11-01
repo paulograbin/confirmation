@@ -3,6 +3,7 @@ package com.paulograbin.confirmation.userequest.usecases.creation;
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.userequest.UserRequest;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.persistence.UserRepository;
@@ -27,15 +28,17 @@ public class CreatePseudoUserUseCase {
     private final UserRepository userRepository;
     private final ChapterRepository chapterRepository;
     private final UserRequestRepository userRequestRepository;
+    private final EmailService emailService;
 
 
-    public CreatePseudoUserUseCase(CreatePseudoUserRequest request, UserRepository repository, UserRequestRepository userRequestRepository, ChapterRepository chapterRepository) {
+    public CreatePseudoUserUseCase(CreatePseudoUserRequest request, UserRepository repository, UserRequestRepository userRequestRepository, ChapterRepository chapterRepository, EmailService emailService) {
         this.response = new CreatePseudoUserResponse();
 
         this.request = request;
         this.userRepository = repository;
         this.chapterRepository = chapterRepository;
         this.userRequestRepository = userRequestRepository;
+        this.emailService = emailService;
     }
 
     public CreatePseudoUserResponse execute() {
@@ -44,12 +47,17 @@ public class CreatePseudoUserUseCase {
 
         if (isValid()) {
             createUserRequest();
+            sendMailToUser();
         } else {
             setErrors();
         }
 
         logger.info("User request creation response {}", response);
         return response;
+    }
+
+    private void sendMailToUser() {
+
     }
 
     private void createUserRequest() {
