@@ -107,14 +107,6 @@ class UserRequestController {
     public ResponseEntity<CreatePseudoUserResponse> createUserRequest(@RequestBody CreatePseudoUserRequest request, @CurrentUser User currentUser) {
         log.info("Received new create user request");
 
-        if (currentUser == null) {
-            CreatePseudoUserResponse response = new CreatePseudoUserResponse();
-            response.errorMessage = "This action can only be performed by an admin or an MC";
-            response.notAllowed = true;
-
-            return ResponseEntity.badRequest().body(response);
-        }
-
         request.setRequestingUser(currentUser.getId());
 
         CreatePseudoUserResponse response = new CreatePseudoUserUseCase(request, userRepository, repository, chapterRepository).execute();
