@@ -30,6 +30,8 @@ public class CreatePseudoUserUseCase {
     private final UserRequestRepository userRequestRepository;
     private final EmailService emailService;
 
+    private UserRequest userToCreate;
+
 
     public CreatePseudoUserUseCase(CreatePseudoUserRequest request, UserRepository repository, UserRequestRepository userRequestRepository, ChapterRepository chapterRepository, EmailService emailService) {
         this.response = new CreatePseudoUserResponse();
@@ -57,11 +59,11 @@ public class CreatePseudoUserUseCase {
     }
 
     private void sendMailToUser() {
-
+        emailService.sendUserRequestCreatedMail(userToCreate);
     }
 
     private void createUserRequest() {
-        UserRequest userToCreate = new UserRequest();
+        userToCreate = new UserRequest();
         userToCreate.setCode(UUID.randomUUID());
         userToCreate.setEmail(request.email);
         userToCreate.setFirstName(request.firstName);
