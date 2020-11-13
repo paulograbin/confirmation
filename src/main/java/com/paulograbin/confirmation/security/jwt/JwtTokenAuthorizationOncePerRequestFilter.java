@@ -39,7 +39,6 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
         logger.debug("Authentication Request For '{}'", request.getRequestURL());
 
         try {
-
             final String requestTokenHeader = getTokenFromRequestHeader(request);
 
             if (jwtTokenUtil.validateToken(requestTokenHeader)) {
