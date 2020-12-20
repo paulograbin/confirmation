@@ -1,12 +1,14 @@
 package com.paulograbin.confirmation.chapter;
 
+import com.paulograbin.confirmation.chapter.usecases.readchapter.ReadChapterRequest;
+import com.paulograbin.confirmation.chapter.usecases.readchapter.ReadChapterResponse;
+import com.paulograbin.confirmation.chapter.usecases.readchapter.ReadChapterUseCase;
 import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.persistence.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import com.paulograbin.confirmation.web.dto.ChapterDTO;
-import com.paulograbin.confirmation.web.dto.ChapterSimpleDTO;
 import com.paulograbin.confirmation.web.dto.UserDTO;
-import com.paulograbin.confirmation.web.dto.UserSimpleDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
@@ -29,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.Duration;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,12 @@ public class ChapterController {
 
     @Resource
     private ChapterService chapterService;
+
+    @Resource
+    private ChapterRepository chapterRepository;
+
+    @Resource
+    private UserRepository userRepository;
 
     @Resource
     private ModelMapper modelMapper;
@@ -69,26 +76,23 @@ public class ChapterController {
                 .body(dtoList);
     }
 
-    @GetMapping(path = "/meucapitulo")
-    @Cacheable(value = "chapterMembers", key = "#currentUser.chapter.id")
+    @GetMapping(path = "/meucapitulo", produces = MediaType.APPLICATION_JSON_VALUE)
+//    @Cacheable(value = "chapterMembers", key = "#currentUser.chapter.id")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ChapterSimpleDTO> mychapter(@CurrentUser User currentUser) {
+    public ResponseEntity<ReadChapterResponse> mychapter2(@CurrentUser User currentUser) {
         log.info("Fetching chapter for user {}", currentUser.getId());
 
-        Chapter chapter = chapterService.fetchById(currentUser.getChapter().getId());
-        ChapterSimpleDTO chapterDTO = modelMapper.map(chapter, ChapterSimpleDTO.class);
+        ReadChapterRequest request = new ReadChapterRequest();
+        request.chapterId = currentUser.getChapter().getId();
+        request.requestingUser = currentUser.getId();
 
-        chapterDTO.setMembers(chapter.getUsers()
-                .stream()
-                .filter(User::isActive)
-                .map(u -> modelMapper.map(u, UserSimpleDTO.class))
-                .collect(Collectors.toList()));
-        chapterDTO.getMembers().sort(Comparator.comparing(UserSimpleDTO::getFirstName));
+        ReadChapterResponse response = new ReadChapterUseCase(request, chapterRepository, userRepository).execute();
 
         CacheControl cc = CacheControl.maxAge(Duration.ofDays(1)).cachePrivate();
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .ok()
                 .cacheControl(cc)
-                .body(chapterDTO);
+                .body(response);
     }
 
     @GetMapping(path = "/{id}")
