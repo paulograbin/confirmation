@@ -32,6 +32,5 @@ public class UserDTO {
     private boolean master;
 
     private List<ParticipationWithoutUserDTO> participations;
-    private List<EventDetailsDTO> createdEvents;
 
 }
