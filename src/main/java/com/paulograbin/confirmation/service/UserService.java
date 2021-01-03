@@ -92,6 +92,11 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new NotFoundException("User " + id + " not found!"));
     }
 
+    public User fetchBasicInformationAboutUser(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User " + id + " not found!"));
+    }
+
     public User createUser(User userToCreate) {
         validateInformation(userToCreate);
         validateAvailableUsername(userToCreate.getUsername());

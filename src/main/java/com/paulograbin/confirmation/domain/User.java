@@ -21,6 +21,22 @@ import java.util.stream.Collectors;
         @UniqueConstraint(columnNames = {"username"}),
         @UniqueConstraint(columnNames = {"email"})
 })
+@NamedEntityGraph(name = "graph.user.only",
+        attributeNodes =
+                {
+                        @NamedAttributeNode("roles")
+//                        @NamedAttributeNode(value =  "chapter")
+                }
+)
+//@NamedEntityGraph(name = "graph.user.only",
+//        attributeNodes =
+//                {
+//                        @NamedAttributeNode("roles"),
+//                        @NamedAttributeNode(value =  "chapter", subgraph = "chapter"),
+//                },
+//        subgraphs = @NamedSubgraph(name = "chapter",
+//                attributeNodes = @NamedAttributeNode("users"))
+//)
 public class User extends AbstracEntity implements UserDetails {
 
     @Id
@@ -45,7 +61,7 @@ public class User extends AbstracEntity implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Participation> participations = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "user_roles",
         joinColumns = @JoinColumn(name = "user_id"))
     private Set<Role> roles = new HashSet<>();

@@ -34,7 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -62,7 +64,7 @@ class UsersController {
         log.info("Useragent {}", userAgent);
         log.info("Host {}", host);
 
-        User userFromDatabase = userService.fetchById(currentUserId);
+        User userFromDatabase = userService.fetchBasicInformationAboutUser(currentUserId);
         UserDTO userDTO = modelMapper.map(userFromDatabase, UserDTO.class);
         userDTO.setParticipations(Collections.emptyList());
 
