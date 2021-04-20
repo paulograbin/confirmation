@@ -59,11 +59,11 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
         log.info("Running development default data");
 
         setDefaultRoles();
-        setDefaultChapters();
+//        setDefaultChapters();
         setDefaultAdmin();
 
-        setDefaultEvents();
-        setDefaultUsers();
+//        setDefaultEvents();
+//        setDefaultUsers();
 
 //        setUserRequests();
 //        updateUserRequestToIncludeId();

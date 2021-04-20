@@ -63,7 +63,7 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
         log.info("Running production default data");
 
         setDefaultAdmin();
-        setUserRequests();
+//        setUserRequests();
     }
 
     @Getter
