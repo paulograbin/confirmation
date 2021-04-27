@@ -2,7 +2,7 @@ package com.paulograbin.confirmation.userequest;
 
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.domain.AbstracEntity;
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;

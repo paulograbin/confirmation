@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.web;
 
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.security.jwt.JwtTokenUtil;
 import com.paulograbin.confirmation.security.jwt.resource.ApiResponse;
 import com.paulograbin.confirmation.security.jwt.resource.AuthenticationException;

@@ -1,7 +1,6 @@
-package com.paulograbin.confirmation.web;
+package com.paulograbin.confirmation.user;
 
 import com.google.gson.Gson;
-import com.paulograbin.confirmation.domain.User;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.UserService;
@@ -9,6 +8,9 @@ import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequestAdmin;
 import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteRequest;
 import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteResponse;
+import com.paulograbin.confirmation.passwordreset.ResetPasswordRequest;
+import com.paulograbin.confirmation.passwordreset.ResetPasswordResponse;
+import com.paulograbin.confirmation.passwordreset.ResetPasswordUseCase;
 import com.paulograbin.confirmation.web.dto.UserDTO;
 import com.paulograbin.confirmation.web.dto.UserDetailsDTO;
 import org.modelmapper.ModelMapper;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,9 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -51,6 +52,9 @@ class UsersController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private UserRepository userRepository;
 
     @Resource
     private ModelMapper modelMapper;

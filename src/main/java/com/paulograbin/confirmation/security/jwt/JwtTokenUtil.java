@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation.security.jwt;
 
 import com.paulograbin.confirmation.DateUtils;
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.security.jwt.resource.JwtTokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

@@ -3,7 +3,7 @@ package com.paulograbin.confirmation.service;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.event.Event;
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;

@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.usecases.user;
 
-import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.user.UserRepository;
 
 public class UpdateUserUseCase {
 

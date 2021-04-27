@@ -2,8 +2,8 @@ package com.paulograbin.confirmation.chapter.usecases.readchapter;
 
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
-import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

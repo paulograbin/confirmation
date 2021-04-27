@@ -1,11 +1,11 @@
 package com.paulograbin.confirmation.event.usecases.readevent;
 
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationStatus;
-import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
 import com.paulograbin.confirmation.web.dto.ParticipationWithoutEventDTO;
 import org.modelmapper.ModelMapper;

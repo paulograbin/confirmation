@@ -1,9 +1,9 @@
 package com.paulograbin.confirmation.usecases.user.harddelete;
 
 import com.paulograbin.confirmation.participation.Participation;
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
-import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

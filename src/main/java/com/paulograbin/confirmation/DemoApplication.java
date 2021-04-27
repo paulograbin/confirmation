@@ -1,7 +1,7 @@
 package com.paulograbin.confirmation;
 
 import com.paulograbin.confirmation.chapter.Chapter;
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.service.UserService;
 import org.modelmapper.Conditions;

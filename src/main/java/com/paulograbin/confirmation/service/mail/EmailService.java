@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.service.mail;
 
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.userequest.UserRequest;
 
 import java.util.Map;

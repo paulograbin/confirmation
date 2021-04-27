@@ -1,7 +1,8 @@
-package com.paulograbin.confirmation.persistence.memory;
+package com.paulograbin.confirmation.user;
 
-import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.persistence.memory.InMemoryRepository;
+import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;

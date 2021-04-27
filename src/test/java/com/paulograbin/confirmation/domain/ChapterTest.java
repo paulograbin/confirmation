@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.domain;
 
 import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.user.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;

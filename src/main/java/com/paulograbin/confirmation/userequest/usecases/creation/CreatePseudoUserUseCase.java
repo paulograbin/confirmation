@@ -2,11 +2,11 @@ package com.paulograbin.confirmation.userequest.usecases.creation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.Chapter;
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.userequest.UserRequest;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
-import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;

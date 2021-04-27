@@ -2,7 +2,7 @@ package com.paulograbin.confirmation.participation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.event.Event;
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.service.UserService;

@@ -1,6 +1,6 @@
 package com.paulograbin.confirmation.service;
 
-import com.paulograbin.confirmation.domain.User;
+import com.paulograbin.confirmation.user.User;
 import lombok.Getter;
 import lombok.Value;
 

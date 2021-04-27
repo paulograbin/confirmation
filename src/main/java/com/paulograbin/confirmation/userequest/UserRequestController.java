@@ -1,8 +1,8 @@
 package com.paulograbin.confirmation.userequest;
 
 import com.paulograbin.confirmation.chapter.ChapterRepository;
-import com.paulograbin.confirmation.domain.User;
-import com.paulograbin.confirmation.persistence.UserRepository;
+import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.userequest.usecases.convertion.ConvertPseudoUserRequest;
@@ -35,8 +35,6 @@ import javax.annotation.Resource;
 import javax.websocket.server.PathParam;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 
