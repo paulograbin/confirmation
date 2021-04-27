@@ -22,10 +22,6 @@ LABEL org.label-schema.description="Confirmation private parts"
 
 EXPOSE 3000
 
-ENV confirmation_mysql_connection=jdbc:mysql://db:3306/confirmation?createDatabaseIfNotExist=true
-ENV confirmation_mysql_username=root
-ENV confirmation_mysql_password=root
-
 WORKDIR /opt/confirmation/
-COPY --from=build /opt/confirmation/target/Confirmation-0.0.1-SNAPSHOT.jar .
-ENTRYPOINT ["java", "-jar", "/opt/confirmation/Confirmation-0.0.1-SNAPSHOT.jar"]
+COPY --from=build /opt/confirmation/target/Confirmation-1.0.jar .
+ENTRYPOINT ["java", "-jar", "/opt/confirmation/Confirmation-1.0.jar"]
