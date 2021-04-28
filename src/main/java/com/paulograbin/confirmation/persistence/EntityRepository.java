@@ -41,7 +41,4 @@ public interface EntityRepository<T, ID> extends CrudRepository<T, ID> {
 
     @Override
     void deleteAll();
-
-    @Override
-    void deleteAllById(Iterable<? extends ID> ids);
 }

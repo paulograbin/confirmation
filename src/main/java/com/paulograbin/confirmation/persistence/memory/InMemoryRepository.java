@@ -83,9 +83,4 @@ public class InMemoryRepository<T extends AbstracEntity> implements EntityReposi
     public void deleteAll() {
         throw new UnsupportedOperationException();
     }
-
-    @Override
-    public void deleteAllById(Iterable<? extends Long> longs) {
-        throw new UnsupportedOperationException();
-    }
 }

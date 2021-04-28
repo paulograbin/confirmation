@@ -1,9 +1,9 @@
 package com.paulograbin.confirmation;
 
 import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.service.UserService;
-import com.paulograbin.confirmation.user.User;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.module.jsr310.Jsr310Module;
@@ -15,6 +15,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
 import javax.annotation.Resource;
+
+import static org.apache.commons.lang3.Validate.isTrue;
 
 @SpringBootApplication
 @EnableCaching
