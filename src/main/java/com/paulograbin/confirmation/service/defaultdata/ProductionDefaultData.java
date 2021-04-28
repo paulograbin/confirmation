@@ -1,22 +1,22 @@
-package com.paulograbin.confirmation.service.defaultData;
+package com.paulograbin.confirmation.service.defaultdata;
 
-import com.paulograbin.confirmation.DemoApplication;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.RoleName;
-import com.paulograbin.confirmation.user.User;
-import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
+import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +28,9 @@ import java.util.HashSet;
 
 @Profile("production")
 @Service
-public class ProductionDefaultData implements DefaultData, CommandLineRunner {
+public class ProductionDefaultData implements DefaultData {
 
-    private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(ProductionDefaultData.class);
 
     private static final String ADMIN_USERNAME = "plgrabin";
     private static final String ADMIN_EMAIL = "plgrabin@gmail.com";
@@ -56,8 +56,8 @@ public class ProductionDefaultData implements DefaultData, CommandLineRunner {
     private RoleService roleService;
 
 
-    @Override
-    public void run(String... args) {
+    @EventListener(ApplicationReadyEvent.class)
+    public void run() {
         log.info("Running production default data");
 
         setDefaultAdmin();
