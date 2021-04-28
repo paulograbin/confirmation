@@ -1,21 +1,22 @@
-package com.paulograbin.confirmation.service.defaultData;
+package com.paulograbin.confirmation.service.defaultdata;
 
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
-import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
+import com.paulograbin.confirmation.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ import java.util.HashSet;
 
 @Service
 @Profile("!production")
-public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
+public class DevelopmentDefaultData implements DefaultData {
 
     private static final Logger log = LoggerFactory.getLogger(DevelopmentDefaultData.class);
 
@@ -53,12 +54,12 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
     private EventService eventService;
 
 
-    @Override
-    public void run(String... args) {
+    @EventListener(ApplicationReadyEvent.class)
+    public void run() {
         log.info("Running development default data");
 
         setDefaultRoles();
-//        setDefaultChapters();
+        setDefaultChapters();
         setDefaultAdmin();
 
 //        setDefaultEvents();
@@ -217,5 +218,4 @@ public class DevelopmentDefaultData implements DefaultData, CommandLineRunner {
         chapterService.createChapter(new ChapterCreationRequest(200L, "Capitulo BBBBBBBBB"));
         chapterService.createChapter(new ChapterCreationRequest(592L, "GVS"));
     }
-
 }
