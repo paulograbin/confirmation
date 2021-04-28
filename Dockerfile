@@ -1,8 +1,10 @@
-#FROM maven:3-jdk-11-slim as baseImage
+#FROM maven:3-openjdk-15-slim as baseImage
 #
 #WORKDIR /opt/confirmation
 #COPY pom.xml /opt/confirmation
-#RUN mvn dependency:go-offline
+#
+#RUN mvn dependency:resolve-plugins dependency:resolve dependency:go-offline
+
 
 
 FROM paulograbin/confirmationbase as build
@@ -14,7 +16,7 @@ COPY . .
 RUN mvn package -Dmaven.test.skip=true
 
 
-FROM gcr.io/distroless/java:11 as deploy
+FROM adoptopenjdk:15-jre-openj9 as deploy
 
 LABEL maintainer="Paulo Gräbin <paulograbin@gmail.com>"
 LABEL org.label-schema.name="Confirmation backend"
