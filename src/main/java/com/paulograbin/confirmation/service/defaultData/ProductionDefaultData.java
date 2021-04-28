@@ -1,6 +1,5 @@
 package com.paulograbin.confirmation.service.defaultData;
 
-import com.paulograbin.confirmation.DemoApplication;
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.user.User;
@@ -30,7 +29,7 @@ import java.util.HashSet;
 @Service
 public class ProductionDefaultData implements DefaultData, CommandLineRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(ProductionDefaultData.class);
 
     private static final String ADMIN_USERNAME = "plgrabin";
     private static final String ADMIN_EMAIL = "plgrabin@gmail.com";
