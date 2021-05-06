@@ -1,11 +1,4 @@
-#FROM maven:3-jdk-11-slim as baseImage
-#
-#WORKDIR /opt/confirmation
-#COPY pom.xml /opt/confirmation
-#RUN mvn dependency:go-offline
-
-
-FROM paulograbin/confirmationbase as build
+FROM maven:3-jdk-11-slim as build
 
 WORKDIR /opt/confirmation
 COPY pom.xml /opt/confirmation
