@@ -78,6 +78,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/echo").permitAll()
+                .antMatchers(HttpMethod.GET, "/feature/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/userrequest/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/userrequest/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/userrequest/").authenticated()
