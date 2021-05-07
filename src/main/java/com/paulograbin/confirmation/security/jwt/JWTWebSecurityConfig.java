@@ -110,8 +110,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("https://paulograbin.github.io");
+                registry.addMapping("/**");
             }
         };
     }
