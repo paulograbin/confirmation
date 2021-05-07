@@ -25,6 +25,13 @@ public class EchoController {
 
     @GetMapping
     public List<String> echoBack(HttpServletRequest request) {
+        List<String> strings = logRequestDetails(log, request);
+
+        return strings;
+    }
+
+    public static List<String> logRequestDetails(Logger log, HttpServletRequest request) {
+
         log.info("******");
         List<String> a = new ArrayList<>();
 
