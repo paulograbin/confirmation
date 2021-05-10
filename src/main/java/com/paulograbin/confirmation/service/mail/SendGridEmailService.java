@@ -11,6 +11,8 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Email;
+import com.sendgrid.helpers.mail.objects.Personalization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,37 +66,60 @@ public class SendGridEmailService implements EmailService {
             logger.info("Status code: {}", response.getStatusCode());
             logger.info("Headers: {}", response.getHeaders());
         } catch (IOException ex) {
-            System.out.println("Deu pau");
+            logger.error("Deu pau no envio de email");
         }
     }
 
     @Override
     public void sendUserRequestCreatedMail(UserRequest userRequest) {
-        var email = new EmailMessageEntity();
-        email.setSubject("Usuário criado");
-        email.setFromAddress(FROM_EMAIL_ADDRESS);
-        email.setToAddress(userRequest.getEmail());
-        email.setCcAddress(CC_EMAIL_ADDRESS);
-        email.setTemplateId(REQUEST_CREATED_EMAIL_TEMPLATE);
-        emailMessageRepository.save(email);
+        String subject = "Usuário criado";
+        Email from = new Email(FROM_EMAIL_ADDRESS);
 
-        List<EmailParameterEntity> parameters = email.getParameters();
+        Email to = new Email(userRequest.getEmail());
+        Email cc = new Email(CC_EMAIL_ADDRESS);
 
-        EmailParameterEntity p1 = new EmailParameterEntity();
-        p1.setEmailMessage(email);
-        p1.setParameterName("firstName");
-        p1.setParameterValue(userRequest.getFirstName());
+        final var personalization = new Personalization();
+        personalization.addDynamicTemplateData("firstName", userRequest.getFirstName());
+        personalization.addDynamicTemplateData("requestNumber", userRequest.getCode());
+        personalization.addTo(to);
+        personalization.addTo(cc);
 
-        EmailParameterEntity p2 = new EmailParameterEntity();
-        p2.setEmailMessage(email);
-        p2.setParameterName("requestNumber");
-        p2.setParameterValue(userRequest.getCode().toString());
+        Mail mail = new Mail();
+        mail.setTemplateId(REQUEST_CREATED_EMAIL_TEMPLATE);
+        mail.setFrom(from);
+        mail.setSubject(subject);
+        mail.addPersonalization(personalization);
 
-        emailParameterRepository.saveAll(List.of(p1, p2));
-
-        email.setParameters(parameters);
-        emailMessageRepository.save(email);
+        sendMail(mail);
     }
+
+//    @Override
+//    public void sendUserRequestCreatedMail(UserRequest userRequest) {
+//        var email = new EmailMessageEntity();
+//        email.setSubject("Usuário criado");
+//        email.setFromAddress(FROM_EMAIL_ADDRESS);
+//        email.setToAddress(userRequest.getEmail());
+//        email.setCcAddress(CC_EMAIL_ADDRESS);
+//        email.setTemplateId(REQUEST_CREATED_EMAIL_TEMPLATE);
+//        emailMessageRepository.save(email);
+//
+//        List<EmailParameterEntity> parameters = email.getParameters();
+//
+//        EmailParameterEntity p1 = new EmailParameterEntity();
+//        p1.setEmailMessage(email);
+//        p1.setParameterName("firstName");
+//        p1.setParameterValue(userRequest.getFirstName());
+//
+//        EmailParameterEntity p2 = new EmailParameterEntity();
+//        p2.setEmailMessage(email);
+//        p2.setParameterName("requestNumber");
+//        p2.setParameterValue(userRequest.getCode().toString());
+//
+//        emailParameterRepository.saveAll(List.of(p1, p2));
+//
+//        email.setParameters(parameters);
+//        emailMessageRepository.save(email);
+//    }
 
     @Override
     public void sendEventCreatedMail(Map<String, String> emailsAndNames, String chapterName) {
