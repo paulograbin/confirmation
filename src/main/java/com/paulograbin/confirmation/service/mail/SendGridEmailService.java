@@ -1,5 +1,9 @@
 package com.paulograbin.confirmation.service.mail;
 
+import com.paulograbin.confirmation.email.EmailMessageEntity;
+import com.paulograbin.confirmation.email.EmailMessageRepository;
+import com.paulograbin.confirmation.email.EmailParameterEntity;
+import com.paulograbin.confirmation.email.EmailParameterRepository;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.userequest.UserRequest;
 import com.sendgrid.Method;
@@ -7,9 +11,6 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
-import com.sendgrid.helpers.mail.objects.Email;
-import com.sendgrid.helpers.mail.objects.Personalization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +43,13 @@ public class SendGridEmailService implements EmailService {
     @Resource
     private SendGridProperties properties;
 
+    @Resource
+    private EmailMessageRepository emailMessageRepository;
+
+    @Resource
+    private EmailParameterRepository emailParameterRepository;
+
+
     private void sendMail(Mail mail) {
         SendGrid sg = new SendGrid(properties.getApiKey());
         Request request = new Request();
@@ -62,25 +70,30 @@ public class SendGridEmailService implements EmailService {
 
     @Override
     public void sendUserRequestCreatedMail(UserRequest userRequest) {
-        String subject = "Usuário criado";
-        Email from = new Email(FROM_EMAIL_ADDRESS);
+        var email = new EmailMessageEntity();
+        email.setSubject("Usuário criado");
+        email.setFromAddress(FROM_EMAIL_ADDRESS);
+        email.setToAddress(userRequest.getEmail());
+        email.setCcAddress(CC_EMAIL_ADDRESS);
+        email.setTemplateId(REQUEST_CREATED_EMAIL_TEMPLATE);
+        emailMessageRepository.save(email);
 
-        Email to = new Email(userRequest.getEmail());
-        Email cc = new Email(CC_EMAIL_ADDRESS);
+        List<EmailParameterEntity> parameters = email.getParameters();
 
-        final var personalization = new Personalization();
-        personalization.addDynamicTemplateData("firstName", userRequest.getFirstName());
-        personalization.addDynamicTemplateData("requestNumber", userRequest.getCode());
-        personalization.addTo(to);
-        personalization.addTo(cc);
+        EmailParameterEntity p1 = new EmailParameterEntity();
+        p1.setEmailMessage(email);
+        p1.setParameterName("firstName");
+        p1.setParameterValue(userRequest.getFirstName());
 
-        Mail mail = new Mail();
-        mail.setTemplateId(REQUEST_CREATED_EMAIL_TEMPLATE);
-        mail.setFrom(from);
-        mail.setSubject(subject);
-        mail.addPersonalization(personalization);
+        EmailParameterEntity p2 = new EmailParameterEntity();
+        p2.setEmailMessage(email);
+        p2.setParameterName("requestNumber");
+        p2.setParameterValue(userRequest.getCode().toString());
 
-        sendMail(mail);
+        emailParameterRepository.saveAll(List.of(p1, p2));
+
+        email.setParameters(parameters);
+        emailMessageRepository.save(email);
     }
 
     @Override
@@ -90,54 +103,64 @@ public class SendGridEmailService implements EmailService {
             return;
         }
 
-        List<Mail> mailsToSend = new ArrayList<>();
-
-        String subject = "Nova cerimônia criada";
-        Email from = new Email(FROM_EMAIL_ADDRESS);
+        var subject = "Nova cerimônia criada";
 
         emailsAndNames.entrySet().forEach(e -> {
-            Email to = new Email(e.getKey());
-            Email cc = new Email(CC_EMAIL_ADDRESS);
+            var toAddress = e.getKey();
 
-            final var personalization = new Personalization();
-            personalization.addDynamicTemplateData("nome", e.getValue());
-            personalization.addDynamicTemplateData("nome_capitulo", chapterName);
-            personalization.addTo(to);
-            personalization.addTo(cc);
+            EmailMessageEntity email = new EmailMessageEntity();
+            email.setTemplateId(EVENT_CREATED_EMAIL_TEMPLATE);
+            email.setFromAddress(FROM_EMAIL_ADDRESS);
+            email.setToAddress(toAddress);
+            email.setCcAddress(CC_EMAIL_ADDRESS);
+            email.setSubject(subject);
+            email.setChapterName(chapterName);
 
-            Mail mail = new Mail();
-            mail.setTemplateId(EVENT_CREATED_EMAIL_TEMPLATE);
-            mail.setFrom(from);
-            mail.setSubject(subject);
-            mail.addPersonalization(personalization);
+            emailMessageRepository.save(email);
 
-            mailsToSend.add(mail);
+            List<EmailParameterEntity> parameters = email.getParameters();
+
+            EmailParameterEntity p1 = new EmailParameterEntity();
+            p1.setEmailMessage(email);
+            p1.setParameterName("nome");
+            p1.setParameterValue(e.getValue());
+
+            EmailParameterEntity p2 = new EmailParameterEntity();
+            p2.setEmailMessage(email);
+            p2.setParameterName("nome_capitulo");
+            p2.setParameterValue(chapterName);
+
+            emailParameterRepository.saveAll(List.of(p1, p2));
+
+            email.setParameters(parameters);
+            emailMessageRepository.save(email);
         });
-
-        mailsToSend.stream().forEach(this::sendMail);
     }
 
     @Override
     public void sendPasswordChangedMail(User userFromDatabase) {
-        String subject = "Senha modificada";
-        Email from = new Email(FROM_EMAIL_ADDRESS);
-
-        Email to = new Email(userFromDatabase.getEmail());
-        Email cc = new Email(CC_EMAIL_ADDRESS);
-
-        final var personalization = new Personalization();
-        personalization.addTo(to);
-        personalization.addTo(cc);
+        var emailMessageEntity = new EmailMessageEntity();
+        emailMessageEntity.setSubject("Senha modificada");
+        emailMessageEntity.setFromAddress(FROM_EMAIL_ADDRESS);
+        emailMessageEntity.setToAddress(userFromDatabase.getEmail());
+        emailMessageEntity.setCcAddress(CC_EMAIL_ADDRESS);
 
         var emailText = String.format("Olá %s, conforme sua solicitação sua senha do Confirmação DeMolay foi alterada com sucesso.", userFromDatabase.getFirstName());
-        Content content = new Content("text/plain", emailText);
+        emailMessageEntity.setText(emailText);
+        emailMessageEntity.setContent("text/plain");
 
-        Mail mail = new Mail();
-        mail.setFrom(from);
-        mail.setSubject(subject);
-        mail.addPersonalization(personalization);
-        mail.addContent(content);
+        emailMessageRepository.save(emailMessageEntity);
 
-        sendMail(mail);
+        List<EmailParameterEntity> parameters = new ArrayList<>();
+
+        EmailParameterEntity p1 = new EmailParameterEntity();
+        p1.setEmailMessage(emailMessageEntity);
+        p1.setParameterName("teste1");
+        p1.setParameterValue("teste1value");
+        emailParameterRepository.save(p1);
+        parameters.add(p1);
+
+        emailMessageEntity.setParameters(parameters);
+        emailMessageRepository.save(emailMessageEntity);
     }
 }

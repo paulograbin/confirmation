@@ -1,6 +1,5 @@
 package com.paulograbin.confirmation.user;
 
-import com.paulograbin.confirmation.user.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.core.userdetails.UserDetails;
