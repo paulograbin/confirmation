@@ -1,4 +1,4 @@
-package com.paulograbin.confirmation;
+package com.paulograbin.confirmation.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

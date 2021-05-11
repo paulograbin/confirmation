@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.paulograbin.confirmation.EchoController.logRequestDetails;
+import static com.paulograbin.confirmation.web.EchoController.logRequestDetails;
 import static java.lang.String.format;
 
 
