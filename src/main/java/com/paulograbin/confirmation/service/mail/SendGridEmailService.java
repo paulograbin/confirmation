@@ -208,7 +208,7 @@ public class SendGridEmailService implements EmailService {
         personalization.addTo(cc);
 
         Mail mail = new Mail();
-        mail.setTemplateId(REQUEST_CREATED_EMAIL_TEMPLATE);
+        mail.setTemplateId(PASSWORD_FORGOT_EMAIL_TEMPLATE);
         mail.setFrom(from);
         mail.setSubject(subject);
         mail.addPersonalization(personalization);
