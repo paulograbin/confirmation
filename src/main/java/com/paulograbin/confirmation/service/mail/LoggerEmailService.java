@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.service.mail;
 
+import com.paulograbin.confirmation.passwordreset.PasswordRequest;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.userequest.UserRequest;
 import org.slf4j.Logger;
@@ -28,5 +29,10 @@ public class LoggerEmailService implements EmailService {
     @Override
     public void sendUserRequestCreatedMail(UserRequest userRequest) {
         logger.info("Sending mail to let the person know a new user has been requested for him/her with id {}", userRequest.getId());
+    }
+
+    @Override
+    public void sendForgotPasswordMail(PasswordRequest passwordRequest, User user) {
+        logger.info("Sending email to reset password for user {}", user.getEmail());
     }
 }

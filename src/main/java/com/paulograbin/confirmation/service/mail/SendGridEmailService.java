@@ -4,6 +4,7 @@ import com.paulograbin.confirmation.email.EmailMessageEntity;
 import com.paulograbin.confirmation.email.EmailMessageRepository;
 import com.paulograbin.confirmation.email.EmailParameterEntity;
 import com.paulograbin.confirmation.email.EmailParameterRepository;
+import com.paulograbin.confirmation.passwordreset.PasswordRequest;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.userequest.UserRequest;
 import com.sendgrid.Method;
@@ -41,6 +42,9 @@ public class SendGridEmailService implements EmailService {
 
     @Value("${sendgrid.template.event.created}")
     public String EVENT_CREATED_EMAIL_TEMPLATE;
+
+    @Value("${sendgrid.template.password.forgot}")
+    public String PASSWORD_FORGOT_EMAIL_TEMPLATE;
 
     @Resource
     private SendGridProperties properties;
@@ -187,5 +191,28 @@ public class SendGridEmailService implements EmailService {
 
         emailMessageEntity.setParameters(parameters);
         emailMessageRepository.save(emailMessageEntity);
+    }
+
+    @Override
+    public void sendForgotPasswordMail(PasswordRequest passwordRequest, User user) {
+        String subject = "Recuperação de senha";
+        Email from = new Email(FROM_EMAIL_ADDRESS);
+
+        Email to = new Email(user.getEmail());
+        Email cc = new Email(CC_EMAIL_ADDRESS);
+
+        final var personalization = new Personalization();
+        personalization.addDynamicTemplateData("firstName", user.getFirstName());
+        personalization.addDynamicTemplateData("passwordRequest", passwordRequest.getCode());
+        personalization.addTo(to);
+        personalization.addTo(cc);
+
+        Mail mail = new Mail();
+        mail.setTemplateId(REQUEST_CREATED_EMAIL_TEMPLATE);
+        mail.setFrom(from);
+        mail.setSubject(subject);
+        mail.addPersonalization(personalization);
+
+        sendMail(mail);
     }
 }

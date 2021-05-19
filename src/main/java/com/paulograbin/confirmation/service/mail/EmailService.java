@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.service.mail;
 
+import com.paulograbin.confirmation.passwordreset.PasswordRequest;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.userequest.UserRequest;
 
@@ -13,4 +14,5 @@ public interface EmailService {
 
     void sendUserRequestCreatedMail(UserRequest userRequest);
 
+    void sendForgotPasswordMail(PasswordRequest passwordRequest, User user);
 }
