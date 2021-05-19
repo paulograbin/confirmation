@@ -2,6 +2,7 @@ package com.paulograbin.confirmation.passwordreset.creation;
 
 import com.paulograbin.confirmation.passwordreset.PasswordRequest;
 import com.paulograbin.confirmation.passwordreset.PasswordResetRepository;
+import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.user.UserRepository;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -25,10 +26,13 @@ public class ResetPasswordUseCase {
     private final PasswordResetRepository repository;
     private final UserRepository userRepository;
 
-    public ResetPasswordUseCase(ResetPasswordRequest request, PasswordResetRepository repository, UserRepository userRepository) {
+    private final EmailService emailService;
+
+    public ResetPasswordUseCase(ResetPasswordRequest request, PasswordResetRepository repository, UserRepository userRepository, EmailService emailService) {
         this.request = request;
         this.repository = repository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
 
         response = new ResetPasswordResponse();
     }
@@ -75,6 +79,7 @@ public class ResetPasswordUseCase {
         User user = byUsernameOrEmail.get();
 
         //send email
+        emailService.sendForgotPasswordMail(passwordRequest, user);
 
         response.successful = true;
         logger.info("Email sent with request code {}", passwordRequest.getCode());

@@ -3,9 +3,7 @@ package com.paulograbin.confirmation.passwordreset;
 import com.paulograbin.confirmation.passwordreset.creation.ResetPasswordRequest;
 import com.paulograbin.confirmation.passwordreset.creation.ResetPasswordResponse;
 import com.paulograbin.confirmation.passwordreset.creation.ResetPasswordUseCase;
-import com.paulograbin.confirmation.passwordreset.read.ReadPasswordResetRequest;
-import com.paulograbin.confirmation.passwordreset.read.ReadPasswordResetResponse;
-import com.paulograbin.confirmation.passwordreset.read.ReadPasswordResetUseCase;
+import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +37,9 @@ class PasswordResetController {
     @Resource
     private PasswordResetRepository passwordResetRepository;
 
+    @Resource
+    private EmailService emailService;
+
 
     @PostMapping("/{userEmailAddress}")
     @ResponseStatus(HttpStatus.OK)
@@ -49,7 +49,7 @@ class PasswordResetController {
         ResetPasswordRequest request = new ResetPasswordRequest();
         request.emailAddress = emailAddress;
 
-        ResetPasswordResponse execute = new ResetPasswordUseCase(request, passwordResetRepository, userRepository).execute();
+        ResetPasswordResponse execute = new ResetPasswordUseCase(request, passwordResetRepository, userRepository, emailService).execute();
 
 //        if (execute.successful) {
             return ResponseEntity.ok().body(execute);
