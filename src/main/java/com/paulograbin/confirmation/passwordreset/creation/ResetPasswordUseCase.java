@@ -54,6 +54,8 @@ public class ResetPasswordUseCase {
         if (!EmailValidator.getInstance().isValid(request.emailAddress)) {
             response.invalidAddress = true;
         }
+
+        response.successful = false;
     }
 
     private void doIt() {
