@@ -91,7 +91,7 @@ public class ChapterController {
         CacheControl cc = CacheControl.maxAge(Duration.ofDays(1)).cachePrivate();
         return ResponseEntity
                 .ok()
-                .cacheControl(cc)
+//                .cacheControl(cc)
                 .body(response);
     }
 
