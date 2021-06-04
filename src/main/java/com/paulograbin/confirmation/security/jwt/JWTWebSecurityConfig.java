@@ -80,6 +80,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/feature/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/userrequest/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/userrequest/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/reset/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/userrequest/").authenticated()
 //                .antMatchers(HttpMethod.DELETE).hasAnyRole("ADMIN", "MC")
                 .anyRequest().authenticated();
