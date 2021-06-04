@@ -23,12 +23,14 @@ public class ReadChapterResponse {
         public String firstName;
         public String lastName;
         public String userName;
+        public String email;
         public boolean active;
 
-        public Member(String firstName, String lastName, String userName, boolean active) {
+        public Member(String firstName, String lastName, String userName, String email, boolean active) {
             this.firstName = firstName;
             this.lastName = lastName;
             this.userName = userName;
+            this.email = email;
             this.active = active;
         }
     }

@@ -75,6 +75,7 @@ public class ReadChapterUseCase {
             ReadChapterResponse.Member e = new ReadChapterResponse.Member(user.getFirstName(),
                     user.getLastName(),
                     user.getUsername(),
+                    user.getEmail(),
                     user.isActive());
 
             response.members.add(e);
