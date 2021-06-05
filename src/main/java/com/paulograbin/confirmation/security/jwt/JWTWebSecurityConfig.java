@@ -80,9 +80,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/feature/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/userrequest/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/userrequest/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/reset/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/userrequest/").authenticated()
-//                .antMatchers(HttpMethod.DELETE).hasAnyRole("ADMIN", "MC")
+                .antMatchers( "/reset/**").permitAll() // For password reset operations
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
