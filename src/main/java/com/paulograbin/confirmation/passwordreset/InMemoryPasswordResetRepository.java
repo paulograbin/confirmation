@@ -17,12 +17,6 @@ public class InMemoryPasswordResetRepository extends InMemoryRepository<Password
     }
 
     @Override
-    public boolean existsByCode(UUID code) {
-        return this.map.values().stream()
-                .anyMatch(p -> p.getCode().equals(code));
-    }
-
-    @Override
     public List<PasswordRequest> findByEmailAddress(String emailAddress) {
         return this.map.values().stream()
                 .filter(p -> p.getEmailAddress().equalsIgnoreCase(emailAddress))
