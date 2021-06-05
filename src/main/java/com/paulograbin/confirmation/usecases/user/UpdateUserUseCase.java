@@ -8,13 +8,13 @@ public class UpdateUserUseCase {
     private UpdateUserRequest request;
     private UpdateUserResponse response;
 
-    public UpdateUserUseCase(UserRepository userRepository, UpdateUserRequest request, UpdateUserResponse response) {
+    public UpdateUserUseCase(UserRepository userRepository, UpdateUserRequest request) {
         this.userRepository = userRepository;
         this.request = request;
-        this.response = response;
+        this.response = new UpdateUserResponse();
     }
 
-    public void execute() {
-
+    public UpdateUserResponse execute() {
+        return response;
     }
 }
