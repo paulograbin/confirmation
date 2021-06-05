@@ -58,20 +58,12 @@ class PasswordResetController {
 //        }
     }
 
-//    @GetMapping(path = "/{requestCode}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity<ReadPasswordResetResponse> listAll(@PathVariable String requestCode) {
-//        log.info("Listing reset password request {}", requestCode);
-//
-//        var readPasswordResetRequest = new ReadPasswordResetRequest();
-//        readPasswordResetRequest.requestCode = requestCode;
-//
-//        ReadPasswordResetResponse execute = new ReadPasswordResetUseCase(readPasswordResetRequest, repository).execute();
-//
-////        if (response.successful) {
-//        return ResponseEntity.ok().body(execute);
-////        } else {
-////            return ResponseEntity.badRequest().body(response);
-////        }
-//    }
+    @PutMapping
+    public ResponseEntity<DefineNewPasswordResponse> defineNewPassword(@RequestBody DefineNewPasswordRequest defineNewPasswordRequest) {
+        log.info("Setting new password for request");
+
+        DefineNewPasswordResponse response = new DefineNewPasswordUseCase(defineNewPasswordRequest, passwordResetRepository, userRepository, passwordEncoder).execute();
+
+        return ResponseEntity.ok().body(response);
+    }
 }

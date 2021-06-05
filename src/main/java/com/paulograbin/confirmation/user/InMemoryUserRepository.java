@@ -30,7 +30,10 @@ public class InMemoryUserRepository extends InMemoryRepository<User> implements 
 
     @Override
     public Optional<User> findByUsernameOrEmail(String username, String email) {
-        throw new UnsupportedOperationException();
+         return this.map.values()
+                .stream()
+                .filter(u -> u.getUsername().equals(username) || u.getEmail().equals(email))
+                .findFirst();
     }
 
     @Override
