@@ -149,8 +149,8 @@ public class UserService implements UserDetailsService {
 
 
     public User updateUser(Long id, UpdateUserRequest updateRequest) {
-        UpdateUserResponse response = new UpdateUserResponse();
-        new UpdateUserUseCase(userRepository, updateRequest, response).execute();
+//        UpdateUserResponse response = new UpdateUserResponse();
+//        new UpdateUserUseCase(userRepository, updateRequest).execute();
 
         User userFromDatabase = fetchById(id);
 
