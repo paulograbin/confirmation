@@ -58,7 +58,7 @@ class UsersController {
 
 
     @GetMapping(value = "/me")
-    @Cacheable(value = "me", key = "#currentUser.id")
+//    @Cacheable(value = "me", key = "#currentUser.id")
     public ResponseEntity<UserDTO> getCurrentUser(@CurrentUser User currentUser, HttpServletRequest request) {
         Long currentUserId = currentUser.getId();
         logRequestDetails(log, request);
@@ -76,7 +76,7 @@ class UsersController {
     }
 
     @GetMapping(value = "/panel")
-    @Cacheable(value = "admin", key = "#currentUser.id")
+//    @Cacheable(value = "admin", key = "#currentUser.id")
     public boolean canOpenAdminPanel(@CurrentUser User currentUser) {
         log.info("Fetching /panel for user {}", currentUser.getId());
 

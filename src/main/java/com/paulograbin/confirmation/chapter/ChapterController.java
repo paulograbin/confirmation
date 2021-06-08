@@ -57,7 +57,7 @@ public class ChapterController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    @Cacheable("chapters")
+//    @Cacheable("chapters")
     public ResponseEntity<List<ChapterDTO>> fetchAllChapters() {
         log.info("Listing all chapters");
 
