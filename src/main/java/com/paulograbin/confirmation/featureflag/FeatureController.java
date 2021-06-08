@@ -29,10 +29,7 @@ public class FeatureController {
 
     public FeatureController() {
         featureMap.put("RESET_PASSWORD_BUTTON", Boolean.TRUE);
-        featureMap.put("ENABLE_RESET_PASSWORD", Boolean.TRUE);
-        featureMap.put("TESTE_A", Boolean.FALSE);
-        featureMap.put("TESTE_B", Boolean.TRUE);
-        featureMap.put("TESTE_C", Boolean.TRUE);
+        featureMap.put("ENABLE_RESET_PASSWORD", Boolean.FALSE);
     }
 
     @GetMapping(path = "/{featureKey}")
