@@ -71,7 +71,7 @@ public class SendGridEmailService implements EmailService {
             logger.info("Status code: {}", response.getStatusCode());
             logger.info("Headers: {}", response.getHeaders());
         } catch (IOException ex) {
-            logger.error("Deu pau no envio de email");
+            logger.error("Deu pau no envio de email: {}", ex.getMessage());
         }
     }
 
