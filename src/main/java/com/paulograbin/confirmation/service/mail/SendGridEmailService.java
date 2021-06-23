@@ -12,6 +12,7 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import org.slf4j.Logger;
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -168,11 +168,15 @@ public class SendGridEmailService implements EmailService {
 
     @Override
     public void sendPasswordChangedMail(User userFromDatabase) {
-        var emailMessageEntity = new EmailMessageEntity();
-        emailMessageEntity.setSubject("Senha modificada");
-        emailMessageEntity.setFromAddress(FROM_EMAIL_ADDRESS);
-        emailMessageEntity.setToAddress(userFromDatabase.getEmail());
-        emailMessageEntity.setCcAddress(CC_EMAIL_ADDRESS);
+        String subject = "Senha modificada";
+        Email from = new Email(FROM_EMAIL_ADDRESS);
+
+        Email to = new Email(userFromDatabase.getEmail());
+        Email cc = new Email(CC_EMAIL_ADDRESS);
+
+        final var personalization = new Personalization();
+        personalization.addTo(to);
+        personalization.addTo(cc);
 
         var emailText = String.format("Olá %s, conforme sua solicitação sua senha do Confirmação DeMolay foi alterada com sucesso.", userFromDatabase.getFirstName());
         emailMessageEntity.setText(emailText);
