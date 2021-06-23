@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +35,7 @@ public class EmailMessageEntity extends AbstracEntity {
     private LocalDateTime creationDate;
     private LocalDateTime sentDate;
 
-    @OneToMany(mappedBy = "emailMessage")
+    @OneToMany(mappedBy = "emailMessage", fetch = FetchType.EAGER)
     private List<EmailParameterEntity> parameters = new ArrayList<>();
 
 
