@@ -13,6 +13,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.Resource;
 
@@ -20,6 +22,8 @@ import static org.apache.commons.lang3.Validate.isTrue;
 
 @SpringBootApplication
 @EnableCaching
+@Configuration
+@EnableScheduling
 public class DemoApplication {
 
     // TODO Figure out a way to obtain the token in the controller test calls
