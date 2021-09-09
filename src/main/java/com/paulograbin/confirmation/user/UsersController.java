@@ -14,7 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,7 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.paulograbin.confirmation.web.EchoController.logRequestDetails;
+import static com.paulograbin.confirmation.web.MainController.logRequestDetails;
 import static java.lang.String.format;
 
 
