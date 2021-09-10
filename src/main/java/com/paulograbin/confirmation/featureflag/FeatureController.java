@@ -2,6 +2,7 @@ package com.paulograbin.confirmation.featureflag;
 
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.user.User;
+import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.apache.commons.lang3.BooleanUtils.isTrue;
+
 
 @CrossOrigin("*")
 @RestController
@@ -29,7 +32,7 @@ public class FeatureController {
 
     public FeatureController() {
         featureMap.put("RESET_PASSWORD_BUTTON", Boolean.TRUE);
-        featureMap.put("ENABLE_RESET_PASSWORD", Boolean.FALSE);
+        featureMap.put("ENABLE_RESET_PASSWORD", Boolean.TRUE);
     }
 
     @GetMapping(path = "/{featureKey}")
@@ -56,7 +59,7 @@ public class FeatureController {
 
         Boolean aBoolean = featureMap.computeIfPresent(featureKey, (s, aBoolean1) -> !aBoolean1);
 
-        return ResponseEntity.ok(aBoolean);
+        return ResponseEntity.ok(isTrue(aBoolean));
     }
 
     @GetMapping
