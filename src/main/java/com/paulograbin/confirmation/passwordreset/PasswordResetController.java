@@ -65,7 +65,7 @@ class PasswordResetController {
     }
 
     @GetMapping(path = "/{requestCode}")
-    public ResponseEntity<ReadPasswordResetResponse> listAll(@PathVariable("requestCode") String requestCode) {
+    public ResponseEntity<ReadPasswordResetResponse> getRequestDetails(@PathVariable("requestCode") String requestCode) {
         log.info("Listing reset password request {}", requestCode);
 
         var readPasswordResetRequest = new ReadPasswordResetRequest();
