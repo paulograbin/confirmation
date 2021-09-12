@@ -11,4 +11,5 @@ public class DefineNewPasswordResponse {
     public boolean invalidPassword;
     public boolean nonExistingRequest;
     public boolean userNotFound;
+    public String errorMessage;
 }

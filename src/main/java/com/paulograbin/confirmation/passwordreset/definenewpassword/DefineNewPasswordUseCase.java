@@ -67,13 +67,13 @@ public class DefineNewPasswordUseCase {
     }
 
     private void setErrors() {
+        response.successful = false;
+
         if (isBlank(request.getPassword())) {
-            response.successful = false;
             response.invalidPassword = true;
         }
 
         if (isBlank(request.getRequestCode())) {
-            response.successful = false;
             response.invalidRequestCode = true;
 
             return;
@@ -85,7 +85,6 @@ public class DefineNewPasswordUseCase {
 
             Optional<PasswordRequest> byCode = repository.findByCode(uuid);
             if (byCode.isEmpty()) {
-                response.successful = false;
                 response.nonExistingRequest = true;
 
                 return;
@@ -94,14 +93,14 @@ public class DefineNewPasswordUseCase {
             PasswordRequest passwordRequest = byCode.get();
 
             if (passwordRequest.getExpirationDate().isBefore(LocalDateTime.now())) {
-                response.successful = false;
                 response.nonExistingRequest = true;
-            }
+                response.errorMessage = "Requisição expirada ou inválida";
 
+                return;
+            }
 
             Optional<User> byUsernameOrEmail = userRepository.findByUsernameOrEmail(passwordRequest.getEmailAddress(), passwordRequest.getEmailAddress());
             if (byUsernameOrEmail.isEmpty()) {
-                response.successful = false;
                 response.userNotFound = true;
             }
         } catch (IllegalArgumentException e) {
