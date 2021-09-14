@@ -96,7 +96,7 @@ public class CreatePseudoUserUseCase {
             return false;
         }
 
-        User requestingUser = userRepository.findById(request.requestingUser).orElse(new User());
+        User requestingUser = userRepository.findById(request.requestingUser).orElseGet(User::new);
         if (requestingUser.getId() == null) {
             return false;
         }
@@ -141,7 +141,7 @@ public class CreatePseudoUserUseCase {
             }
         }
 
-        User requestingUser = userRepository.findById(request.requestingUser).orElse(new User());
+        User requestingUser = userRepository.findById(request.requestingUser).orElseGet(User::new);
         if (requestingUser.getId() == null) {
             response.invalidRequestingUser = true;
         }

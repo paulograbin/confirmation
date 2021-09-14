@@ -53,7 +53,7 @@ public class UserHardDeleteUseCase {
             response.userNotFound = true;
         }
 
-        User user = repository.findById(request.getRequestingUser()).orElse(new User());
+        User user = repository.findById(request.getRequestingUser()).orElseGet(User::new);
         if (!user.isAdmin()) {
             response.errorMessage = "This action can only be performed by an admin";
             response.notAdmin = true;
@@ -63,7 +63,7 @@ public class UserHardDeleteUseCase {
     private boolean isValid() {
         logger.info("Checking if request is valid");
 
-        User user = repository.findById(request.getRequestingUser()).orElse(new User());
+        User user = repository.findById(request.getRequestingUser()).orElseGet(User::new);
 
         if (!user.isAdmin()) {
             return false;
