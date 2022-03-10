@@ -1,4 +1,4 @@
-FROM maven:3-openjdk-15-slim as build
+FROM maven:3-openjdk-17-slim as build
 
 WORKDIR /opt/confirmation
 COPY pom.xml /opt/confirmation
@@ -7,7 +7,7 @@ COPY . .
 RUN mvn package -Dmaven.test.skip=true
 
 
-FROM adoptopenjdk:15-jre-openj9 as deploy
+FROM openjdk:17.0.2 as deploy
 
 LABEL maintainer="Paulo Gräbin <paulograbin@gmail.com>"
 LABEL org.label-schema.name="Confirmation backend"
