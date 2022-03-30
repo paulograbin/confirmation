@@ -36,7 +36,7 @@ public class SendGridEmailService implements EmailService {
     private static final Logger logger = LoggerFactory.getLogger(SendGridEmailService.class);
 
     public static final String FROM_EMAIL_ADDRESS = "paulograbin@gmail.com";
-    public static final String CC_EMAIL_ADDRESS = "pl.grabin@gmail.com";
+    public static final String CC_EMAIL_ADDRESS = "paulo.grabin@kps.com";
 
     @Value("${sendgrid.template.user.created}")
     public String REQUEST_CREATED_EMAIL_TEMPLATE;
@@ -64,6 +64,10 @@ public class SendGridEmailService implements EmailService {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
+
+            logger.info("****");
+            logger.info(mail.build());
+            logger.info("****");
             Response response = sg.api(request);
 
             logger.info("Mail send to {}", mail.toString());
@@ -193,6 +197,8 @@ public class SendGridEmailService implements EmailService {
 
     @Override
     public void sendForgotPasswordMail(PasswordRequest passwordRequest, User user) {
+        sendMailWithDynamicTemplate(passwordRequest, user);
+
         String subject = "Recuperação de senha";
         Email from = new Email(FROM_EMAIL_ADDRESS);
 
@@ -212,5 +218,9 @@ public class SendGridEmailService implements EmailService {
         mail.addPersonalization(personalization);
 
         sendMail(mail);
+    }
+
+    private void sendMailWithDynamicTemplate(PasswordRequest passwordRequest, User user) {
+
     }
 }
