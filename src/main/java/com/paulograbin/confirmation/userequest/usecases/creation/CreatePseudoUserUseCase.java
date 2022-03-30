@@ -92,9 +92,9 @@ public class CreatePseudoUserUseCase {
             return false;
         }
 
-        if (isBlank(request.lastName) || request.lastName.length() < NAME_MINIMUM_LENGTH || request.lastName.length() > NAME_MAX_LENGTH) {
-            return false;
-        }
+//        if (isBlank(request.lastName) || request.lastName.length() < NAME_MINIMUM_LENGTH || request.lastName.length() > NAME_MAX_LENGTH) {
+//            return false;
+//        }
 
         User requestingUser = userRepository.findById(request.requestingUser).orElseGet(User::new);
         if (requestingUser.getId() == null) {
@@ -127,10 +127,10 @@ public class CreatePseudoUserUseCase {
             response.invalidFirstName = true;
         }
 
-        if (isBlank(request.lastName) || request.lastName.length() < NAME_MINIMUM_LENGTH || request.lastName.length() > NAME_MAX_LENGTH) {
-            response.errorMessage = "Sobrenome inválido";
-            response.invalidLastName = true;
-        }
+//        if (isBlank(request.lastName) || request.lastName.length() < NAME_MINIMUM_LENGTH || request.lastName.length() > NAME_MAX_LENGTH) {
+//            response.errorMessage = "Sobrenome inválido";
+//            response.invalidLastName = true;
+//        }
 
         if (!EmailValidator.getInstance().isValid(request.email)) {
             response.invalidEmail = true;
