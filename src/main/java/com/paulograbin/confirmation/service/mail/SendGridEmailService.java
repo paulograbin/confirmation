@@ -36,7 +36,7 @@ public class SendGridEmailService implements EmailService {
     private static final Logger logger = LoggerFactory.getLogger(SendGridEmailService.class);
 
     public static final String FROM_EMAIL_ADDRESS = "paulograbin@gmail.com";
-    public static final String CC_EMAIL_ADDRESS = "pl.grabin@kps.com";
+    public static final String CC_EMAIL_ADDRESS = "pl.grabin@gmail.com";
 
     @Value("${sendgrid.template.user.created}")
     public String REQUEST_CREATED_EMAIL_TEMPLATE;
