@@ -1,5 +1,6 @@
 package com.paulograbin.confirmation.web;
 
+import com.paulograbin.confirmation.notification.TelegramNotificationService;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.security.jwt.JwtTokenUtil;
 import com.paulograbin.confirmation.security.jwt.resource.ApiResponse;
@@ -56,6 +57,9 @@ class AuthenticationController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private TelegramNotificationService notificationService;
+
     @PostMapping("/authenticate")
     public ResponseEntity<JwtTokenResponse> createAuthenticationToken(@RequestBody LoginRequest loginRequest) {
         try {
@@ -70,6 +74,8 @@ class AuthenticationController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             JwtTokenResponse generatedToken = jwtTokenUtil.generateToken(authentication);
+
+            notificationService.sendAlert("User " + userDetails.getUsername() + " has logged on");
 
             return ResponseEntity.ok(generatedToken);
         } catch (DisabledException e) {
