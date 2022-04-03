@@ -7,13 +7,13 @@ import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
+import com.paulograbin.confirmation.web.ResponseEntityCachedFactory;
 import com.paulograbin.confirmation.web.dto.ChapterDTO;
 import com.paulograbin.confirmation.web.dto.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -64,15 +64,12 @@ public class ChapterController {
         Iterable<Chapter> eventIterator = chapterService.findAll();
         List<Chapter> chapterList = Lists.from(eventIterator.iterator());
 
-        CacheControl cc = CacheControl.maxAge(Duration.ofMinutes(10)).cachePrivate();
-
-
         List<ChapterDTO> dtoList = chapterList.stream()
                 .map(u -> modelMapper.map(u, ChapterDTO.class))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok()
-                .cacheControl(cc)
+                .cacheControl(ResponseEntityCachedFactory.TEN_MINUTES)
                 .body(dtoList);
     }
 

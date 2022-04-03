@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
@@ -33,11 +31,11 @@ public class TelegramNotificationService implements NotificationService {
         urlString = String.format(urlString, TELEGRAM_BOT_KEY, TELEGRAM_GROUP_ID, messageText);
 
         try {
-            URL url = new URL(urlString);
-            URLConnection conn = url.openConnection();
-            InputStream is = new BufferedInputStream(conn.getInputStream());
+            var url = new URL(urlString);
+            var conn = url.openConnection();
+            var is = new BufferedInputStream(conn.getInputStream());
 
-            String text = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
+            var text = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
                     .lines()
                     .collect(Collectors.joining("\n"));
 
