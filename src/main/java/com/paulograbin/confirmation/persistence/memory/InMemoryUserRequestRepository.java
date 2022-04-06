@@ -21,6 +21,12 @@ public class InMemoryUserRequestRepository extends InMemoryRepository<UserReques
     }
 
     @Override
+    public Optional<UserRequest> findByEmail(String email) {
+        // todo fix
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public long countAllByUserNotNull() {
         return map.values()
                 .stream()
