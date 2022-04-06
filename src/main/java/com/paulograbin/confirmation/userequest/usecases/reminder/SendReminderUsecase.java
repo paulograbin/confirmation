@@ -59,7 +59,7 @@ public class SendReminderUsecase {
     }
 
     private boolean isValid() {
-        return false;
+        return true;
     }
 
     private void setErrors() {
