@@ -11,6 +11,8 @@ public interface UserRequestRepository extends CrudRepository<UserRequest, Long>
 
     Optional<UserRequest> findByCode(UUID code);
 
+    Optional<UserRequest> findByEmail(String email);
+
     long countAllByUserNotNull();
 
 }

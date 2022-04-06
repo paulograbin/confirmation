@@ -14,6 +14,9 @@ import com.paulograbin.confirmation.userequest.usecases.creation.CreatePseudoUse
 import com.paulograbin.confirmation.userequest.usecases.read.ReadPseudoUserRequest;
 import com.paulograbin.confirmation.userequest.usecases.read.ReadPseudoUserResponse;
 import com.paulograbin.confirmation.userequest.usecases.read.ReadPseudoUserUseCase;
+import com.paulograbin.confirmation.userequest.usecases.reminder.SendReminderRequest;
+import com.paulograbin.confirmation.userequest.usecases.reminder.SendReminderResponse;
+import com.paulograbin.confirmation.userequest.usecases.reminder.SendReminderUsecase;
 import com.paulograbin.confirmation.web.dto.UserRequestDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
@@ -86,10 +89,24 @@ class UserRequestController {
         ReadPseudoUserResponse response = new ReadPseudoUserUseCase(readPseudoUserRequest, repository).execute();
 
 //        if (response.successful) {
-            return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(response);
 //        } else {
 //            return ResponseEntity.badRequest().body(response);
 //        }
+    }
+
+    @PostMapping(path = "/reminder/{useremail}")
+    public ResponseEntity<SendReminderResponse> sendReminder(@PathParam("useremail") String userEmail) {
+        SendReminderRequest request = new SendReminderRequest();
+        request.setUserEmail(userEmail);
+
+        SendReminderResponse response = new SendReminderUsecase(request, repository, emailService).execute();
+
+        if (response.successful) {
+            return ResponseEntity.ok().body(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     @PostMapping(path = "/{id}")
