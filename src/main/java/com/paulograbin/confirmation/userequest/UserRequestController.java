@@ -96,7 +96,7 @@ class UserRequestController {
     }
 
     @PostMapping(path = "/reminder/{useremail}")
-    public ResponseEntity<SendReminderResponse> sendReminder(@PathParam("useremail") String userEmail) {
+    public ResponseEntity<SendReminderResponse> sendReminder(@PathVariable("useremail") String userEmail) {
         SendReminderRequest request = new SendReminderRequest();
         request.setUserEmail(userEmail);
 
