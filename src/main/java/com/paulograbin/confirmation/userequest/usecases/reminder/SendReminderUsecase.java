@@ -46,6 +46,14 @@ public class SendReminderUsecase {
         Optional<UserRequest> byEmail = repository.findByEmail(request.getUserEmail());
         UserRequest userRequest = byEmail.get();
 
+        if (userRequest.getConversionDate() != null) {
+            response.successful = false;
+            response.userAlreadyCreated = true;
+
+            return;
+        }
+
+
         LocalDateTime expirationDate = userRequest.getExpirationDate();
         expirationDate.plusWeeks(1);
 

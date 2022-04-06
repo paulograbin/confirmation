@@ -10,4 +10,5 @@ public class SendReminderResponse {
     public String userEmail;
     public String code;
 
+    public boolean userAlreadyCreated;
 }
