@@ -20,10 +20,10 @@ public class TelegramNotificationService implements NotificationService {
     private static final Logger logger = LoggerFactory.getLogger(TelegramNotificationService.class);
 
     @Value("${telegram.bot.key}")
-    public static String TELEGRAM_BOT_KEY;
+    public String TELEGRAM_BOT_KEY;
 
     @Value("${telegram.group.id}")
-    public static String TELEGRAM_GROUP_ID = "-774787175";
+    public String TELEGRAM_GROUP_ID;
 
 
     public void sendAlert(String messageText) {
