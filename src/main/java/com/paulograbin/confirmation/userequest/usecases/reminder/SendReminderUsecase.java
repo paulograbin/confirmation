@@ -55,7 +55,7 @@ public class SendReminderUsecase {
 
 
         LocalDateTime expirationDate = userRequest.getExpirationDate();
-        expirationDate.plusWeeks(1);
+        userRequest.setExpirationDate(expirationDate.plusWeeks(1));
 
         repository.save(userRequest);
 
