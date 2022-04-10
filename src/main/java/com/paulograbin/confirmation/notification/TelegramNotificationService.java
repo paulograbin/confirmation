@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -36,8 +37,10 @@ public class TelegramNotificationService implements NotificationService {
         var urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
         urlString = String.format(urlString, TELEGRAM_BOT_KEY, TELEGRAM_GROUP_ID, messge);
 
+        var encodedURL = URLEncoder.encode(urlString, StandardCharsets.UTF_8);
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(urlString))
+                .uri(URI.create(encodedURL))
                 .timeout(Duration.ofSeconds(1))
                 .GET()
                 .build();
