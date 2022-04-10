@@ -34,21 +34,26 @@ public class TelegramNotificationService implements NotificationService {
 
     @Override
     public void sendAlertAsync(String messge) {
-        var urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
-        urlString = String.format(urlString, TELEGRAM_BOT_KEY, TELEGRAM_GROUP_ID, messge);
+        try {
+            var urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
+            urlString = String.format(urlString, TELEGRAM_BOT_KEY, TELEGRAM_GROUP_ID, messge);
 
-        var encodedURL = URLEncoder.encode(urlString, StandardCharsets.UTF_8);
+            var encodedURL = URLEncoder.encode(urlString, StandardCharsets.UTF_8);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(encodedURL))
-                .timeout(Duration.ofSeconds(1))
-                .GET()
-                .build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(encodedURL))
+                    .timeout(Duration.ofSeconds(1))
+                    .GET()
+                    .build();
 
-        HttpClient client = HttpClient.newHttpClient();
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(logger::info);
+            HttpClient client = HttpClient.newHttpClient();
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body)
+                    .thenAccept(logger::info);
+        } catch (RuntimeException e) {
+            logger.error("Telegram request failed: {}", e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
