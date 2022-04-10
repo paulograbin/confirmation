@@ -36,12 +36,10 @@ public class TelegramNotificationService implements NotificationService {
     public void sendAlertAsync(String messge) {
         try {
             var urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
-            urlString = String.format(urlString, TELEGRAM_BOT_KEY, TELEGRAM_GROUP_ID, messge);
-
-            var encodedURL = URLEncoder.encode(urlString, StandardCharsets.UTF_8);
+            urlString = String.format(urlString, TELEGRAM_BOT_KEY, TELEGRAM_GROUP_ID, URLEncoder.encode(messge, StandardCharsets.UTF_8));
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(encodedURL))
+                    .uri(URI.create(urlString))
                     .timeout(Duration.ofSeconds(1))
                     .GET()
                     .build();
