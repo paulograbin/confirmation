@@ -111,6 +111,9 @@ public class ParticipationService {
         Participation participation = getParticipationFromUserOnEvent(eventId, userId);
         participation.setStatus(ParticipationStatus.RECUSADO);
 
+        notificationService.sendAlert("User " + participation.getUser().getUsername()
+                + " just declined on event " + participation.getEvent().getTitle());
+
         return participationRepository.save(participation);
     }
 
