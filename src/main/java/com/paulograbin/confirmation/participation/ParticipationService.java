@@ -2,6 +2,7 @@ package com.paulograbin.confirmation.participation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.event.Event;
+import com.paulograbin.confirmation.notification.TelegramNotificationService;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.event.EventService;
@@ -32,6 +33,9 @@ public class ParticipationService {
     EventService eventService;
     @Resource
     UserService userService;
+
+    @Resource
+    TelegramNotificationService notificationService;
 
     @Resource
     private ModelMapper modelMapper;
@@ -96,6 +100,9 @@ public class ParticipationService {
     public Participation confirmParticipation(long eventId, long userId) {
         Participation participation = getParticipationFromUserOnEvent(eventId, userId);
         participation.setStatus(ParticipationStatus.CONFIRMADO);
+
+        notificationService.sendAlert("User " + participation.getUser().getUsername()
+                + " just confirmed on event " + participation.getEvent().getTitle());
 
         return participationRepository.save(participation);
     }
