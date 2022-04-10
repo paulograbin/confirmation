@@ -9,8 +9,13 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.stream.Collectors;
 
 
@@ -26,6 +31,24 @@ public class TelegramNotificationService implements NotificationService {
     public String TELEGRAM_GROUP_ID;
 
 
+    @Override
+    public void sendAlertAsync(String messge) {
+        var urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
+        urlString = String.format(urlString, TELEGRAM_BOT_KEY, TELEGRAM_GROUP_ID, messge);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(urlString))
+                .timeout(Duration.ofSeconds(1))
+                .GET()
+                .build();
+
+        HttpClient client = HttpClient.newHttpClient();
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(logger::info);
+    }
+
+    @Override
     public void sendAlert(String messageText) {
         var urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
         urlString = String.format(urlString, TELEGRAM_BOT_KEY, TELEGRAM_GROUP_ID, messageText);

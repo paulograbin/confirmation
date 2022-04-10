@@ -75,7 +75,7 @@ class AuthenticationController {
 
             JwtTokenResponse generatedToken = jwtTokenUtil.generateToken(authentication);
 
-            notificationService.sendAlert("User " + userDetails.getUsername() + " has logged on");
+            notificationService.sendAlertAsync("User " + userDetails.getUsername() + " has logged on");
 
             return ResponseEntity.ok(generatedToken);
         } catch (DisabledException e) {
