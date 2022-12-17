@@ -3,11 +3,10 @@ package com.paulograbin.confirmation.chapter;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 
 @Service
