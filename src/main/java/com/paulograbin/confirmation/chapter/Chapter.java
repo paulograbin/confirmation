@@ -3,10 +3,15 @@ package com.paulograbin.confirmation.chapter;
 import com.paulograbin.confirmation.domain.AbstracEntity;
 import com.paulograbin.confirmation.event.Event;
 import com.paulograbin.confirmation.user.User;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
