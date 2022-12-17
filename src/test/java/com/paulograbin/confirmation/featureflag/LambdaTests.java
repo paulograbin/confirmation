@@ -38,15 +38,17 @@ class LambdaTests {
     void testThree() {
         String user = makeEmptyOptional().orElse("Executing orElse");
         System.out.println(user);
-        String user2 = makeEmptyOptional().orElseGet(() -> "Executing orElse");
+
+        String user2 = makeEmptyOptional().orElseGet(() -> "Executing orElseGet");
         System.out.println(user2);
+
+        String user3 = makeNonOptional().orElseGet(() -> "Executing orElseGet again");
+        System.out.println(user3);
     }
 
     private Optional<String> makeNonOptional() {
         return Optional.of("Present!!");
     }
-
-
 
     private Optional<String> makeEmptyOptional() {
         return Optional.empty();
