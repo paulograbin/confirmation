@@ -11,6 +11,7 @@ import com.paulograbin.confirmation.passwordreset.read.ReadPasswordResetResponse
 import com.paulograbin.confirmation.passwordreset.read.ReadPasswordResetUseCase;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.user.UserRepository;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -24,8 +25,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 
 @RestController
