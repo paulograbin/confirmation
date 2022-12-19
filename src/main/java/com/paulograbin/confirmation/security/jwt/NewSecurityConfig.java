@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.security.jwt;
 
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -52,7 +53,7 @@ public class NewSecurityConfig {
                 .and()
                 .userDetailsService(userService)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests().requestMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.css", "/**/*.js").permitAll()
+                .authorizeHttpRequests().requestMatchers("/", "/favicon.ico", "/**.png", "/**.gif", "/**.css", "/**.js").permitAll()
                 .and()
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/*").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/reset/**").permitAll())
