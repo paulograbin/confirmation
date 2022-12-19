@@ -1,15 +1,16 @@
 package com.paulograbin.confirmation.metrics;
 
 import com.paulograbin.confirmation.chapter.ChapterRepository;
-import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.metrics.usecases.read.ReadMetricsRequest;
 import com.paulograbin.confirmation.metrics.usecases.read.ReadMetricsResponse;
 import com.paulograbin.confirmation.metrics.usecases.read.ReadMetricsUseCase;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
-import com.paulograbin.confirmation.event.repository.EventRepository;
-import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
+import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.CacheControl;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.time.Duration;
 
 
