@@ -39,8 +39,8 @@ import static com.paulograbin.confirmation.web.MainController.logRequestDetails;
 import static java.lang.String.format;
 
 
-@RestController
 @CrossOrigin("*")
+@RestController
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 class UsersController {
 
