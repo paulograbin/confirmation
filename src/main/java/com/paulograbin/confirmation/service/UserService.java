@@ -143,22 +143,31 @@ public class UserService implements UserDetailsService {
 //        UpdateUserResponse response = new UpdateUserResponse();
 //        new UpdateUserUseCase(userRepository, updateRequest).execute();
 
+        log.error("1");
         User userFromDatabase = fetchById(id);
 
+        log.error("2");
         if (!id.equals(updateRequest.getId())) {
             throw new InvalidRequestException("Provided id and request don't match");
         }
 
+        log.error("3");
+
         if (updateRequest.getPassword().length() < 6 || updateRequest.getPassword().length() > 128) {
             throw new InvalidRequestException("Password doesn't match required size");
         }
+        log.error("4");
 
         userFromDatabase.setFirstName(updateRequest.getFirstName());
         userFromDatabase.setLastName(updateRequest.getLastName());
         userFromDatabase.setPassword(new BCryptPasswordEncoder().encode(updateRequest.getPassword()));
         userFromDatabase.setModificationDate(DateUtils.getCurrentDate());
 
+        log.error("5");
+
         emailService.sendPasswordChangedMail(userFromDatabase);
+
+        log.error("6");
 
         return userRepository.save(userFromDatabase);
     }
