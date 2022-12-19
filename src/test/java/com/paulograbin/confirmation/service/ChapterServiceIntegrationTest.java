@@ -1,17 +1,16 @@
 package com.paulograbin.confirmation.service;
 
 import com.paulograbin.confirmation.chapter.Chapter;
+import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.event.Event;
-import com.paulograbin.confirmation.user.User;
-import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
+import com.paulograbin.confirmation.user.User;
+import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
