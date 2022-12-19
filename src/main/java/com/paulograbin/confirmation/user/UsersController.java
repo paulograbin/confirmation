@@ -10,6 +10,8 @@ import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteReque
 import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteResponse;
 import com.paulograbin.confirmation.web.dto.UserDTO;
 import com.paulograbin.confirmation.web.dto.UserDetailsDTO;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
@@ -28,8 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
