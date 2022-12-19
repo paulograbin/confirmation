@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.passwordreset;
 
 import com.paulograbin.confirmation.domain.AbstracEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class PasswordRequest extends AbstracEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "uuid", updatable = false)
     private UUID code;
     private String emailAddress;
     private LocalDateTime creationDate;
