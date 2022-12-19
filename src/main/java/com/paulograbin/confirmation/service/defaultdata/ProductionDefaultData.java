@@ -9,6 +9,7 @@ import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
+import jakarta.annotation.Resource;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -20,7 +21,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,6 +43,7 @@ public class ProductionDefaultData implements DefaultData {
 
     @Resource
     private UserRepository userRepository;
+
     @Resource
     private UserRequestRepository userRequestRepository;
 
