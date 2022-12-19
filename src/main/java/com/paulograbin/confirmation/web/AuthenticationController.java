@@ -1,7 +1,6 @@
 package com.paulograbin.confirmation.web;
 
 import com.paulograbin.confirmation.notification.TelegramNotificationService;
-import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.security.jwt.JwtTokenUtil;
 import com.paulograbin.confirmation.security.jwt.resource.ApiResponse;
 import com.paulograbin.confirmation.security.jwt.resource.AuthenticationException;
@@ -9,6 +8,8 @@ import com.paulograbin.confirmation.security.jwt.resource.JwtTokenResponse;
 import com.paulograbin.confirmation.security.jwt.resource.LoginRequest;
 import com.paulograbin.confirmation.security.jwt.resource.SignUpRequest;
 import com.paulograbin.confirmation.service.UserService;
+import com.paulograbin.confirmation.user.User;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.annotation.Resource;
 import java.net.URI;
 
 

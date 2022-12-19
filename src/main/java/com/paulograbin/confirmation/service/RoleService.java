@@ -4,11 +4,10 @@ import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.persistence.RoleRepository;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 import java.util.Optional;
 

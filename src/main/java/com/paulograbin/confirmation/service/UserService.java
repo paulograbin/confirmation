@@ -4,32 +4,29 @@ import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Role;
-import com.paulograbin.confirmation.user.User;
-import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.exception.EmailNotAvailableException;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
-import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequestAdmin;
-import com.paulograbin.confirmation.usecases.user.UpdateUserResponse;
-import com.paulograbin.confirmation.usecases.user.UpdateUserUseCase;
 import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteRequest;
 import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteResponse;
 import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteUseCase;
+import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.user.UserRepository;
+import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,16 +50,10 @@ public class UserService implements UserDetailsService {
     private RoleService roleService;
 
     @Resource
-    private EventService eventService;
-
-    @Resource
     private ChapterService chapterService;
 
     @Resource
     private EmailService emailService;
-
-    @Resource
-    private PasswordEncoder passwordEncoder;
 
 
     public Iterable<User> fetchAll(User currentUser) {
@@ -103,7 +94,7 @@ public class UserService implements UserDetailsService {
         validateAvailableEmail(userToCreate.getEmail());
 
         userToCreate.setId(null);
-        userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
+        userToCreate.setPassword(new BCryptPasswordEncoder().encode(userToCreate.getPassword()));
         userToCreate.setCreationDate(DateUtils.getCurrentDate());
 
         assignUserRole(userToCreate);
@@ -164,7 +155,7 @@ public class UserService implements UserDetailsService {
 
         userFromDatabase.setFirstName(updateRequest.getFirstName());
         userFromDatabase.setLastName(updateRequest.getLastName());
-        userFromDatabase.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+        userFromDatabase.setPassword(new BCryptPasswordEncoder().encode(updateRequest.getPassword()));
         userFromDatabase.setModificationDate(DateUtils.getCurrentDate());
 
         emailService.sendPasswordChangedMail(userFromDatabase);

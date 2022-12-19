@@ -11,6 +11,7 @@ import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.user.User;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;

@@ -4,19 +4,19 @@ import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
-import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
-import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
+import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.user.UserRepository;
+import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;

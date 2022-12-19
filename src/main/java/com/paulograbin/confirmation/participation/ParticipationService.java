@@ -2,17 +2,18 @@ package com.paulograbin.confirmation.participation;
 
 import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.event.Event;
-import com.paulograbin.confirmation.notification.TelegramNotificationService;
-import com.paulograbin.confirmation.user.User;
-import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.event.EventService;
+import com.paulograbin.confirmation.exception.NotFoundException;
+import com.paulograbin.confirmation.notification.TelegramNotificationService;
 import com.paulograbin.confirmation.service.UserService;
+import com.paulograbin.confirmation.user.User;
+import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -30,7 +31,9 @@ public class ParticipationService {
     ParticipationRepository participationRepository;
 
     @Resource
+    @Lazy
     EventService eventService;
+
     @Resource
     UserService userService;
 
@@ -39,6 +42,7 @@ public class ParticipationService {
 
     @Resource
     private ModelMapper modelMapper;
+
 
     public Iterable<Participation> fetchAllParticipations() {
         log.info("Fetching every participation");
