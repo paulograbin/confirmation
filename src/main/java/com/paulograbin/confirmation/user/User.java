@@ -26,9 +26,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -80,7 +78,8 @@ public class User extends AbstracEntity implements UserDetails {
     private Set<Participation> participations = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"))
     private Set<Role> roles = new HashSet<>();
 
 
@@ -104,7 +103,10 @@ public class User extends AbstracEntity implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{" + "id='" + id + '\'' + ", username='" + username + '\'' + '}';
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                '}';
     }
 
     @Override
