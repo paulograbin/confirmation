@@ -62,6 +62,7 @@ public class NewSecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/userrequest/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/userrequest/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/userrequest/").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS).permitAll())
 
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
 
