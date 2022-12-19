@@ -1,21 +1,23 @@
 package com.paulograbin.confirmation.event;
 
 import com.google.gson.Gson;
-import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.event.repository.EventRepository;
+import com.paulograbin.confirmation.event.usecases.creation.EventCreationRequest;
+import com.paulograbin.confirmation.event.usecases.creation.EventCreationResponse;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventRequest;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventResponse;
 import com.paulograbin.confirmation.event.usecases.readevent.ReadEventUseCase;
 import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationService;
-import com.paulograbin.confirmation.event.repository.EventRepository;
 import com.paulograbin.confirmation.participation.ParticipationStatus;
-import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
-import com.paulograbin.confirmation.event.usecases.creation.EventCreationRequest;
-import com.paulograbin.confirmation.event.usecases.creation.EventCreationResponse;
+import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.web.dto.EventDTO;
 import com.paulograbin.confirmation.web.dto.EventDetailsDTO;
 import com.paulograbin.confirmation.web.dto.ParticipationWithoutUserDTO;
+import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
@@ -35,8 +37,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Comparator;
@@ -164,8 +164,8 @@ class EventsController {
 
         List<Participation> allUpcomingParticipationsFromUser = participationService.getAllUpcomingParticipationsFromUser(currentUser.getId());
         List<Event> upcomingEvents = eventService.fetchUpComingEventsFromChapter(currentUser.getChapter().getId());
-        log.info("Found {} upcoming events",  upcomingEvents.size());
-        log.info("User has {} participations",  allUpcomingParticipationsFromUser.size());
+        log.info("Found {} upcoming events", upcomingEvents.size());
+        log.info("User has {} participations", allUpcomingParticipationsFromUser.size());
 
         Map<Long, Participation> participationMap = new HashMap<>();
         for (Event upcomingEvent : upcomingEvents) {
