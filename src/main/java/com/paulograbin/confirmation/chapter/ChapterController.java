@@ -69,7 +69,7 @@ public class ChapterController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok()
-                .cacheControl(ResponseEntityCachedFactory.TEN_MINUTES)
+                .cacheControl(ResponseEntityCachedFactory.NO_CACHE)
                 .body(dtoList);
     }
 
