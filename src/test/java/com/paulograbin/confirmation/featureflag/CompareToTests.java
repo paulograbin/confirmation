@@ -1,7 +1,6 @@
 package com.paulograbin.confirmation.featureflag;
 
 import org.assertj.core.api.Assertions;
-import org.assertj.core.internal.BigDecimals;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
