@@ -11,6 +11,7 @@ import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class ParticipationService {
     ParticipationRepository participationRepository;
 
     @Resource
+    @Lazy
     EventService eventService;
 
     @Resource
@@ -40,6 +42,7 @@ public class ParticipationService {
 
     @Resource
     private ModelMapper modelMapper;
+
 
     public Iterable<Participation> fetchAllParticipations() {
         log.info("Fetching every participation");
