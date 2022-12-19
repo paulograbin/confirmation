@@ -1,15 +1,14 @@
 package com.paulograbin.confirmation.passwordreset;
 
 import com.paulograbin.confirmation.domain.AbstracEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,7 +22,6 @@ public class PasswordRequest extends AbstracEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Type(type = "uuid-char")
     private UUID code;
     private String emailAddress;
     private LocalDateTime creationDate;
