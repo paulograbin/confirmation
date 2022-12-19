@@ -53,6 +53,7 @@ public class NewSecurityConfig {
                 .and()
                 .userDetailsService(userService)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS).permitAll())
                 .authorizeHttpRequests().requestMatchers("/", "/favicon.ico", "/**.png", "/**.gif", "/**.css", "/**.js").permitAll()
                 .and()
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/*").permitAll())
@@ -62,7 +63,7 @@ public class NewSecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/userrequest/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/userrequest/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/userrequest/").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS).permitAll())
+
 
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
 
