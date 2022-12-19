@@ -5,15 +5,30 @@ import com.paulograbin.confirmation.domain.AbstracEntity;
 import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.participation.Participation;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -65,8 +80,7 @@ public class User extends AbstracEntity implements UserDetails {
     private Set<Participation> participations = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "user_roles",
-        joinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     private Set<Role> roles = new HashSet<>();
 
 
@@ -90,10 +104,7 @@ public class User extends AbstracEntity implements UserDetails {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                '}';
+        return "User{" + "id='" + id + '\'' + ", username='" + username + '\'' + '}';
     }
 
     @Override

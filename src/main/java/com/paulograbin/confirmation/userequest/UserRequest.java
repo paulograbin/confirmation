@@ -3,18 +3,17 @@ package com.paulograbin.confirmation.userequest;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.domain.AbstracEntity;
 import com.paulograbin.confirmation.user.User;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -31,7 +30,6 @@ public class UserRequest extends AbstracEntity {
     @SequenceGenerator(name = "UserRequestSequence", sequenceName = "USER_REQUEST_SEQUENCE", allocationSize = 1)
     private Long id;
 
-    @Type(type = "uuid-char")
     private UUID code;
 
     private String firstName;
