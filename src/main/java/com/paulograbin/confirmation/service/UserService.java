@@ -4,7 +4,6 @@ import com.paulograbin.confirmation.DateUtils;
 import com.paulograbin.confirmation.chapter.Chapter;
 import com.paulograbin.confirmation.chapter.ChapterService;
 import com.paulograbin.confirmation.domain.Role;
-import com.paulograbin.confirmation.event.EventService;
 import com.paulograbin.confirmation.exception.EmailNotAvailableException;
 import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
@@ -49,9 +48,6 @@ public class UserService implements UserDetailsService {
 
     @Resource
     private RoleService roleService;
-
-    @Resource
-    private EventService eventService;
 
     @Resource
     private ChapterService chapterService;
