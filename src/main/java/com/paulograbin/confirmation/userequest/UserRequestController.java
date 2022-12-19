@@ -1,10 +1,10 @@
 package com.paulograbin.confirmation.userequest;
 
 import com.paulograbin.confirmation.chapter.ChapterRepository;
-import com.paulograbin.confirmation.user.User;
-import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.mail.EmailService;
+import com.paulograbin.confirmation.user.User;
+import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.userequest.usecases.convertion.ConvertPseudoUserRequest;
 import com.paulograbin.confirmation.userequest.usecases.convertion.ConvertPseudoUserResponse;
 import com.paulograbin.confirmation.userequest.usecases.convertion.ConvertPseudoUserUseCase;
@@ -18,6 +18,8 @@ import com.paulograbin.confirmation.userequest.usecases.reminder.SendReminderReq
 import com.paulograbin.confirmation.userequest.usecases.reminder.SendReminderResponse;
 import com.paulograbin.confirmation.userequest.usecases.reminder.SendReminderUsecase;
 import com.paulograbin.confirmation.web.dto.UserRequestDTO;
+import jakarta.annotation.Resource;
+import jakarta.websocket.server.PathParam;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Lists;
 import org.slf4j.Logger;
@@ -35,8 +37,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.websocket.server.PathParam;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
