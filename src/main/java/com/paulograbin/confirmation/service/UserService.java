@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -54,9 +54,6 @@ public class UserService implements UserDetailsService {
 
     @Resource
     private EmailService emailService;
-
-    @Resource
-    private PasswordEncoder passwordEncoder;
 
 
     public Iterable<User> fetchAll(User currentUser) {
@@ -97,7 +94,7 @@ public class UserService implements UserDetailsService {
         validateAvailableEmail(userToCreate.getEmail());
 
         userToCreate.setId(null);
-        userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
+        userToCreate.setPassword(new BCryptPasswordEncoder().encode(userToCreate.getPassword()));
         userToCreate.setCreationDate(DateUtils.getCurrentDate());
 
         assignUserRole(userToCreate);
@@ -158,7 +155,7 @@ public class UserService implements UserDetailsService {
 
         userFromDatabase.setFirstName(updateRequest.getFirstName());
         userFromDatabase.setLastName(updateRequest.getLastName());
-        userFromDatabase.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+        userFromDatabase.setPassword(new BCryptPasswordEncoder().encode(updateRequest.getPassword()));
         userFromDatabase.setModificationDate(DateUtils.getCurrentDate());
 
         emailService.sendPasswordChangedMail(userFromDatabase);
