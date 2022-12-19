@@ -199,6 +199,9 @@ public class EventService {
                 .toLocalDate()
                 .minus(1, ChronoUnit.DAYS);
 
+        log.info("Yesterday date {}", yesterday);
+        log.info(eventRepository.toString());
+
         return eventRepository.findAllByChapterIdAndDateGreaterThanEqual(chapterId, yesterday);
     }
 
