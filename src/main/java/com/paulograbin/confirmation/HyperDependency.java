@@ -2,11 +2,11 @@ package com.paulograbin.confirmation;
 
 import io.hypersistence.optimizer.HypersistenceOptimizer;
 import io.hypersistence.optimizer.core.config.JpaConfig;
+import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
 
 
 @Configuration
