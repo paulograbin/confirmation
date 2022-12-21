@@ -1,17 +1,11 @@
 package com.paulograbin.confirmation.service.defaultdata;
 
-import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
-import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.user.User;
-import com.paulograbin.confirmation.user.UserRepository;
-import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import jakarta.annotation.Resource;
-import lombok.Getter;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,13 +16,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 
 
 @Profile("production")
 @Service
-public class ProductionDefaultData implements DefaultData {
+public class ProductionDefaultData {
 
     private static final Logger log = LoggerFactory.getLogger(ProductionDefaultData.class);
 
@@ -42,18 +35,6 @@ public class ProductionDefaultData implements DefaultData {
     private UserService userService;
 
     @Resource
-    private UserRepository userRepository;
-
-    @Resource
-    private UserRequestRepository userRequestRepository;
-
-    @Resource
-    private ChapterRepository chapterRepository;
-
-    @Resource
-    private EmailService emailService;
-
-    @Resource
     private RoleService roleService;
 
 
@@ -62,37 +43,8 @@ public class ProductionDefaultData implements DefaultData {
         log.info("Running production default data");
 
         setDefaultAdmin();
-//        setUserRequests();
     }
 
-    @Getter
-    @Setter
-    class NamePair {
-        String firstName;
-        String lastName;
-
-        public NamePair(String firstName, String lastName) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-        }
-    }
-
-    private void setUserRequests() {
-        HashMap<String, NamePair> users = new HashMap<>();
-//        users.put("xxx@xxx.com", new NamePair("xxx", "xxx"));
-
-//        users.forEach((email, namePair) -> {
-//            CreatePseudoUserRequest request = new CreatePseudoUserRequest();
-//
-//            request.requestingUser = 1;
-//            request.email = email;
-//            request.firstName = namePair.firstName;
-//            request.lastName = namePair.lastName;
-//            request.chapterId = 592;
-//
-//            new CreatePseudoUserUseCase(request, userRepository, userRequestRepository, chapterRepository, emailService).execute();
-//        });
-    }
 
     private void setDefaultAdmin() {
         log.info("Checking default admin....");
