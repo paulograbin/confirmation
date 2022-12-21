@@ -12,6 +12,7 @@ import com.paulograbin.confirmation.usecases.ChapterCreationRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.user.User;
 import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,6 +56,7 @@ public class DevelopmentDefaultData implements DefaultData {
 
 
     @EventListener(ApplicationReadyEvent.class)
+    @Transactional
     public void run() {
         log.info("Running development default data");
 
