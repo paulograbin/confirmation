@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
@@ -55,6 +56,7 @@ public class DevelopmentDefaultData implements DefaultData {
 
 
     @EventListener(ApplicationReadyEvent.class)
+    @Transactional
     public void run() {
         log.info("Running development default data");
 
