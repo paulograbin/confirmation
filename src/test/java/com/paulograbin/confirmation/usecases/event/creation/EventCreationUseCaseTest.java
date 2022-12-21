@@ -18,8 +18,6 @@ import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryChapterRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryParticipationRepository;
 import com.paulograbin.confirmation.user.InMemoryUserRepository;
-import com.paulograbin.confirmation.service.mail.EmailService;
-import com.paulograbin.confirmation.service.mail.LoggerEmailService;
 import org.assertj.core.data.TemporalUnitLessThanOffset;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +43,6 @@ class EventCreationUseCaseTest {
     private ParticipationRepository participationRepository;
     private UserRepository userRepository;
 
-    private EmailService emailService;
 
     private EventCreationRequest request;
     private EventCreationResponse response;
@@ -55,7 +52,6 @@ class EventCreationUseCaseTest {
         repository = new InMemoryEventRepository();
         participationRepository = new InMemoryParticipationRepository();
         userRepository = new InMemoryUserRepository();
-        emailService = new LoggerEmailService();
         chapterRepository = new InMemoryChapterRepository();
 
         request = makeValidRequest();
@@ -168,7 +164,7 @@ class EventCreationUseCaseTest {
     }
 
     private void whenExecutingTestCase() {
-        this.response = new EventCreationUseCase(request, repository, participationRepository, userRepository, emailService, chapterRepository).execute();
+        this.response = new EventCreationUseCase(request, repository, participationRepository, userRepository, chapterRepository).execute();
     }
 
     private void givenAMasterUser() {

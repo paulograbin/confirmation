@@ -9,8 +9,6 @@ import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryChapterRepository;
 import com.paulograbin.confirmation.user.InMemoryUserRepository;
 import com.paulograbin.confirmation.persistence.memory.InMemoryUserRequestRepository;
-import com.paulograbin.confirmation.service.mail.EmailService;
-import com.paulograbin.confirmation.service.mail.LoggerEmailService;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -26,7 +24,6 @@ class CreatePseudoUserUseCaseTest {
     private UserRequestRepository userRequestRepository;
     private ChapterRepository chapterRepository;
 
-    private EmailService emailService;
 
     private CreatePseudoUserRequest request;
     private CreatePseudoUserResponse response;
@@ -42,11 +39,10 @@ class CreatePseudoUserUseCaseTest {
         userRepository = new InMemoryUserRepository();
         chapterRepository = new InMemoryChapterRepository();
 
-        emailService = new LoggerEmailService();
     }
 
     private void whenExecutingUseCase() {
-        response = new CreatePseudoUserUseCase(request, userRepository, userRequestRepository, chapterRepository, emailService).execute();
+        response = new CreatePseudoUserUseCase(request, userRepository, userRequestRepository, chapterRepository).execute();
     }
 
     private void makeValidRequest() {
