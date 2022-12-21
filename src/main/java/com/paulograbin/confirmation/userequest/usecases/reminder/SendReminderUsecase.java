@@ -1,6 +1,5 @@
 package com.paulograbin.confirmation.userequest.usecases.reminder;
 
-import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.userequest.UserRequest;
 import com.paulograbin.confirmation.userequest.UserRequestRepository;
 import org.slf4j.Logger;
@@ -18,14 +17,11 @@ public class SendReminderUsecase {
     private final SendReminderResponse response;
     private final UserRequestRepository repository;
 
-    private final EmailService emailService;
-
-    public SendReminderUsecase(SendReminderRequest request, UserRequestRepository repository, EmailService emailService) {
+    public SendReminderUsecase(SendReminderRequest request, UserRequestRepository repository) {
         this.response = new SendReminderResponse();
 
         this.request = request;
         this.repository = repository;
-        this.emailService = emailService;
 
     }
 
@@ -61,7 +57,6 @@ public class SendReminderUsecase {
         response.userEmail = userRequest.getEmail();
         response.code = userRequest.getCode().toString();
 
-        emailService.sendUserRequestCreatedMail(userRequest);
     }
 
     private boolean isValid() {

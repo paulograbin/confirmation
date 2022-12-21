@@ -9,7 +9,6 @@ import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
-import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequestAdmin;
 import com.paulograbin.confirmation.usecases.user.harddelete.UserHardDeleteRequest;
@@ -51,9 +50,6 @@ public class UserService implements UserDetailsService {
 
     @Resource
     private ChapterService chapterService;
-
-    @Resource
-    private EmailService emailService;
 
 
     public Iterable<User> fetchAll(User currentUser) {
@@ -164,8 +160,6 @@ public class UserService implements UserDetailsService {
         userFromDatabase.setModificationDate(DateUtils.getCurrentDate());
 
         log.error("5");
-
-        emailService.sendPasswordChangedMail(userFromDatabase);
 
         log.error("6");
 

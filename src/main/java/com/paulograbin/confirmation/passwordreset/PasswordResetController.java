@@ -9,7 +9,6 @@ import com.paulograbin.confirmation.passwordreset.definenewpassword.DefineNewPas
 import com.paulograbin.confirmation.passwordreset.read.ReadPasswordResetRequest;
 import com.paulograbin.confirmation.passwordreset.read.ReadPasswordResetResponse;
 import com.paulograbin.confirmation.passwordreset.read.ReadPasswordResetUseCase;
-import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.user.UserRepository;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -45,9 +44,6 @@ class PasswordResetController {
     private PasswordResetRepository passwordResetRepository;
 
     @Resource
-    private EmailService emailService;
-
-    @Resource
     private PasswordEncoder passwordEncoder;
 
 
@@ -58,7 +54,7 @@ class PasswordResetController {
         ResetPasswordRequest request = new ResetPasswordRequest();
         request.emailAddress = emailAddress;
 
-        ResetPasswordResponse execute = new ResetPasswordUseCase(request, passwordResetRepository, userRepository, emailService).execute();
+        ResetPasswordResponse execute = new ResetPasswordUseCase(request, passwordResetRepository, userRepository).execute();
 
         return ResponseEntity.ok().body(execute);
     }

@@ -4,7 +4,6 @@ import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
-import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.user.UserRepository;
@@ -49,9 +48,6 @@ public class ProductionDefaultData implements DefaultData {
 
     @Resource
     private ChapterRepository chapterRepository;
-
-    @Resource
-    private EmailService emailService;
 
     @Resource
     private RoleService roleService;

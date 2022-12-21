@@ -8,7 +8,6 @@ import com.paulograbin.confirmation.exception.InvalidRequestException;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.exception.UsernameNotAvailableException;
 import com.paulograbin.confirmation.user.UserRepository;
-import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,9 +45,6 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private EmailService emailService;
 
     @BeforeEach
     void setUp() {
@@ -276,6 +272,5 @@ class UserServiceTest {
 
         userService.updateUser(333L, updateRequest);
 
-        verify(emailService, times(1)).sendPasswordChangedMail(any());
     }
 }

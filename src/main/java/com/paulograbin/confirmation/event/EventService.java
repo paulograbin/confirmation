@@ -16,7 +16,6 @@ import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.participation.ParticipationService;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
 import com.paulograbin.confirmation.service.UserService;
-import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.user.UserRepository;
 import jakarta.annotation.Resource;
@@ -58,9 +57,6 @@ public class EventService {
     @Resource
     UserRepository userRepository;
 
-    @Resource
-    EmailService emailService;
-
     public Iterable<Event> fetchAllEvents() {
         log.info("Fetching all events");
 
@@ -77,7 +73,7 @@ public class EventService {
     public EventCreationResponse createEvent(EventCreationRequest request, User currentUser) {
         request.setCreatorId(currentUser.getId());
 
-        EventCreationResponse eventCreationResponse = new EventCreationUseCase(request, eventRepository, participationRepository, userRepository, emailService, chapterRepository).execute();
+        EventCreationResponse eventCreationResponse = new EventCreationUseCase(request, eventRepository, participationRepository, userRepository, chapterRepository).execute();
 
         return eventCreationResponse;
     }

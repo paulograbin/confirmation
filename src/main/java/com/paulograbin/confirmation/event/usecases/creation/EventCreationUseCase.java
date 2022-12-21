@@ -9,7 +9,6 @@ import com.paulograbin.confirmation.participation.Participation;
 import com.paulograbin.confirmation.participation.ParticipationRepository;
 import com.paulograbin.confirmation.participation.ParticipationStatus;
 import com.paulograbin.confirmation.user.UserRepository;
-import com.paulograbin.confirmation.service.mail.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,17 +38,14 @@ public class EventCreationUseCase {
     private final ParticipationRepository participationRepository;
     private final ChapterRepository chapterRepository;
 
-    private final EmailService emailService;
-
     private String chapterName = "";
     private User eventCreator;
 
-    public EventCreationUseCase(EventCreationRequest request, EventRepository eventRepository, ParticipationRepository participationRepository, UserRepository userRepository, EmailService emailService, ChapterRepository chapterRepository) {
+    public EventCreationUseCase(EventCreationRequest request, EventRepository eventRepository, ParticipationRepository participationRepository, UserRepository userRepository, ChapterRepository chapterRepository) {
         this.request = request;
         this.eventRepository = eventRepository;
         this.participationRepository = participationRepository;
         this.userRepository = userRepository;
-        this.emailService = emailService;
         this.chapterRepository = chapterRepository;
 
         this.response = new EventCreationResponse();
@@ -80,7 +76,6 @@ public class EventCreationUseCase {
         Map<String, String> invitedUsers = allActiveMembers.stream().collect(Collectors.toMap(User::getEmail, User::getFirstName));
         logger.info("Sending event created mail to: {}", invitedUsers);
 
-        emailService.sendEventCreatedMail(invitedUsers, chapterName);
     }
 
     private void confirmMasterPresence() {

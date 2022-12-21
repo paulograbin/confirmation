@@ -2,7 +2,6 @@ package com.paulograbin.confirmation.userequest;
 
 import com.paulograbin.confirmation.chapter.ChapterRepository;
 import com.paulograbin.confirmation.security.jwt.CurrentUser;
-import com.paulograbin.confirmation.service.mail.EmailService;
 import com.paulograbin.confirmation.user.User;
 import com.paulograbin.confirmation.user.UserRepository;
 import com.paulograbin.confirmation.userequest.usecases.convertion.ConvertPseudoUserRequest;
@@ -59,9 +58,6 @@ class UserRequestController {
     private ChapterRepository chapterRepository;
 
     @Resource
-    private EmailService emailService;
-
-    @Resource
     private PasswordEncoder passwordEncoder;
 
     @Resource
@@ -100,7 +96,7 @@ class UserRequestController {
         SendReminderRequest request = new SendReminderRequest();
         request.setUserEmail(userEmail);
 
-        SendReminderResponse response = new SendReminderUsecase(request, repository, emailService).execute();
+        SendReminderResponse response = new SendReminderUsecase(request, repository).execute();
 
         if (response.successful) {
             return ResponseEntity.ok().body(response);
@@ -126,7 +122,7 @@ class UserRequestController {
 
         request.setRequestingUser(currentUser.getId());
 
-        CreatePseudoUserResponse response = new CreatePseudoUserUseCase(request, userRepository, repository, chapterRepository, emailService).execute();
+        CreatePseudoUserResponse response = new CreatePseudoUserUseCase(request, userRepository, repository, chapterRepository).execute();
 
         if (response.successful) {
             return ResponseEntity.created(URI.create("userrequest/" + response.code)).body(response);
