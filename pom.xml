@@ -18,16 +18,9 @@
 
     <properties>
         <java.version>17</java.version>
-        <hypersistence-optimizer.version>2.6.3-jakarta</hypersistence-optimizer.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>io.hypersistence</groupId>
-            <artifactId>hypersistence-optimizer</artifactId>
-            <version>${hypersistence-optimizer.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>net.ttddyy</groupId>
             <artifactId>datasource-proxy</artifactId>
