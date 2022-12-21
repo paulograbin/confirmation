@@ -3,8 +3,6 @@ package com.paulograbin.confirmation.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +17,6 @@ import java.util.Objects;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -31,6 +28,11 @@ public class Role {
     }
 
     public Role(RoleName roleName) {
+        this.name = roleName;
+    }
+
+    public Role(Long id, RoleName roleName) {
+        this.id = id;
         this.name = roleName;
     }
 
