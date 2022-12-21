@@ -203,8 +203,7 @@ public class EventService {
         return eventRepository.findAllByChapterIdAndDateGreaterThanEqual(chapterId, yesterday);
     }
 
-    public Event publishEvent(long eve
-                              ntId, User currentUser) {
+    public Event publishEvent(long eventId, User currentUser) {
         log.info("Publishing event {} by user {}", eventId, currentUser.getUsername());
 
         Event event = this.fetchById(eventId);
