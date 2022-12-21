@@ -194,6 +194,7 @@ public class EventService {
         return event.getCreator().getId().equals(currentUser.getId());
     }
 
+    @Transactional(Transactional.TxType.NEVER)
     public List<Event> fetchUpComingEventsFromChapter(long chapterId) {
         LocalDate yesterday = DateUtils.getCurrentDate()
                 .toLocalDate()
@@ -202,7 +203,8 @@ public class EventService {
         return eventRepository.findAllByChapterIdAndDateGreaterThanEqual(chapterId, yesterday);
     }
 
-    public Event publishEvent(long eventId, User currentUser) {
+    public Event publishEvent(long eve
+                              ntId, User currentUser) {
         log.info("Publishing event {} by user {}", eventId, currentUser.getUsername());
 
         Event event = this.fetchById(eventId);
