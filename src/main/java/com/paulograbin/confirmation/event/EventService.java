@@ -194,6 +194,7 @@ public class EventService {
         return event.getCreator().getId().equals(currentUser.getId());
     }
 
+    @Transactional(Transactional.TxType.REQUIRED)
     public List<Event> fetchUpComingEventsFromChapter(long chapterId) {
         LocalDate yesterday = DateUtils.getCurrentDate()
                 .toLocalDate()

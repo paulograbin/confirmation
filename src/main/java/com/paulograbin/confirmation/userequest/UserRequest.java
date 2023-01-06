@@ -28,8 +28,7 @@ import java.util.UUID;
 public class UserRequest extends AbstracEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "UserRequestSequence")
-    @SequenceGenerator(name = "UserRequestSequence", sequenceName = "USER_REQUEST_SEQUENCE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(columnDefinition = "uuid", updatable = false)
