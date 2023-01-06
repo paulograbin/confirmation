@@ -1,6 +1,7 @@
 package com.paulograbin.confirmation.service.defaultdata;
 
 import com.paulograbin.confirmation.chapter.ChapterRepository;
+import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
@@ -61,8 +62,25 @@ public class ProductionDefaultData implements DefaultData {
     public void run() {
         log.info("Running production default data");
 
+        setDefaultRoles();
         setDefaultAdmin();
 //        setUserRequests();
+    }
+
+    private void setDefaultRoles() {
+        log.info("Checking for default roles...");
+
+        if (roleService.fetchRoleCount() == 0) {
+            log.info("Adding default roles to the system");
+
+            Role admin = new Role(RoleName.ROLE_ADMIN);
+            Role master = new Role(RoleName.ROLE_MC);
+            Role user = new Role(RoleName.ROLE_USER);
+
+            roleService.save(admin);
+            roleService.save(master);
+            roleService.save(user);
+        }
     }
 
     @Getter
