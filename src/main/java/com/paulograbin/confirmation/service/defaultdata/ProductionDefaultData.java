@@ -7,6 +7,8 @@ import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.user.User;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,14 +16,14 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.HashSet;
 
 
 @Profile("production")
-@Service
+@Component
 public class ProductionDefaultData {
 
     private static final Logger log = LoggerFactory.getLogger(ProductionDefaultData.class);
@@ -38,6 +40,9 @@ public class ProductionDefaultData {
     @Resource
     private RoleService roleService;
 
+    @Resource
+    private EntityManager entityManager;
+
 
     @EventListener(ApplicationReadyEvent.class)
     public void run() {
@@ -47,19 +52,20 @@ public class ProductionDefaultData {
         setDefaultAdmin();
     }
 
-    private void setDefaultRoles() {
+    @Transactional
+    public void setDefaultRoles() {
         log.info("Checking for default roles...");
 
         if (roleService.fetchRoleCount() == 0) {
             log.info("Adding default roles to the system");
 
-            Role admin = new Role(RoleName.ROLE_ADMIN);
-            Role master = new Role(RoleName.ROLE_MC);
-            Role user = new Role(RoleName.ROLE_USER);
+            Role admin = new Role(1L, RoleName.ROLE_ADMIN);
+            Role master = new Role(2L, RoleName.ROLE_MC);
+            Role user = new Role(3L, RoleName.ROLE_USER);
 
-            roleService.save(admin);
-            roleService.save(master);
-            roleService.save(user);
+            entityManager.persist(admin);
+            entityManager.persist(master);
+            entityManager.persist(user);
         }
     }
 

@@ -5,8 +5,6 @@ import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.exception.NotFoundException;
 import com.paulograbin.confirmation.persistence.RoleRepository;
 import jakarta.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,7 +15,7 @@ import static java.lang.String.format;
 @Service
 public class RoleService {
 
-    private static final Logger log = LoggerFactory.getLogger(RoleService.class);
+//    private static final Logger log = LoggerFactory.getLogger(RoleService.class);
 
     @Resource
     private RoleRepository roleRepository;
@@ -25,10 +23,6 @@ public class RoleService {
 
     public long fetchRoleCount() {
         return roleRepository.count();
-    }
-
-    public Role save(Role roleToSave) {
-        return roleRepository.save(roleToSave);
     }
 
     public Role getByName(RoleName role) {
