@@ -45,6 +45,7 @@ public class ProductionDefaultData {
 
 
     @EventListener(ApplicationReadyEvent.class)
+    @Transactional
     public void run() {
         log.info("Running production default data");
 
@@ -52,7 +53,6 @@ public class ProductionDefaultData {
         setDefaultAdmin();
     }
 
-    @Transactional
     public void setDefaultRoles() {
         log.info("Checking for default roles...");
 
