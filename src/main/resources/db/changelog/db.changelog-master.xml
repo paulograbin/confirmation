@@ -7,4 +7,22 @@
 <!--    <include file="new_column_user_request.xml" relativeToChangelogFile="true"/>-->
 <!--    <include file="make_new_column_primary_key.xml" relativeToChangelogFile="true"/>-->
 <!--    <include file="rename_columns_on_user_request.xml" relativeToChangelogFile="true"/>-->
+
+    <changeSet id="00000001" author="plgrabin@gmail.com">
+        <loadData file="db/data/role.csv"
+                  separator=";"
+                  tableName="role">
+            <column name="name" type="string"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="00000002" author="plgrabin@gmail.com">
+        <loadData file="db/data/chapter.csv"
+                  separator=";"
+                  tableName="chapter">
+        </loadData>
+    </changeSet>
+
+
+
 </databaseChangeLog>

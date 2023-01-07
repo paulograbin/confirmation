@@ -49,24 +49,7 @@ public class ProductionDefaultData {
     public void run() {
         log.info("Running production default data");
 
-        setDefaultRoles();
         setDefaultAdmin();
-    }
-
-    public void setDefaultRoles() {
-        log.info("Checking for default roles...");
-
-        if (roleService.fetchRoleCount() == 0) {
-            log.info("Adding default roles to the system");
-
-            Role admin = new Role(1L, RoleName.ROLE_ADMIN);
-            Role master = new Role(2L, RoleName.ROLE_MC);
-            Role user = new Role(3L, RoleName.ROLE_USER);
-
-            entityManager.persist(admin);
-            entityManager.persist(master);
-            entityManager.persist(user);
-        }
     }
 
     private void setDefaultAdmin() {
