@@ -16,14 +16,13 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table
 public class PasswordRequest extends AbstracEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "uuid", updatable = false)
+    @Column(name = "code", columnDefinition = "VARCHAR(36)", updatable = false)
     private UUID code;
     private String emailAddress;
     private LocalDateTime creationDate;

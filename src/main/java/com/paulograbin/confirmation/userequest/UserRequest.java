@@ -31,7 +31,7 @@ public class UserRequest extends AbstracEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "uuid", updatable = false)
+    @Column(name = "code", columnDefinition = "VARCHAR(36)", updatable = false)
     private UUID code;
 
     private String firstName;

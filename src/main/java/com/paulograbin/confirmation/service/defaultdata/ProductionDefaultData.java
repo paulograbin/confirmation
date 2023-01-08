@@ -6,6 +6,7 @@ import com.paulograbin.confirmation.service.UserService;
 import com.paulograbin.confirmation.usecases.user.UpdateUserRequest;
 import com.paulograbin.confirmation.user.User;
 import jakarta.annotation.Resource;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,14 +14,14 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.HashSet;
 
 
 @Profile("production")
-@Service
+@Component
 public class ProductionDefaultData {
 
     private static final Logger log = LoggerFactory.getLogger(ProductionDefaultData.class);
@@ -39,12 +40,12 @@ public class ProductionDefaultData {
 
 
     @EventListener(ApplicationReadyEvent.class)
+    @Transactional
     public void run() {
         log.info("Running production default data");
 
         setDefaultAdmin();
     }
-
 
     private void setDefaultAdmin() {
         log.info("Checking default admin....");
@@ -58,7 +59,7 @@ public class ProductionDefaultData {
             defaultAdmin = new User(ADMIN_USERNAME, "Paulo", "Gräbin", ADMIN_EMAIL, "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
 
-            userService.assignUserToChapter(defaultAdmin.getId(), 3L);
+            userService.assignUserToChapter(defaultAdmin.getId(), 300L);
         }
 
         log.info("Setting admin password....");
@@ -70,7 +71,7 @@ public class ProductionDefaultData {
         defaultPasswordRequest.setPassword(defaultPass);
         userService.updateUser(defaultAdmin.getId(), defaultPasswordRequest);
 
-        userService.assignUserToChapter(defaultAdmin.getId(), 3L);
+        userService.assignUserToChapter(defaultAdmin.getId(), 300L);
 
         log.info("Setting admin authorizations....");
         userService.setAsMaster(defaultAdmin.getId());
