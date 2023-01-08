@@ -1,6 +1,5 @@
 package com.paulograbin.confirmation.service.defaultdata;
 
-import com.paulograbin.confirmation.domain.Role;
 import com.paulograbin.confirmation.domain.RoleName;
 import com.paulograbin.confirmation.service.RoleService;
 import com.paulograbin.confirmation.service.UserService;
@@ -64,7 +63,7 @@ public class ProductionDefaultData {
             defaultAdmin = new User(ADMIN_USERNAME, "Paulo", "Gräbin", ADMIN_EMAIL, "aaa");
             defaultAdmin = userService.createUser(defaultAdmin);
 
-            userService.assignUserToChapter(defaultAdmin.getId(), 3L);
+            userService.assignUserToChapter(defaultAdmin.getId(), 300L);
         }
 
         log.info("Setting admin password....");
@@ -76,7 +75,7 @@ public class ProductionDefaultData {
         defaultPasswordRequest.setPassword(defaultPass);
         userService.updateUser(defaultAdmin.getId(), defaultPasswordRequest);
 
-        userService.assignUserToChapter(defaultAdmin.getId(), 3L);
+        userService.assignUserToChapter(defaultAdmin.getId(), 300L);
 
         log.info("Setting admin authorizations....");
         userService.setAsMaster(defaultAdmin.getId());
